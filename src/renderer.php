@@ -30,6 +30,7 @@ function render($bag)
     if (array_key_exists('view', $bag)) {
         // Expose data directly to the view
         $data = $bag['data'] ?? [];
+        $isHome = $bag['isHome'] ?? false;
         
         if (array_key_exists('layout', $bag)) {
             // The view has to be embedded in a layout, so render it in a buffer

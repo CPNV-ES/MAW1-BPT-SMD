@@ -3,8 +3,7 @@
 require_once SOURCE_DIR . '/models/exercises.php';
 
 if ($_POST) {
-    $id = createExercice($_POST['exercise_title']);
-
+    $id = createExercise($_POST['exercise_title']);
     header('Location: /exercises/' . $id . '/fields');
 }
 

@@ -12,12 +12,22 @@
 </head>
 
 <body>
-<header class="heading <?= $headerColor ?? null ?>">
-    <section class="container">
-        <a href="/"><img src="/images/logo-84d7d70645fbe179ce04c983a5fae1e6cba523d7cd28e0cd49a04707ccbef56e.png"></a>
-        <span class="exercise-label"><?= $title ?? 'ExerciceLooper' ?></span>
-    </section>
-</header>
+<?php if ($isHome): ?>
+    <header class="dashboard">
+        <section class="container">
+            <p><img src="/images/logo-84d7d70645fbe179ce04c983a5fae1e6cba523d7cd28e0cd49a04707ccbef56e.png"></p>
+            <h1>Exercise<br>Looper</h1>
+        </section>
+    </header>
+<?php else: ?>
+    <header class="heading <?= $headerColor ?? null ?>">
+        <section class="container">
+            <a href="/"><img
+                        src="/images/logo-84d7d70645fbe179ce04c983a5fae1e6cba523d7cd28e0cd49a04707ccbef56e.png"></a>
+            <span class="exercise-label"><?= $title ?? 'ExerciseLooper' ?></span>
+        </section>
+    </header>
+<?php endif; ?>
 
 <main class="container">
     <title>ExerciseLooper</title>
