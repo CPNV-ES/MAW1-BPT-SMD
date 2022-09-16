@@ -7,20 +7,20 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mydb` ;
+DROP SCHEMA IF EXISTS `looper` ;
 
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `looper` DEFAULT CHARACTER SET utf8 ;
+USE `looper` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`exercises`
+-- Table `looper`.`exercises`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`exercises` ;
+DROP TABLE IF EXISTS `looper`.`exercises` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`exercises` (
+CREATE TABLE IF NOT EXISTS `looper`.`exercises` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
@@ -28,11 +28,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`fields`
+-- Table `looper`.`fields`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`fields` ;
+DROP TABLE IF EXISTS `looper`.`fields` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`fields` (
+CREATE TABLE IF NOT EXISTS `looper`.`fields` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NULL,
   `value_kind` VARCHAR(45) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`fields` (
   INDEX `fk_fields_exercises_idx` (`exercises_id` ASC) VISIBLE,
   CONSTRAINT `fk_fields_exercises`
     FOREIGN KEY (`exercises_id`)
-    REFERENCES `mydb`.`exercises` (`id`)
+    REFERENCES `looper`.`exercises` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
