@@ -1,31 +1,65 @@
 <?php
 
-class DB
+namespace App\Models;
+
+use App\Database\DBConnection;
+
+abstract class Model
 {
-    private $conn;
 
-    function __construct()
+    protected DBConnection $db;
+    protected string $table;
+
+    public function __construct(DBConnection $db)
     {
-        $this->conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
+        $this->db = $db;
     }
 
-    // Select query
-    function select($table)
+    public function all(): array
     {
-        $select = $this->conn->prepare("SELECT * FROM $table");
-
-        $select->execute();
-
-        return $select->fetchAll();
+        return $this->db->query("SELECT * FROM {$this->table}", $this);
     }
 
-    // Insert query
-    function insert($table, $keys, $values)
+    public function findById(int $id): Model
     {
-        $insert = $this->conn->prepare("INSERT INTO $table ($keys) VALUES (:values)");
+        return $this->db->query("SELECT * FROM {$this->table} WHERE id = ?", [$id], true);
+    }
 
-        $insert->execute(['values' => $values]);
+    public function create(array $data, ?array $relations = null)
+    {
+        $firstParenthesis = "";
+        $secondParenthesis = "";
+        $i = 1;
 
-        return $this->conn->lastInsertId();
+        foreach ($data as $key => $value) {
+            $comma = $i === count($data) ? "" : ", ";
+            $firstParenthesis .= "{$key}{$comma}";
+            $secondParenthesis .= ":{$key}{$comma}";
+            $i++;
+        }
+        return $this->db->query("INSERT INTO {$this->table} ($firstParenthesis)
+        VALUES($secondParenthesis)", $this, $data
+        );
+    }
+
+    public function update(int $id, array $data, ?array $relations = null)
+    {
+        $sqlRequestPart = "";
+        $i = 1;
+
+        foreach ($data as $key => $value) {
+            $comma = $i === count($data) ? "" : ', ';
+            $sqlRequestPart .= "{$key} = :{$key}{$comma}";
+            $i++;
+        }
+
+        $data['id'] = $id;
+
+        return $this->db->query("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id", $this, $data);
+    }
+
+    public function destroy(int $id): bool
+    {
+        return $this->db->query("DELETE FROM {$this->table} WHERE id = ?", $this, [$id]);
     }
 }

@@ -1,3 +1,5 @@
 
 /.idea
 *.drawio.bkp
+
+vendor/*

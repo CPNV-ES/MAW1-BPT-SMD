@@ -2,8 +2,6 @@
 $headerColor = 'results';
 ?>
 
-<h1><?= $title ?></h1>
-
 <div class="row">
     <section class="column">
         <h1>Building</h1>
@@ -16,13 +14,14 @@ $headerColor = 'results';
             </thead>
 
             <tbody>
-            <?php foreach ($data['exercises'] as $exercise) : ?>
+            <?php foreach ($params[0]['exercises'] as $exercise) : ?>
                 <tr>
-                    <td><?= $exercise[1] ?></td>
+                    <td><?= $exercise->title ?></td>
                     <td>
-                        <a title="Manage fields" href="/exercises/<?= $exercise[0] ?>/fields"><i class="fa fa-edit"></i></a>
+                        <a title="Manage fields" href="/exercises/<?= $exercise->id ?>/fields"><i
+                                    class="fa fa-edit"></i></a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                           href="/exercises/<?= $exercise[0] ?>"<i class=" fa fa-trash"></i></a>
+                           href="/exercises/<?= $exercise->id ?>"<i class=" fa fa-trash"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

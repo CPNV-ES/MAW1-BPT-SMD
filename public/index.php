@@ -1,59 +1,30 @@
 <?php
-//=============================================================================
-// Entry script for ooless framework web apps.
-// Author:  Pascal Hurni
-// Date:    03-05-2014
-//=============================================================================
-// Do not modify this file except to adapt the URL fetching for URL rewriting.
-// Fill up these files:
-//    src/dispatcher.php
-//    src/handler.php
-//    src/renderer.php
-//=============================================================================
 
-session_start();
+use App\Controllers\ExerciseController;
+use App\Controllers\FieldsController;
+use App\Controllers\HomeController;
+use App\Router\Router;
 
-define('BASE_DIR', dirname(__FILE__) . '/..');
-define('SOURCE_DIR', BASE_DIR . '/src');
+require '../vendor/autoload.php';
+
+define('TEMPLATES_DIR', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR);
+define('SCRIPTS_DIR', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'looper');
 define('DB_CHARSET', 'utf8');
 define('DB_USER', 'root');
-define('DB_PASSWORD', '');
+const DB_PASSWORD = '';
 
-//=============================================================================
-// Create the BAG which will contain the request/response meta data
+$router = new Router();
 
-$bag = [];
+$router->get('/', HomeController::class . '::index');
 
-//=============================================================================
-// Extract the route from a friendly URL
+$router->get('/exercises', ExerciseController::class . '::index');
+$router->post('/exercises', ExerciseController::class . '::createExercise');
+$router->get('/exercises/new', ExerciseController::class . '::create');
+$router->post('/exercises/:id', ExerciseController::class . '::delete');
 
-$route = $_SERVER["REQUEST_URI"];
-if (!empty($_SERVER["QUERY_STRING"])) {
-    $route = substr($route, 0, strlen($_SERVER["REQUEST_URI"]) - strlen($_SERVER["QUERY_STRING"]) - 1);
-}
+$router->get('/exercises/:id/fields', FieldsController::class . '::index');
 
-$bag['route'] = urldecode($route);
-$bag['method'] = $_SERVER['REQUEST_METHOD'];
-
-error_log("index(): " . $bag['method'] . " " . $bag['route']);
-
-//=============================================================================
-// Dispatch the request
-
-require SOURCE_DIR . '/dispatcher.php';
-$bag = dispatch($bag);
-
-//=============================================================================
-// Call the handler
-
-require SOURCE_DIR . '/handler.php';
-$bag = handle($bag);
-
-//=============================================================================
-// Render the response
-
-require SOURCE_DIR . '/renderer.php';
-render($bag);
+$router->run();
