@@ -11,9 +11,16 @@ class DBConnection
     protected string $charset;
     protected string $username;
     protected string $password;
-    protected ?PDO $pdo;
+    protected ?PDO   $pdo;
 
-    public function __construct(string $dbname, string $host, string $charset, string $username, string $password)
+    /**
+     * @param string $dbname   Name of the database
+     * @param string $host     Url to join the database
+     * @param string $charset  Charset of the base
+     * @param string $username Username for connection
+     * @param string $password Password for the connection
+     */
+    public function __construct (string $dbname, string $host, string $charset, string $username, string $password)
     {
         $this->dbname = $dbname;
         $this->host = $host;
@@ -22,39 +29,55 @@ class DBConnection
         $this->password = $password;
     }
 
-    public function open(): PDO
+    public function getPDO (): PDO
     {
-        return $this->pdo ?? $this->pdo = new PDO("mysql:dbname={$this->dbname};host={$this->host};charset{$this->charset}", $this->username, $this->password,);
+        if (!isset($this->pdo)) $this->open();
+        return $this->pdo;
     }
 
-    public function close()
+    /**
+     * @return void
+     */
+    protected function open (): void
+    {
+        $this->pdo = new PDO("mysql:dbname={$this->dbname};host={$this->host};charset{$this->charset}", $this->username, $this->password,);
+    }
+
+    /**
+     * Close db connection
+     *
+     * @return void
+     */
+    protected function close (): void
     {
         $this->pdo = null;
     }
 
-    public function query(string $sql, $class, array $param = null)
+    /**
+     * Run a query on the database
+     *
+     * @param string     $sql    Sql to run
+     * @param string     $class  class expected in return
+     * @param array|null $param  params for the query
+     * @param bool|null  $single true for a single value in return
+     *
+     * @return bool|object|array
+     */
+    public function execute (string $sql, string $class, array $param = null, bool $single = null): bool|object|array
     {
         $method = is_null($param) ? 'query' : 'prepare';
+        $stmt = $this->getPDO()->$method($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $class, [$this]);
 
-        if (strpos($sql, 'DELETE') === 0
-            || strpos($sql, 'UPDATE') === 0
-            || strpos($sql, 'INSERT') === 0) {
-
-            var_dump($method);
-            $stmt = $this->open()->$method($sql);
-            $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($class), [$this]);
-            $res = $stmt->execute($param);
-
-            return strpos($sql, 'INSERT') === 0 ? $this->pdo->lastInsertId() : $res;
+        if (str_starts_with($sql, 'DELETE') || str_starts_with($sql, 'UPDATE') || str_starts_with($sql, 'INSERT')) {
+            return $stmt->execute($param);
         }
-
-        $stmt = $this->open()->$method($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, get_class($class), [$this]);
 
         if ($method !== 'query') {
             $stmt->execute($param);
         }
 
-        return $stmt->fetchAll();
+        $fetch = is_null($single) ? 'fetchAll' : 'fetch';
+        return $stmt->$fetch();
     }
 }
