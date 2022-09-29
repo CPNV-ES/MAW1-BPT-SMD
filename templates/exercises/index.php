@@ -14,14 +14,15 @@ $headerColor = 'results';
             </thead>
 
             <tbody>
-            <?php foreach ($params[0]['exercises'] as $exercise) : ?>
+            <?php
+            foreach ($params['exercises'] as $exercise) : ?>
                 <tr>
-                    <td><?= $exercise->title ?></td>
+                    <td><?= $exercise->getTitle() ?></td>
                     <td>
-                        <a title="Manage fields" href="/exercises/<?= $exercise->id ?>/fields"><i
+                        <a title="Manage fields" href="/exercises/<?= $exercise->getId() ?>/fields"><i
                                     class="fa fa-edit"></i></a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                           href="/exercises/<?= $exercise->id ?>"<i class=" fa fa-trash"></i></a>
+                           href="/exercises/<?= $exercise->getId() ?>"<i class=" fa fa-trash"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

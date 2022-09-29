@@ -8,8 +8,8 @@ $headerColor = 'managing'
     <div class="field">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
+        <div style="color: orangered"><?= $params['error'] ?></div>
     </div>
-
     <div class="actions">
         <input type="submit" name="commit" value="Create Exercise" data-disable-with="Create Exercise">
     </div>

@@ -12,14 +12,16 @@
 </head>
 
 <body>
-<?php if (isset($params[0]['isHome']) and $params[0]['isHome']): ?>
+<?php
+if (isset($params['isHome']) and $params['isHome']): ?>
     <header class="dashboard">
         <section class="container">
             <p><img src="/assets/logo-84d7d70645fbe179ce04c983a5fae1e6cba523d7cd28e0cd49a04707ccbef56e.png"></p>
             <h1>Exercise<br>Looper</h1>
         </section>
     </header>
-<?php else: ?>
+<?php
+else: ?>
     <header class="heading <?= $headerColor ?? null ?>">
         <section class="container">
             <a href="/"><img
@@ -27,7 +29,8 @@
             <span class="exercise-label"><?= $title ?? 'ExerciseLooper' ?></span>
         </section>
     </header>
-<?php endif; ?>
+<?php
+endif; ?>
 
 <main class="container">
     <title>ExerciseLooper</title>

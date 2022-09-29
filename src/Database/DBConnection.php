@@ -6,29 +6,43 @@ use PDO;
 
 class DBConnection
 {
-    protected string $dbname;
-    protected string $host;
-    protected string $charset;
+    private static ?DBConnection $instance = null;
+
+    protected string $dns;
     protected string $username;
     protected string $password;
     protected ?PDO   $pdo;
 
     /**
-     * @param string $dbname   Name of the database
-     * @param string $host     Url to join the database
-     * @param string $charset  Charset of the base
+     * @param string $dns      Arguments required to create a database connection
      * @param string $username Username for connection
      * @param string $password Password for the connection
      */
-    public function __construct (string $dbname, string $host, string $charset, string $username, string $password)
+    private function __construct (string $dns, string $username, string $password)
     {
-        $this->dbname = $dbname;
-        $this->host = $host;
-        $this->charset = $charset;
+        $this->dns = $dns;
         $this->username = $username;
         $this->password = $password;
     }
 
+    /**
+     * @param string $dns      Arguments required to create a database connection
+     * @param string $username Username for connection
+     * @param string $password Password for the connection
+     *
+     * @return DBConnection
+     */
+    public static function getInstance (string $dns, string $username, string $password): DBConnection
+    {
+        if (self::$instance == null) {
+            self::$instance = new DBConnection($dns, $username, $password);
+        }
+        return self::$instance;
+    }
+
+    /**
+     * @return PDO
+     */
     public function getPDO (): PDO
     {
         if (!isset($this->pdo)) $this->open();
@@ -40,7 +54,7 @@ class DBConnection
      */
     protected function open (): void
     {
-        $this->pdo = new PDO("mysql:dbname={$this->dbname};host={$this->host};charset{$this->charset}", $this->username, $this->password,);
+        $this->pdo = new PDO($this->dns, $this->username, $this->password);
     }
 
     /**

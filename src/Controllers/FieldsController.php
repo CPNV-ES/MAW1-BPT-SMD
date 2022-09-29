@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use App\models\Exercise;
+use App\Models\Exercise;
 
 class FieldsController extends Controller
 {
     public function index(int $id)
     {
-        $this->view('fields/index');
+        $this->render('fields/index');
     }
 }

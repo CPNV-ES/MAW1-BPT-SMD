@@ -2,6 +2,8 @@
 
 namespace App\Database;
 
+use PDOException;
+
 /**
  * Query
  */
@@ -43,9 +45,9 @@ class Query
      *
      * @param array $data array of fields name and value
      *
-     * @return void
+     * @return bool
      */
-    public function insert (array $data): void
+    public function insert (array $data): bool
     {
         $firstParenthesis = "";
         $secondParenthesis = "";
@@ -57,7 +59,14 @@ class Query
             $secondParenthesis .= ":{$key}{$comma}";
             $i++;
         }
-        $this->db->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES($secondParenthesis)", $this->class, $data);
+
+        try {
+            $this->db->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES($secondParenthesis)", $this->class, $data);
+            return true;
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
     }
 
     /**
