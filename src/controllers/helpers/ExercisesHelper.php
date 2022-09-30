@@ -3,33 +3,32 @@
 
 class ExercisesHelper
 {
-    protected $params;
-    protected $conditions;
+    protected Query $query;
 
-    public function __construct (query $query)
+    public function __construct (Query $query)
     {
         $this->query = $query;
     }
 
-    public function get ($id = null)
+    public function get (array $id = null): array
     {
         if (is_null($id)) {
-            return $this->query->Select();
+            return $this->query->select();
         } else {
             $conditions = "id IN :id";
             $params = array(':id' => $id);
-            return $this->query->Select($conditions, $params);
+            return $this->query->select($conditions, $params);
         }
     }
 
-    public function create ($title, $state)
+    public function create (string $title): void
     {
-        $params = ['title' => $title, 'state' => $state];
-        return $this->query->Insert($params);
+        $params = compact('title');
+        $this->query->insert($params);
     }
 
-    public function delete ($id)
+    public function delete (int $id): void
     {
-        return $this->query->Delete($id);
+        $this->query->delete($id);
     }
 }
