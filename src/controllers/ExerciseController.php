@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Database\DBConnection;
 use App\Database\Query;
 use App\Models\Exercise;
-use App\Models\ExerciseHelper;
+use App\Models\ExercisesHelper;
 
 class ExerciseController extends Controller
 {
@@ -14,7 +14,7 @@ class ExerciseController extends Controller
     /**
      * @param DBConnection $db
      */
-    function __construct (DBConnection $db)
+    function __construct(DBConnection $db)
     {
         parent::__construct();
         $this->query = new Query($db, 'exercises', Exercise::class);
@@ -23,9 +23,9 @@ class ExerciseController extends Controller
     /**
      * @return void
      */
-    public function index (): void
+    public function index(): void
     {
-        $exercisesHelper = new ExerciseHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->query);
         $exercises = $exercisesHelper->get();
         $this->view('exercises/index', compact('exercises'));
     }
@@ -33,7 +33,7 @@ class ExerciseController extends Controller
     /**
      * @return void
      */
-    public function create (): void
+    public function create(): void
     {
         $this->view('exercises/new');
     }
@@ -41,11 +41,11 @@ class ExerciseController extends Controller
     /**
      * @return void
      */
-    public function createExercise (): void
+    public function createExercise(): void
     {
         $exercise = Exercise::withTitle($_POST['title']);
 
-        $exercisesHelper = new ExerciseHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->query);
 
         if ($exercisesHelper->create($exercise)) {
             header("Location: /exercises");
@@ -59,9 +59,9 @@ class ExerciseController extends Controller
      *
      * @return void
      */
-    public function delete (int $id): void
+    public function delete(int $id): void
     {
-        $exercisesHelper = new ExerciseHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->query);
 
         $exercisesHelper->delete($id);
 
