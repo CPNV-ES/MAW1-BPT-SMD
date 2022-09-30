@@ -2,43 +2,69 @@
 
 namespace App\Controllers;
 
+use App\Database\DBConnection;
+use App\Database\Query;
 use App\Models\Exercise;
+use App\Models\ExerciseHelper;
 
 class ExerciseController extends Controller
 {
-    public function index()
+    protected Query $query;
+
+    /**
+     * @param DBConnection $db
+     */
+    function __construct (DBConnection $db)
     {
-        $exercise = new Exercise($this->getDB());
-        $exercises = $exercise->all();
-        $this->view('exercises/index', [compact('exercises')]);
+        parent::__construct();
+        $this->query = new Query($db, 'exercises', Exercise::class);
     }
 
-    public function create()
+    /**
+     * @return void
+     */
+    public function index (): void
+    {
+        $exercisesHelper = new ExerciseHelper($this->query);
+        $exercises = $exercisesHelper->get();
+        $this->view('exercises/index', compact('exercises'));
+    }
+
+    /**
+     * @return void
+     */
+    public function create (): void
     {
         $this->view('exercises/new');
     }
 
-    public function createExercise()
+    /**
+     * @return void
+     */
+    public function createExercise (): void
     {
-        $exercise = new Exercise($this->getDB());
+        $exercise = Exercise::withTitle($_POST['title']);
 
-        $result = $exercise->create([
-            'title' => $_POST['title']
-        ]);
+        $exercisesHelper = new ExerciseHelper($this->query);
 
-        if ($result) {
-            return header("Location: /exercises/{$result}/fields");
+        if ($exercisesHelper->create($exercise)) {
+            header("Location: /exercises");
+        } else {
+            header("Location: /exercises/new");
         }
     }
 
-    public function delete(int $id)
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function delete (int $id): void
     {
-        $exercise = new Exercise($this->getDB());
+        $exercisesHelper = new ExerciseHelper($this->query);
 
-        $result = $exercise->destroy($id);
+        $exercisesHelper->delete($id);
 
-        if ($result) {
-            return header('Location: /exercises');
-        }
+        header('Location: /exercises');
     }
 }

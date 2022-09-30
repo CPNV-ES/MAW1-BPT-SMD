@@ -4,9 +4,9 @@ namespace App\Controllers;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index ()
     {
         $isHome = true;
-        $this->render('site/index', compact('isHome'));
+        $this->view('site/index', compact('isHome'));
     }
 }

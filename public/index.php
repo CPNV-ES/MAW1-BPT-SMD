@@ -20,8 +20,8 @@ $router = Router::getInstance();
 $router->get('/', HomeController::class . '::index');
 
 $router->get('/exercises', ExerciseController::class . '::index');
-$router->post('/exercises', ExerciseController::class . '::createExercise');
 $router->get('/exercises/new', ExerciseController::class . '::create');
+$router->post('/exercises/new', ExerciseController::class . '::createExercise');
 $router->post('/exercises/:id', ExerciseController::class . '::delete');
 
 $router->get('/exercises/:id/fields', FieldsController::class . '::index');
