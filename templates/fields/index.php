@@ -15,7 +15,7 @@ $title = "Exercise: ";
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params[0]['fields'] as $field) : ?>
+            <?php foreach ($params['fields'] as $field) : ?>
                 <tr>
                     <td><?= $field->title ?></td>
                     <td>single_line</td>

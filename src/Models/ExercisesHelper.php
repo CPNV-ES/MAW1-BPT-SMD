@@ -1,16 +1,19 @@
 <?php
 
+namespace App\Models;
+
+use App\Database\Query;
 
 class ExercisesHelper
 {
     protected Query $query;
 
-    public function __construct (Query $query)
+    public function __construct(Query $query)
     {
         $this->query = $query;
     }
 
-    public function get (array $id = null): array
+    public function get(array $id = null): array
     {
         if (is_null($id)) {
             return $this->query->select();
@@ -21,13 +24,12 @@ class ExercisesHelper
         }
     }
 
-    public function create (string $title): void
+    public function create(Exercise $exercise): bool
     {
-        $params = compact('title');
-        $this->query->insert($params);
+        return $this->query->insert(['title' => $exercise->getTitle()]);
     }
 
-    public function delete (int $id): void
+    public function delete(int $id): void
     {
         $this->query->delete($id);
     }

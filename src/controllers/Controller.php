@@ -2,22 +2,22 @@
 
 namespace App\Controllers;
 
-use App\Database\DBConnection;
 
 abstract class Controller
 {
-    protected DBConnection $db;
 
-    public function __construct(DBConnection $db)
+    public function __construct ()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        $this->db = $db;
+        if (session_status() === PHP_SESSION_NONE) session_start();
     }
 
-    protected function view(string $path, array $params = null)
+    /**
+     * @param string     $path
+     * @param array|null $params
+     *
+     * @return void
+     */
+    protected function view (string $path, array $params = null): void
     {
         ob_start();
         require TEMPLATES_DIR . $path . '.php';
@@ -25,8 +25,4 @@ abstract class Controller
         require TEMPLATES_DIR . 'layout.php';
     }
 
-    protected function getDB()
-    {
-        return $this->db;
-    }
 }

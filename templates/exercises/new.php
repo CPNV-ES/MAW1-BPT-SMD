@@ -4,12 +4,12 @@ $headerColor = 'managing'
 ?>
 <h1><?= $title ?></h1>
 
-<form action="/exercises" accept-charset="UTF-8" method="post">
+<form action="/exercises/new" accept-charset="UTF-8" method="post">
     <div class="field">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
+        <div style="color: orangered"><?= $params['error'] ?></div>
     </div>
-
     <div class="actions">
         <input type="submit" name="commit" value="Create Exercise" data-disable-with="Create Exercise">
     </div>
