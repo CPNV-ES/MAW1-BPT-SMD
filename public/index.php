@@ -7,13 +7,11 @@ use App\Database\DBConnection;
 use App\Router\Router;
 
 require '../vendor/autoload.php';
+require_once 'const.php';
 
 define('TEMPLATES_DIR', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR);
 define('SCRIPTS_DIR', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
 
-const DB_DNS = 'mysql:dbname=looper;host=localhost;charset=utf8';
-const DB_USER = 'root';
-const DB_PASSWORD = '';
 
 $router = Router::getInstance();
 
