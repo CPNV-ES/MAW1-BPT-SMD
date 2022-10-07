@@ -10,14 +10,14 @@ class Exercise
     protected int    $id;
     protected string $title;
 
-    public function __construct () {}
+    public function __construct() {}
 
     /**
      * @param string $title
      *
      * @return Exercise
      */
-    public static function withTitle (string $title): Exercise
+    public static function withTitle(string $title): Exercise
     {
         $exercise = new self();
         $exercise->setTitle($title);
@@ -27,7 +27,7 @@ class Exercise
     /**
      * @return int
      */
-    public function getId (): int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -35,7 +35,7 @@ class Exercise
     /**
      * @return string
      */
-    public function getTitle (): string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -45,7 +45,7 @@ class Exercise
      *
      * @return void
      */
-    public function setTitle (string $title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }

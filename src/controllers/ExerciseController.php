@@ -14,7 +14,7 @@ class ExerciseController extends Controller
     /**
      * @param DBConnection $db
      */
-    function __construct(DBConnection $db)
+    public function __construct(DBConnection $db)
     {
         parent::__construct();
         $this->query = new Query($db, 'exercises', Exercise::class);

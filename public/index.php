@@ -23,5 +23,6 @@ $router->post('/exercises/new', ExerciseController::class . '::createExercise');
 $router->post('/exercises/:id', ExerciseController::class . '::delete');
 
 $router->get('/exercises/:id/fields', FieldsController::class . '::index');
+$router->post('/exercises/:id/fields/new', FieldsController::class . '::create');
 
 $router->run();

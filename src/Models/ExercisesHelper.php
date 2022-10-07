@@ -13,13 +13,13 @@ class ExercisesHelper
         $this->query = $query;
     }
 
-    public function get(array $id = null): array
+    public function get(array $ids = null): array
     {
-        if (is_null($id)) {
+        if (is_null($ids)) {
             return $this->query->select();
         } else {
             $conditions = "id IN :id";
-            $params = array(':id' => $id);
+            $params['id'] = '(' . implode(',', $ids) . ')';
             return $this->query->select($conditions, $params);
         }
     }

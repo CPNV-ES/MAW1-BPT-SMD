@@ -18,7 +18,7 @@ class DBConnection
      * @param string $username Username for connection
      * @param string $password Password for the connection
      */
-    private function __construct (string $dns, string $username, string $password)
+    private function __construct(string $dns, string $username, string $password)
     {
         $this->dns = $dns;
         $this->username = $username;
@@ -32,7 +32,7 @@ class DBConnection
      *
      * @return DBConnection
      */
-    public static function getInstance (string $dns, string $username, string $password): DBConnection
+    public static function getInstance(string $dns, string $username, string $password): DBConnection
     {
         if (self::$instance == null) {
             self::$instance = new DBConnection($dns, $username, $password);
@@ -43,26 +43,28 @@ class DBConnection
     /**
      * @return PDO
      */
-    public function getPDO (): PDO
+    public function getPDO(): PDO
     {
-        if (!isset($this->pdo)) $this->open();
+        if (!isset($this->pdo)) {
+            $this->open();
+        }
         return $this->pdo;
     }
 
     /**
      * @return void
      */
-    protected function open (): void
+    protected function open(): void
     {
         $this->pdo = new PDO($this->dns, $this->username, $this->password);
     }
 
     /**
-     * Close db connection
+     * Close dbConnection connection
      *
      * @return void
      */
-    protected function close (): void
+    protected function close(): void
     {
         $this->pdo = null;
     }
@@ -77,7 +79,7 @@ class DBConnection
      *
      * @return bool|object|array
      */
-    public function execute (string $sql, string $class, array $param = null, bool $single = null): bool|object|array
+    public function execute(string $sql, string $class, array $param = null, bool $single = null): bool|object|array
     {
         $method = is_null($param) ? 'query' : 'prepare';
         $stmt = $this->getPDO()->$method($sql);
@@ -93,5 +95,10 @@ class DBConnection
 
         $fetch = is_null($single) ? 'fetchAll' : 'fetch';
         return $stmt->$fetch();
+    }
+
+    public function getLastItemId(): int
+    {
+        return $this->getPDO()->lastInsertId();
     }
 }
