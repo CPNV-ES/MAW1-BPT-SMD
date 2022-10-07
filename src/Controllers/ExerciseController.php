@@ -33,17 +33,9 @@ class ExerciseController extends Controller
     /**
      * @return void
      */
-    public function create(): void
-    {
-        $this->view('exercises/new');
-    }
-
-    /**
-     * @return void
-     */
     public function createExercise(): void
     {
-        $exercise = Exercise::withTitle($_POST['title']);
+        $exercise = Exercise::withData($_POST['title'], 'Building');
 
         $exercisesHelper = new ExercisesHelper($this->query);
 
@@ -51,7 +43,16 @@ class ExerciseController extends Controller
             header("Location: /exercises");
         } else {
             header("Location: /exercises/new");
+            $params['error'] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function create(): void
+    {
+        $this->view('exercises/new');
     }
 
     /**

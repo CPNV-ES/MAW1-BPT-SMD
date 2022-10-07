@@ -6,9 +6,11 @@ namespace App\Controllers;
 abstract class Controller
 {
 
-    public function __construct ()
+    public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     /**
@@ -17,7 +19,7 @@ abstract class Controller
      *
      * @return void
      */
-    protected function view (string $path, array $params = null): void
+    protected function view(string $path, array $params = null): void
     {
         ob_start();
         require TEMPLATES_DIR . $path . '.php';
