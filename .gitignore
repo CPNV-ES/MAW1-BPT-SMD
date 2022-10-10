@@ -1,3 +1,6 @@
 
 /.idea
 *.drawio.bkp
+
+vendor/*
+public/const.php

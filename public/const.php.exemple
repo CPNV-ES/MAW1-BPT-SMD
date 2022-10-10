@@ -1,0 +1,6 @@
+<?php
+
+//Database informations
+const DB_DNS = 'mysql:dbname=DBNAME;host=HOSTNAME;charset=utf8';
+const DB_USER = 'DB_USER';
+const DB_PASSWORD = 'DB_PASSWORD';
