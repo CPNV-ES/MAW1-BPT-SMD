@@ -9,6 +9,7 @@ class Exercise
 {
     protected int    $id;
     protected string $title;
+    protected string $state;
 
     public function __construct() {}
 
@@ -53,5 +54,10 @@ class Exercise
     public function getState(): string
     {
         return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 }
