@@ -20,7 +20,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             foreach ($params['exercise']->getAllFields() as $field) : ?>
                 <tr>
                     <td><?= $field->getLabel() ?></td>
-                    <td>single_line</td>
+                    <td><?= $field->getValue() ?></td>
                     <td>
                         <a title="Edit"
                            href="/exercises/<?= $params['exercise']->getId() ?>/fields/<?= $field->getId() ?>/edit">
@@ -53,7 +53,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
 
             <div class="field">
                 <label for="field_label">Label</label>
-                <input type="text" name="field[label]" id="field_label">
+                <input type="text" name="field[label]" id="field_label" required>
             </div>
 
             <div class="field">
@@ -64,6 +64,8 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
                     <option value="multi_line">Multi-line text</option>
                 </select>
             </div>
+
+            <div style="color: orangered"><?= $params['error'] ?? '' ?></div>
 
             <div class="actions">
                 <input type="submit" name="commit" value="Create Field" data-disable-with="Create Field">

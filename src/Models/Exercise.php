@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Database\DBConnection;
 use App\Database\Query;
+use PDOException;
 
 /**
  * Exercise
@@ -15,6 +16,9 @@ class Exercise
     protected string $state = 'Building';
     protected Query  $query;
 
+    /**
+     * @param array $params
+     */
     public function __construct(array $params = [])
     {
         $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
@@ -67,6 +71,35 @@ class Exercise
 
     public function getAllFields(): array
     {
-        return $this->query->select();
+        return $this->query->select('exercise_id = :id', [':id' => $this->id]);
+    }
+
+    /**
+     * @param Field $field
+     *
+     * @return int
+     */
+    public function createField(Field $field): int
+    {
+        try {
+            return $this->query->insert([
+                'label' => $field->getLabel(),
+                'value' => $field->getValue(),
+                'exercise_id' => $this->id
+            ]);
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
+    }
+
+    /**
+     * @param $id
+     *
+     * @return void
+     */
+    public function deleteField($id): void
+    {
+        $this->query->delete($id);
     }
 }

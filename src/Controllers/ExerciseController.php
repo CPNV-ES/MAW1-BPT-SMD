@@ -25,7 +25,7 @@ class ExerciseController extends Controller
         $params = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
-            $exercisesHelper = new ExercisesHelper($this->dbConnection);
+            $exercisesHelper = new ExercisesHelper();
             if ($id = $exercisesHelper->create($exercise)) {
                 header("Location: /exercises/{$id}/fields");
             } else {

@@ -46,7 +46,12 @@ class Route
         $params = explode('::', $this->action);
         $controller = new $params[0]();
         $method = $params[1];
-
-        isset($this->matches[1]) ? $controller->$method($this->matches[1]) : $controller->$method();
+        if (isset($this->matches[2])) {
+            $controller->$method($this->matches[1], $this->matches[2]);
+        } elseif (isset($this->matches[1])) {
+            $controller->$method($this->matches[1]);
+        } else {
+            $controller->$method();
+        }
     }
 }

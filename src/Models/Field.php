@@ -10,6 +10,19 @@ class Field
     protected string   $value;
 
     /**
+     * @param array $params
+     */
+    public function __construct(array $params = [])
+    {
+        if (array_key_exists('label', $params)) {
+            $this->label = $params['label'];
+        }
+        if (array_key_exists('value', $params)) {
+            $this->value = $params['value'];
+        }
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
