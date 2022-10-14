@@ -25,6 +25,39 @@ ___
 - MCD : Draw.io
 - MLD : MySQL Workbench 8.0 CE
 ___
+## Installation
+## Local installation (for development)
+### Prerequisites:
+- Have a `Php` and `Mariadb` service installed and be able to reach them in a shell (test `php -v` and `mariadb -v` to verify. Successful verification if the command is recognized.
+- Have the **PDO** extension activated on the Php server (change `;extension=pdo_mysql` to `extension=pdo_mysql` in the `php.ini` file or verify that it is already done).
+### Procedure:
+1. **Get the repository** from GitHub (clone or `.zip` download) (example clone in a shell in the `C:/Alice/Documents/GitHub/` folder)
+
+        VS:
+        cd C:/Alice/Documents/GitHub/
+        git clone https://github.com/CPNV-ES/MAW1-BPT-SMD.git
+
+1. Open a shell and **install the dependencies** with [`npm`](https://www.npmjs.com/get-npm), as well as the PHP packages (with `Composer`) in the ` folder app! A `node_modules` folder and a `package-lock.json` file appear.
+
+        cd app
+        npm install
+        composer install
+
+1. Start the MySQL service. Log in (with an SQL client for example) as the `root` account. Execute the `db/db-manage/create-db-kanff.sql` file, which will **create the `kanff` database** and its tables. Then **create a new user** (named here `kanffApp` with `Pa$$w0rd` for password) and give him access to the previously created `kanff` database. Connect to the new user to verify that it has been created and that it has access to the `kanff` database.
+1. Go to `app`. Duplicate the `.const.php.example` file and rename it to `.const.php`.
+1. Start an IDE at the root of the repository. Modify the values ​​of the `.const.php` file in order to **register the identifiers** of connection to the database (4 values ​​+ a cartridge).
+
+        $user = "kanffApp";
+        $pass = "Pa\$\$w0rd"; //Special php characters must be preceded by \
+        $dbhost = "localhost";
+        $dbname = "kanff";
+
+1. Run the `db/db-manage/restore-db-kanff.bat` file (or run the `php -f restore-db.php` command in `db/db-manage/`) to * *insert data** from the "Collective Assoc Vaud" pack. The database is now created. This .bat script is useful for very quickly restoring the database during development or testing.
+1. Start a PHP server **in the `app`** folder (not the repository root folder!) on a free port (here 8080).
+1. **Open a web browser** on the localhost address and the chosen port: `localhost:8080`.
+1. **Validation**: The installation is complete when the site is displayed correctly in the browser (login page displayed and CSS style similar to the version of the [test server](https://kanff.mycpnv. ch)) and when the login works.
+___
+
 ## ExerciseLooper features
 
 ### Exercise building

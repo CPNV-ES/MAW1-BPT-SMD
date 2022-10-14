@@ -61,7 +61,11 @@ class Query
             $i++;
         }
 
-        $this->dbConnection->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)", $this->class, $data);
+        $this->dbConnection->execute(
+            "INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)",
+            $this->class,
+            $data
+        );
         return $this->dbConnection->getLastItemId();
     }
 
@@ -86,7 +90,11 @@ class Query
 
         $data['id'] = $id;
 
-        return $this->dbConnection->execute("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id", $this->class, $data);
+        return $this->dbConnection->execute(
+            "UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id",
+            $this->class,
+            $data
+        );
     }
 
     /**
