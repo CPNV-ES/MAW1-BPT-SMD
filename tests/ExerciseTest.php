@@ -9,7 +9,7 @@ require_once '../public/const.php';
 
 class ExerciseTest extends TestCase
 {
-    protected static Exercise $exercise;
+    protected static Exercise        $exercise;
     protected static ExercisesHelper $exercisesHelper;
 
     public function test_constructor()
@@ -21,7 +21,7 @@ class ExerciseTest extends TestCase
 
     public function test_get_id()
     {
-        $exercisesHelper = new ExercisesHelper(DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));
+        $exercisesHelper = new ExercisesHelper();
         $exercise = new Exercise();
         $exercise->setTitle('Test-ExerciseId');
         $exercise->setState('edit');

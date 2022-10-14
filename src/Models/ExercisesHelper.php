@@ -10,9 +10,9 @@ class ExercisesHelper
 {
     protected Query $query;
 
-    public function __construct(DBConnection $dbConnection)
+    public function __construct()
     {
-        $this->query = new Query($dbConnection, 'exercises', Exercise::class);
+        $this->query = new Query(DBConnection::getInstance(), 'exercises', Exercise::class);
     }
 
     /**

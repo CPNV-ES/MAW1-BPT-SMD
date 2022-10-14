@@ -8,9 +8,9 @@ abstract class Controller
 {
     protected DBConnection $dbConnection;
 
-    public function __construct(DBConnection $dbConnection)
+    public function __construct()
     {
-        $this->dbConnection = $dbConnection;
+        $this->dbConnection = DBConnection::getInstance();
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

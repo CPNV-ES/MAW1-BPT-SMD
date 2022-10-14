@@ -1,6 +1,7 @@
 <?php
+
 $headerColor = 'managing';
-$title = "Exercise: ";
+$title = "Exercise: {$params['exercise']->getTitle()}";
 ?>
 
 <div class="row">
@@ -15,35 +16,40 @@ $title = "Exercise: ";
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params['fields'] as $field) : ?>
+            <?php
+            foreach ($params['exercise']->getAllFields() as $field) : ?>
                 <tr>
-                    <td><?= $field->title ?></td>
+                    <td><?= $field->getLabel() ?></td>
                     <td>single_line</td>
                     <td>
-                        <a title="Edit" href="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>/edit">
+                        <a title="Edit"
+                           href="/exercises/<?= $params['exercise']->getId() ?>/fields/<?= $field->getId() ?>/edit">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                           href="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>">
+                           href="/exercises/<?= $params['exercise']->getId() ?>/fields/<?= $field->getId() ?>">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php
+            endforeach; ?>
             </tbody>
         </table>
 
         <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
-           data-method="put" href="/exercises/393?exercise%5Bstatus%5D=answering"><i class="fa fa-comment"></i> Complete
+           data-method="put" href="/exercises/<?= $params['exercise']->getId() ?>?exercise%5Bstatus%5D=answering"><i
+                    class="fa fa-comment"></i> Complete
             and be ready for answers</a>
 
     </section>
     <section class="column">
         <h1>New Field</h1>
-        <form action="/exercises/393/fields" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden"
-                                                                                         value="✓"><input type="hidden"
-                                                                                                          name="authenticity_token"
-                                                                                                          value="JvRa+eX8jVPedAiRCakPf/Qgocl6HyPG7nM2XDRKoPOswVkR0ByEmwKHASib4Yo3/tbE4Lo2oOZ3PMa2/9B75A==">
+        <form action="/exercises/<?= $params['exercise']->getId() ?>/fields" accept-charset="UTF-8" method="post"><input
+                    name="utf8" type="hidden"
+                    value="✓"><input type="hidden"
+                                     name="authenticity_token"
+                                     value="JvRa+eX8jVPedAiRCakPf/Qgocl6HyPG7nM2XDRKoPOswVkR0ByEmwKHASib4Yo3/tbE4Lo2oOZ3PMa2/9B75A==">
 
             <div class="field">
                 <label for="field_label">Label</label>

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Database\DBConnection;
+use App\Database\Query;
+
 /**
  * Exercise
  */
@@ -10,9 +13,11 @@ class Exercise
     protected int    $id;
     protected string $title;
     protected string $state = 'Building';
+    protected Query  $query;
 
     public function __construct(array $params = [])
     {
+        $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
         if (array_key_exists('title', $params)) {
             $this->title = $params['title'];
         }
@@ -58,5 +63,10 @@ class Exercise
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function getAllFields(): array
+    {
+        return $this->query->select();
     }
 }

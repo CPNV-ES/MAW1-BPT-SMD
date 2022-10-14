@@ -16,8 +16,8 @@ class QueryTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $dbConnection = DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD);
-        self::$query = new Query($dbConnection, 'exercises', Exercise::class);
+        DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
+        self::$query = new Query(DBConnection::getInstance(), 'exercises', Exercise::class);
     }
 
     protected function setUp(): void

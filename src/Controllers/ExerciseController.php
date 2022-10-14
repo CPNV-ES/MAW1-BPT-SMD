@@ -12,7 +12,7 @@ class ExerciseController extends Controller
      */
     public function index(): void
     {
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
+        $exercisesHelper = new ExercisesHelper();
         $exercises = $exercisesHelper->get();
         $this->view('exercises/index', compact('exercises'));
     }
@@ -42,7 +42,7 @@ class ExerciseController extends Controller
      */
     public function delete(int $id): void
     {
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
+        $exercisesHelper = new ExercisesHelper();
 
         $exercisesHelper->delete($id);
 
