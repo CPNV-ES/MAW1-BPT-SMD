@@ -4,5 +4,4 @@
 
 vendor/*
 public/const.php
-
-*.cache
+.phpunit.result.cache
