@@ -14,7 +14,7 @@ class Route
      * @param string $path   url path
      * @param string $action Controller::action
      */
-    public function __construct (string $path, string $action)
+    public function __construct(string $path, string $action)
     {
         $this->path = trim($path, '/');
         $this->action = $action;
@@ -25,7 +25,7 @@ class Route
      *
      * @return bool
      */
-    public function matches (string $url): bool
+    public function matches(string $url): bool
     {
         $path = preg_replace('#:([\w]+)#', '([0-9]+)', $this->path);
         $pathToMatch = '/^\/' . str_replace('/', '\/', $path) . '$/';
@@ -41,7 +41,7 @@ class Route
     /**
      * @return void
      */
-    public function execute (): void
+    public function execute(): void
     {
         $params = explode('::', $this->action);
         $controller = new $params[0](DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));

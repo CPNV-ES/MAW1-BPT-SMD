@@ -9,18 +9,18 @@ use PDOException;
  */
 class Query
 {
-    protected DBConnection $db;
+    protected DBConnection $dbConnection;
     protected string       $table;
     protected string       $class;
 
     /**
-     * @param DBConnection $db
+     * @param DBConnection $dbConnection
      * @param string       $table
      * @param string       $class
      */
-    public function __construct (DBConnection $db, string $table, string $class)
+    public function __construct(DBConnection $dbConnection, string $table, string $class)
     {
-        $this->db = $db;
+        $this->dbConnection = $dbConnection;
         $this->table = $table;
         $this->class = $class;
     }
@@ -30,14 +30,15 @@ class Query
      *
      * @param string|null $conditions
      * @param array|null  $params
+     * @param bool        $single
      *
      * @return array
      */
-    function select (string $conditions = null, array $params = null): array
+    public function select(string $conditions = null, array $params = null, bool $single = false): array
     {
         $sql = "SELECT * FROM {$this->table}";
-        $sql .= $conditions ? 'WHERE ' . $conditions : '';
-        return $this->db->execute($sql, $this->class, $params);
+        $sql .= $conditions ? " WHERE {$conditions}" : "";
+        return $this->dbConnection->execute($sql, $this->class, $params, $single);
     }
 
     /**
@@ -45,9 +46,9 @@ class Query
      *
      * @param array $data array of fields name and value
      *
-     * @return bool
+     * @return int
      */
-    public function insert (array $data): bool
+    public function insert(array $data): int
     {
         $firstParenthesis = "";
         $secondParenthesis = "";
@@ -60,13 +61,8 @@ class Query
             $i++;
         }
 
-        try {
-            $this->db->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES($secondParenthesis)", $this->class, $data);
-            return true;
-        } catch (PDOException $e) {
-            error_log($e);
-            return false;
-        }
+        $this->dbConnection->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)", $this->class, $data);
+        return $this->dbConnection->getLastItemId();
     }
 
     /**
@@ -77,7 +73,7 @@ class Query
      *
      * @return bool
      */
-    public function update (int $id, array $data): bool
+    public function update(int $id, array $data): bool
     {
         $sqlRequestPart = "";
         $i = 1;
@@ -90,7 +86,7 @@ class Query
 
         $data['id'] = $id;
 
-        return $this->db->execute("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id", $this->class, $data);
+        return $this->dbConnection->execute("UPDATE {$this->table} SET {$sqlRequestPart} WHERE id = :id", $this->class, $data);
     }
 
     /**
@@ -100,8 +96,8 @@ class Query
      *
      * @return bool
      */
-    public function delete (int $id): bool
+    public function delete(int $id): bool
     {
-        return $this->db->execute("DELETE FROM {$this->table} WHERE id = ?", $this->class, [$id]);
+        return $this->dbConnection->execute("DELETE FROM {$this->table} WHERE id = :id", $this->class, compact('id'));
     }
 }
