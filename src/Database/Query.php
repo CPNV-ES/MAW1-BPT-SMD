@@ -36,7 +36,7 @@ class Query
     function select (string $conditions = null, array $params = null): array
     {
         $sql = "SELECT * FROM {$this->table}";
-        $sql .= $conditions ? 'WHERE ' . $conditions : '';
+        $sql .= $conditions ? ' WHERE ' . $conditions : '';
         return $this->db->execute($sql, $this->class, $params);
     }
 

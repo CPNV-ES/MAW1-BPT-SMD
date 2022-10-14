@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 require_once '../public/const.php';
 
-class ExerciseTest extends TestCase
+class ExercisesHelperTest extends TestCase
 {
-    protected ExercisesHelper $exercisesHelper;
 
+    protected static ExercisesHelper      $exercisesHelper;
 
     /**
      * @return void
@@ -23,43 +23,40 @@ class ExerciseTest extends TestCase
 
         //create exercise for get all
         $exercise = new Exercise();
-        $exercise->setTitle('Test Exercise 1');
+        $exercise->setTitle('Test-Exercise');
         $exercise->setState('edit');
         self::$exercisesHelper->create($exercise);
     }
-
-
+    
     /**
-     * @param $exercisesHelper
      *
      * @return void
      *
      */
     public function test_exercise_can_be_created()
     {
-        $title = 'Test Exercise';
+        $title = 'Test-Exercise 1';
         $exercise = new Exercise();
         $exercise->setTitle($title);
         $exercise->setState('edit');
 
         // verify that the exercise is the correct type
-        $this->assertInstanceOf(ExercisesHelper::class, $this->exercisesHelper);
+        $this->assertInstanceOf(ExercisesHelper::class, self::$exercisesHelper);
 
         //test of create exercise in database
-        self::exercisesHelper->create($exercise);
+        self::$exercisesHelper->create($exercise);
 
         // verify that the exercise exists
         $this->assertEquals($title, $exercise->getTitle());
     }
 
     /**
-     * @param $exercisesHelper
      *
      * @return void
      */
-    public function test_get_one_exercise_by_title($exercisesHelper)
+    public function test_get_one_exercise_by_title()
     {
-        $exercise = $exercisesHelper->get_one_exercise_by_title('Test-Exercise');
+        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise');
         $this->assertEquals('Test-Exercise', $exercise->getTitle());
     }
 
@@ -68,9 +65,9 @@ class ExerciseTest extends TestCase
      *
      * @return void
      */
-    public function test_get_all_exercises($exercisesHelper)
+    public function test_get_all_exercises()
     {
-        $exercises = $exercisesHelper->getAllExercises();
+        $exercises = self::$exercisesHelper->getAllExercises();
         $count = $exercises->count();
         $this->assertGreaterThan(1, $count);
     }
@@ -80,26 +77,20 @@ class ExerciseTest extends TestCase
      *
      * @return void
      */
-    public function test_exercise_can_be_deleted($exercisesHelper)
+    public function test_exercise_can_be_deleted()
     {
-        $count = $exercisesHelper->getAllExercises();
-        $exercise = $exercisesHelper->get_one_exercise_by_title('Test-Exercise');
-        $exercise->delete();
-        $exercise = $exercisesHelper->get_one_exercise_by_title('Test-Exercise 1');
-        $exercise->delete();
-        $countafterdelete = $exercisesHelper->getAllExercises();
+        $count = self::$exercisesHelper->get();
+
+        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise');
+        self::$exercisesHelper->delete($exercise->getId());
+        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise 1');
+        self::$exercisesHelper->delete($exercise->getId());
+
+        $countafterdelete = self::$exercisesHelper->get();
         $this->assertEquals($count - 2, $countafterdelete);
     }
 
-    /**
-     * @param $exercisesHelper
-     *
-     * @return void
-     */
-    public function test_get_one_exercise_by_status($exercisesHelper)
-    {
-        $exercise = $exercisesHelper->get_one_exercise_by_status('edit');
-        $this->assertEquals('edit', $exercise->getState());
-    }
+
+
 
 }
