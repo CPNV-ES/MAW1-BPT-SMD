@@ -23,11 +23,11 @@ class ExercisesHelperTest extends TestCase
 
         //create exercise for get all
         $exercise = new Exercise();
-        $exercise->setTitle('Test-Exercise');
+        $exercise->setTitle('Test-ExercisesHelper');
         $exercise->setState('edit');
         self::$exercisesHelper->create($exercise);
     }
-    
+
     /**
      *
      * @return void
@@ -35,7 +35,7 @@ class ExercisesHelperTest extends TestCase
      */
     public function test_exercise_can_be_created()
     {
-        $title = 'Test-Exercise 1';
+        $title = 'Test-ExercisesHelper 1';
         $exercise = new Exercise();
         $exercise->setTitle($title);
         $exercise->setState('edit');
@@ -57,7 +57,7 @@ class ExercisesHelperTest extends TestCase
     public function test_get_one_exercise_by_title()
     {
         $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise');
-        $this->assertEquals('Test-Exercise', $exercise->getTitle());
+        $this->assertEquals('Test-ExercisesHelper', $exercise->getTitle());
     }
 
     /**
@@ -81,9 +81,9 @@ class ExercisesHelperTest extends TestCase
     {
         $count = self::$exercisesHelper->get();
 
-        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise');
+        $exercise = self::$exercisesHelper->getOneByTitle('Test-ExercisesHelper');
         self::$exercisesHelper->delete($exercise->getId());
-        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise 1');
+        $exercise = self::$exercisesHelper->getOneByTitle('Test-ExercisesHelper 1');
         self::$exercisesHelper->delete($exercise->getId());
 
         $countafterdelete = self::$exercisesHelper->get();
