@@ -18,7 +18,7 @@ $router->get('/', HomeController::class . '::index');
 
 $router->get('/exercises', ExerciseController::class . '::index');
 $router->get('/exercises/new', ExerciseController::class . '::create');
-$router->post('/exercises/new', ExerciseController::class . '::createExercise');
+$router->post('/exercises/new', ExerciseController::class . '::create');
 $router->post('/exercises/:id', ExerciseController::class . '::delete');
 
 $router->get('/exercises/:id/fields', FieldsController::class . '::index');

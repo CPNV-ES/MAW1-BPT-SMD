@@ -22,24 +22,17 @@ class ExerciseController extends Controller
      */
     public function create(): void
     {
-        $this->view('exercises/new');
-    }
-
-    /**
-     * @return void
-     */
-    public function createExercise(): void
-    {
-        $exercise = new Exercise(['title' => $_POST['title']]);
-
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
-
-        if ($id = $exercisesHelper->create($exercise)) {
-            header("Location: /exercises/{$id}/fields");
-        } else {
-            $params['error'] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
-            header("Location: /exercises/new");
+        $params = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $exercise = new Exercise(['title' => $_POST['title']]);
+            $exercisesHelper = new ExercisesHelper($this->dbConnection);
+            if ($id = $exercisesHelper->create($exercise)) {
+                header("Location: /exercises/{$id}/fields");
+            } else {
+                $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
+            }
         }
+        $this->view('exercises/new', $params);
     }
 
     /**
