@@ -9,10 +9,7 @@ $headerColor = 'managing'
     <div class="field">
         <label for="title">Title</label>
         <input type="text" name="title" id="title" required="required">
-        <div style="color: orangered"><?php
-            if (isset($params['error'])) {
-                echo $params['error'];
-            } ?></div>
+        <div style="color: orangered"><?= $params['error'] ?></div>
     </div>
     <div class="actions">
         <input type="submit" name="commit" value="Create Exercise" data-disable-with="Create Exercise">
