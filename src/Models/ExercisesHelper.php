@@ -4,10 +4,8 @@ namespace App\Models;
 
 use App\Database\DBConnection;
 use App\Database\Query;
+use PDOException;
 
-/**
- *
- */
 class ExercisesHelper
 {
     protected Query $query;
@@ -37,11 +35,16 @@ class ExercisesHelper
     /**
      * @param Exercise $exercise
      *
-     * @return bool
+     * @return int
      */
-    public function create(Exercise $exercise): bool
+    public function create(Exercise $exercise): int
     {
-        return $this->query->insert(['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+        try {
+            return $this->query->insert(['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
     }
 
     /**
@@ -52,12 +55,5 @@ class ExercisesHelper
     public function delete(int $id): void
     {
         $this->query->delete($id);
-    }
-
-    public function getOneByTitle(string $title): array
-    {
-        $conditions = "title = :title";
-        $params = ['title' => $title];
-        return $this->query->select($conditions, $params);
     }
 }
