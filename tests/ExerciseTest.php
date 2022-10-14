@@ -1,64 +1,64 @@
 <?php
 
-
-use App\Database\DBConnection;
-use App\Models\Exercise;
-use App\Models\ExercisesHelper;
 use PHPUnit\Framework\TestCase;
-
-require_once '../public/const.php';
+use App\Models\Exercise;
+use App\Models\exercisesHelper;
 
 class ExerciseTest extends TestCase
 {
-    protected static ExercisesHelper $exercisesHelper;
+    protected static Exercise $exercise;
+    protected static ExercisesHelper      $exercisesHelper;
 
-
-    public static function setUpBeforeClass(): void
+    public function test_constructor_NOT_THE_WRIGHT_ONE_WE_MUST_CHANGE_IT_TO_THE_CORRECT_ONE()
     {
-        $dbConnection = DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD);
-        self::$exercisesHelper = new ExercisesHelper($dbConnection);
-    }
-
-
-    public function test_exercise_can_be_created($exercisesHelper)
-    {
-        $title = 'Test Exercise';
+        $title = 'Test-Exercise';
         $exercise = new Exercise();
         $exercise->setTitle($title);
-
-        // verify that the exercise is the correct type
-        $this->assertInstanceOf(ExercisesHelper::class, $exercisesHelper);
-
-        //test of create exercise in database
-        $exercisesHelper->create($exercise);
-
-        // verify that the exercise exists
-        $this->assertEquals($title, $exercise->getTitle());
+        $exercise->setState('edit');
+        $this->assertEquals($title,$exercise->getTitle());
     }
 
-    public function test_get_one_exercise_by_title()
+    public function test_get_id()
     {
-        $exercise = $exercisesHelper->get_one_exercise_by_title('Test-Exercise');
-        $this->assertEquals('Test-Exercise', $exercise->getTitle());
+
+        $exercise = new Exercise();
+        $exercise->setTitle('Test-ExerciseId');
+        $exercise->setState('edit');
+        $createdExercise = self::$exercisesHelper->create($exercise);
+
+        $this->assertEquals($createdExercise->id,$exercise->getId());
+    }
+    public function test_get_title ()
+    {
+        $title = 'Test-ExerciseTitle';
+        $exercise = new Exercise();
+        $exercise->setTitle($title);
+        $this->assertEquals($title,$exercise->getTitle());
+    }
+    public function test_get_state ()
+    {
+        $state = 'edit';
+        $exercise = new Exercise();
+        $exercise->setState($state);
+        $this->assertEquals($state,$exercise->getState());
+    }
+    public function test_set_title ()
+    {
+        $title = 'Test-ExerciseTitle';
+        $exercise = new Exercise();
+        $exercise->setTitle('not-the-true-title');
+        $this->assertNotEquals($title,$exercise->getTitle());
+        $exercise->setTitle($title);
+        $this->assertEquals($title,$exercise->getTitle());
+    }
+    public function test_set_state ()
+    {
+        $state = 'edit';
+        $exercise = new Exercise();
+        $exercise->setState('not-the-true-state');
+        $this->assertNotEquals($state,$exercise->getState());
+        $exercise->setState($state);
     }
 
-    public function test_get_all_exercises()
-    {
-        $exercises = $exercisesHelper->getAllExercises();
-        $count = $exercises->count();
-        $this->assertGreaterThan(1, $count);
-    }
-
-    public function test_exercise_can_be_deleted()
-    {
-        $exercise = $exercisesHelper->get_one_exercise_by_title('Test-Exercise');
-        $exercise->delete();
-    }
-
-    public function test_get_one_exercise_by_status()
-    {
-        $exercise = $exercisesHelper->get_one_exercise_by_status('edit');
-        $this->assertEquals('edit', $exercise->getState());
-    }
 
 }
