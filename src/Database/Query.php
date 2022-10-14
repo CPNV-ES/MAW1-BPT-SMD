@@ -14,7 +14,7 @@ class Query
     protected string       $class;
 
     /**
-     * @param DBConnection $db
+     * @param DBConnection $dbConnection
      * @param string       $table
      * @param string       $class
      */
@@ -30,14 +30,15 @@ class Query
      *
      * @param string|null $conditions
      * @param array|null  $params
+     * @param bool        $single
      *
      * @return array
      */
-    public function select(string $conditions = null, array $params = null): array
+    public function select(string $conditions = null, array $params = null, bool $single = false): array
     {
         $sql = "SELECT * FROM {$this->table}";
         $sql .= $conditions ? " WHERE {$conditions}" : "";
-        return $this->dbConnection->execute($sql, $this->class, $params);
+        return $this->dbConnection->execute($sql, $this->class, $params, $single);
     }
 
     /**
@@ -60,14 +61,8 @@ class Query
             $i++;
         }
 
-//        try {
         $this->dbConnection->execute("INSERT INTO {$this->table} ($firstParenthesis) VALUES ($secondParenthesis)", $this->class, $data);
         return $this->dbConnection->getLastItemId();
-//            return true;
-//        } catch (PDOException $e) {
-//            error_log($e);
-//            return false;
-//        }
     }
 
     /**

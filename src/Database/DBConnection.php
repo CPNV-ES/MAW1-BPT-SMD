@@ -75,15 +75,15 @@ class DBConnection
      * @param string     $sql    Sql to run
      * @param string     $class  class expected in return
      * @param array|null $param  params for the query
-     * @param bool|null  $single true for a single value in return
+     * @param bool       $single true for a single value in return
      *
      * @return bool|object|array
      */
-    public function execute(string $sql, string $class, array $param = null, bool $single = null): bool|object|array
+    public function execute(string $sql, string $class, array $param = null, bool $single = false): bool|object|array
     {
         $method = is_null($param) ? 'query' : 'prepare';
         $stmt = $this->getPDO()->$method($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $class, [$this]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
 
         if (str_starts_with($sql, 'DELETE') || str_starts_with($sql, 'UPDATE') || str_starts_with($sql, 'INSERT')) {
             return $stmt->execute($param);
@@ -93,7 +93,7 @@ class DBConnection
             $stmt->execute($param);
         }
 
-        $fetch = is_null($single) ? 'fetchAll' : 'fetch';
+        $fetch = $single ? 'fetch' : 'fetchAll';
         return $stmt->$fetch();
     }
 

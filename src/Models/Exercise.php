@@ -9,19 +9,13 @@ class Exercise
 {
     protected int    $id;
     protected string $title;
+    protected string $state = 'Building';
 
-    public function __construct() {}
-
-    /**
-     * @param string $title
-     *
-     * @return Exercise
-     */
-    public static function withTitle(string $title): Exercise
+    public function __construct(array $params = [])
     {
-        $exercise = new self();
-        $exercise->setTitle($title);
-        return $exercise;
+        if (array_key_exists('title', $params)) {
+            $this->title = $params['title'];
+        }
     }
 
     /**
@@ -48,5 +42,21 @@ class Exercise
     public function setTitle(string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState(string $state): void
+    {
+        $this->state = $state;
     }
 }

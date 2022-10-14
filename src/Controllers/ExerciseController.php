@@ -2,30 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Database\DBConnection;
-use App\Database\Query;
 use App\Models\Exercise;
 use App\Models\ExercisesHelper;
 
 class ExerciseController extends Controller
 {
-    protected Query $query;
-
-    /**
-     * @param DBConnection $db
-     */
-    public function __construct(DBConnection $db)
-    {
-        parent::__construct();
-        $this->query = new Query($db, 'exercises', Exercise::class);
-    }
-
     /**
      * @return void
      */
     public function index(): void
     {
-        $exercisesHelper = new ExercisesHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->dbConnection);
         $exercises = $exercisesHelper->get();
         $this->view('exercises/index', compact('exercises'));
     }
@@ -43,13 +30,14 @@ class ExerciseController extends Controller
      */
     public function createExercise(): void
     {
-        $exercise = Exercise::withTitle($_POST['title']);
+        $exercise = new Exercise(['title' => $_POST['title']]);
 
-        $exercisesHelper = new ExercisesHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->dbConnection);
 
-        if ($exercisesHelper->create($exercise)) {
-            header("Location: /exercises");
+        if ($id = $exercisesHelper->create($exercise)) {
+            header("Location: /exercises/{$id}/fields");
         } else {
+            $params['error'] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
             header("Location: /exercises/new");
         }
     }
@@ -61,7 +49,7 @@ class ExerciseController extends Controller
      */
     public function delete(int $id): void
     {
-        $exercisesHelper = new ExercisesHelper($this->query);
+        $exercisesHelper = new ExercisesHelper($this->dbConnection);
 
         $exercisesHelper->delete($id);
 

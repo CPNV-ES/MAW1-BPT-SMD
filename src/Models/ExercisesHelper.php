@@ -2,33 +2,56 @@
 
 namespace App\Models;
 
+use App\Database\DBConnection;
 use App\Database\Query;
+use PDOException;
 
 class ExercisesHelper
 {
     protected Query $query;
 
-    public function __construct(Query $query)
+
+    public function __construct(DBConnection $dbConnection)
     {
-        $this->query = $query;
+        $this->query = new Query($dbConnection, 'exercises', Exercise::class);
     }
 
-    public function get(array $ids = null): array
+    /**
+     * @param array|null $id
+     *
+     * @return array
+     */
+    public function get(array $id = null): array
     {
-        if (is_null($ids)) {
+        if (is_null($id)) {
             return $this->query->select();
         } else {
             $conditions = "id IN :id";
-            $params['id'] = '(' . implode(',', $ids) . ')';
+            $params = array(':id' => $id);
             return $this->query->select($conditions, $params);
         }
     }
 
-    public function create(Exercise $exercise): bool
+    /**
+     * @param Exercise $exercise
+     *
+     * @return int
+     */
+    public function create(Exercise $exercise): int
     {
-        return $this->query->insert(['title' => $exercise->getTitle()]);
+        try {
+            return $this->query->insert(['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
     }
 
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
     public function delete(int $id): void
     {
         $this->query->delete($id);

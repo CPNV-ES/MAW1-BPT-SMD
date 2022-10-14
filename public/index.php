@@ -3,7 +3,6 @@
 use App\Controllers\ExerciseController;
 use App\Controllers\FieldsController;
 use App\Controllers\HomeController;
-use App\Database\DBConnection;
 use App\Router\Router;
 
 require '../vendor/autoload.php';
