@@ -10,7 +10,6 @@ class ExercisesHelper
 {
     protected Query $query;
 
-
     public function __construct(DBConnection $dbConnection)
     {
         $this->query = new Query($dbConnection, 'exercises', Exercise::class);
@@ -26,8 +25,8 @@ class ExercisesHelper
         if (is_null($id)) {
             return $this->query->select();
         } else {
-            $conditions = "id IN :id";
-            $params = array(':id' => $id);
+            $conditions = "id IN (:id)";
+            $params = ['id' => implode(',', $id)];
             return $this->query->select($conditions, $params);
         }
     }

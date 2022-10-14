@@ -62,9 +62,14 @@ class DBConnectionTest extends TestCase
 
         //then
         self::assertIsBool(
-            self::$dbConnection->execute("INSERT INTO exercises (title) VALUES (:title);", Exercise::class, [
-                'title' => 'test DBConnection 1'
-            ])
+            self::$dbConnection->execute(
+                "INSERT INTO exercises (title, state) VALUES (:title, :state);",
+                Exercise::class,
+                [
+                    'title' => 'test DBConnection 1',
+                    'state' => 'state'
+                ]
+            )
         );
     }
 
@@ -78,10 +83,14 @@ class DBConnectionTest extends TestCase
 
         //then
         self::assertIsBool(
-            self::$dbConnection->execute("UPDATE exercises SET title = :title1 WHERE title = :title2;", Exercise::class, [
-                'title1' => 'test DBConnection 2',
-                'title2' => 'test DBConnection 1'
-            ])
+            self::$dbConnection->execute(
+                "UPDATE exercises SET title = :title1 WHERE title = :title2;",
+                Exercise::class,
+                [
+                    'title1' => 'test DBConnection 2',
+                    'title2' => 'test DBConnection 1'
+                ]
+            )
         );
     }
 

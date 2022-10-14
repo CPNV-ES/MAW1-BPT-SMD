@@ -22,7 +22,10 @@ class QueryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->id = self::$query->insert(['title' => 'Query Test']);
+        $this->id = self::$query->insert([
+            'title' => 'Query Test',
+            'state' => 'state'
+        ]);
     }
 
     protected function tearDown(): void
@@ -95,7 +98,10 @@ class QueryTest extends TestCase
     public function test_delete()
     {
         //given
-        $id = self::$query->insert(['title' => 'test delete']);
+        $id = self::$query->insert([
+            'title' => 'test delete',
+            'state' => 'state'
+        ]);
 
         //when
         //event is called directly by the assertion
