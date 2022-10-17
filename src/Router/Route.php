@@ -7,17 +7,28 @@ use App\Database\DBConnection;
 class Route
 {
     protected string $path;
-    protected string $action;
+    protected string $controller;
+    protected string $method;
     protected array  $matches;
 
     /**
-     * @param string $path   url path
-     * @param string $action Controller::action
+     * @param string $path
+     * @param string $controller
+     * @param string $method
      */
-    public function __construct(string $path, string $action)
+    public function __construct(string $path, string $controller, string $method)
     {
         $this->path = trim($path, '/');
-        $this->action = $action;
+        $this->controller = $controller;
+        $this->method = $method;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     /**
@@ -43,9 +54,9 @@ class Route
      */
     public function execute(): void
     {
-        $params = explode('::', $this->action);
-        $controller = new $params[0]();
-        $method = $params[1];
+        $controller = new $this->controller();
+        $method = $this->method;
+
         if (isset($this->matches[2])) {
             $controller->$method($this->matches[1], $this->matches[2]);
         } elseif (isset($this->matches[1])) {

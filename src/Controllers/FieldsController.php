@@ -20,7 +20,7 @@ class FieldsController extends Controller
             ]);
 
             if ($exercise->createField($field)) {
-                header("Location: /exercises/{$exercise->getId()}/fields");
+                $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
             } else {
                 $params["error"] = "Le nom du label est déjà utilisé. Veuillez en choisir un autre.";
             }
@@ -35,6 +35,6 @@ class FieldsController extends Controller
 
         $exercise->deleteField($idField);
 
-        header("Location: /exercises/{$exercise->getId()}/fields");
+        $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
     }
 }
