@@ -69,9 +69,22 @@ class Exercise
         $this->state = $state;
     }
 
+    /**
+     * @param int $id
+     *
+     * @return Field
+     */
+    public function getField(int $id): Field
+    {
+        return $this->query->select('id = :id', [':id' => $id], true);
+    }
+
+    /**
+     * @return array
+     */
     public function getAllFields(): array
     {
-        return $this->query->select('exercise_id = :id', [':id' => $this->id]);
+        return $this->query->select('exercises_id = :id', [':id' => $this->id]);
     }
 
     /**
@@ -83,9 +96,9 @@ class Exercise
     {
         try {
             return $this->query->insert([
-                'label' => $field->getLabel(),
-                'value' => $field->getValue(),
-                'exercise_id' => $this->id
+                'label'        => $field->getLabel(),
+                'value_kind'   => $field->getValueKind(),
+                'exercises_id' => $this->id
             ]);
         } catch (PDOException $e) {
             error_log($e);

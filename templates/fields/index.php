@@ -20,7 +20,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             foreach ($params['exercise']->getAllFields() as $field) : ?>
                 <tr>
                     <td><?= $field->getLabel() ?></td>
-                    <td><?= $field->getValue() ?></td>
+                    <td><?= $field->getValueKind() ?></td>
                     <td>
                         <a title="Edit"
                            href="/exercises/<?= $params['exercise']->getId() ?>/fields/<?= $field->getId() ?>/edit">
