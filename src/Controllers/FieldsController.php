@@ -7,10 +7,26 @@ use App\Models\Field;
 
 class FieldsController extends Controller
 {
-    public function index(int $id)
+    protected ExercisesHelper $exercisesHelper;
+
+    public function __construct()
     {
-        $exercise = (new ExercisesHelper())->get([$id])[0];
-        $params = compact('exercise');
+        parent::__construct();
+        $this->exercisesHelper = new ExercisesHelper();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return void
+     */
+    public function index(int $id): void
+    {
+        $exercise = $this->exercisesHelper->get([$id])[0];
+        $params = [
+            'exercise' => $exercise,
+            'router'   => $this->router
+        ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $field = new Field([
@@ -25,14 +41,20 @@ class FieldsController extends Controller
             }
         }
 
+        $params['formAction'] = $this->router->generateUrl('fields_index', ['id' => $id]);
+
         $this->view('fields/index', $params);
     }
 
-    public function edit(int $idExercise, int $idField)
+    public function edit(int $idExercise, int $idField): void
     {
-        $exercise = (new ExercisesHelper())->get([$idExercise])[0];
+        $exercise = $this->exercisesHelper->get([$idExercise])[0];
         $field = $exercise->getField($idField);
-        $params = compact('exercise', 'field');
+        $params = [
+            'exercise' => $exercise,
+            'field'    => $field,
+            'router'   => $this->router
+        ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $field->setLabel($_POST['field']['label']);
@@ -48,9 +70,9 @@ class FieldsController extends Controller
         $this->view('fields/edit', $params);
     }
 
-    public function delete(int $idExercise, int $idField)
+    public function delete(int $idExercise, int $idField): void
     {
-        $exercise = (new ExercisesHelper())->get([$idExercise])[0];
+        $exercise = $this->exercisesHelper->get([$idExercise])[0];
 
         $exercise->deleteField($idField);
 

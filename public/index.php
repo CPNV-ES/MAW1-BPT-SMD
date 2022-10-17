@@ -24,7 +24,7 @@ $router->add('exercises_new', new Route('/exercises/new', ExerciseController::cl
 $router->add('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
 
 $router->add('fields_index', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
-$router->add('fields_edit', new Route('/exercises/:id/fields/:id/edit', FieldsController::class, 'edit'));
-$router->add('fields_delete', new Route('/exercises/:id/fields/:id', FieldsController::class, 'delete'));
+$router->add('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
+$router->add('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
 
 $router->run();

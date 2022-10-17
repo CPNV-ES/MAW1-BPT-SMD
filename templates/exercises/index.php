@@ -23,17 +23,16 @@ $headerColor = 'results';
                         <td>
                             <?php
                             if ($exercise->getAllFields()): ?>
-                                <a title="Be ready for answers" rel="nofollow" data-method="put"
-                                   href="/exercises/467?exercise%5Bstatus%5D=answering">
+                                <a title="Be ready for answers" rel="nofollow" data-method="put" href="/exercises/467?exercise%5Bstatus%5D=answering">
                                     <i class="fa fa-comment"></i>
                                 </a>
                             <?php
                             endif; ?>
-                            <a title="Manage fields" href="/exercises/<?= $exercise->getId() ?>/fields">
-                                <i class="fa fa-edit"></i>
+                            <a title="Manage fields" href="<?= $params['router']->generateUrl('fields_index', ['id' => $exercise->getId()]); ?>">
+                                <i class=" fa fa-edit"></i>
                             </a>
                             <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                               href="/exercises/<?= $exercise->getId() ?>">
+                               href="<?= $params['router']->generateUrl('exercises_delete', ['id' => $exercise->getId()]); ?>">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
