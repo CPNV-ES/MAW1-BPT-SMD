@@ -3,14 +3,17 @@
 namespace App\Controllers;
 
 use App\Database\DBConnection;
+use App\Router\Router;
 
 abstract class Controller
 {
     protected DBConnection $dbConnection;
+    protected Router       $router;
 
     public function __construct(DBConnection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
+        $this->router = Router::getInstance();
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

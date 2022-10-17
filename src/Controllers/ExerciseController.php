@@ -20,14 +20,14 @@ class ExerciseController extends Controller
     /**
      * @return void
      */
-    public function create(): void
+    public function new(): void
     {
         $params = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
             $exercisesHelper = new ExercisesHelper($this->dbConnection);
             if ($id = $exercisesHelper->create($exercise)) {
-                header("Location: /exercises/{$id}/fields");
+                $this->router->redirect('fields_index', ['id' => $id]);
             } else {
                 $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
             }
@@ -46,6 +46,6 @@ class ExerciseController extends Controller
 
         $exercisesHelper->delete($id);
 
-        header('Location: /exercises');
+        $this->router->redirect('exercises_index');
     }
 }
