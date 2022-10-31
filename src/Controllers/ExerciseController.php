@@ -26,7 +26,7 @@ class ExerciseController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
             $exercisesHelper = new ExercisesHelper($this->dbConnection);
-            if ($id = $exercisesHelper->create($exercise)) {
+            if ($exercise->getTitle() !== "" && ($id = $exercisesHelper->create($exercise))) {
                 $this->router->redirect('fields_index', ['id' => $id]);
             } else {
                 $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
