@@ -25,11 +25,13 @@ class ExerciseTest extends TestCase
         $exercise = new Exercise();
         $exercise->setTitle('Test-ExerciseId');
         $exercise->setState('edit');
-        $createdExercise = $exercisesHelper->create($exercise);
+        $id = $exercisesHelper->create($exercise);
 
-        $exercise = $exercisesHelper->get([$createdExercise])[0];
+        $exercise = $exercisesHelper->get([$id])[0];
 
-        $this->assertEquals($createdExercise, $exercise->getId());
+        $this->assertEquals($id, $exercise->getId());
+
+        $exercisesHelper->delete($id);
     }
 
     public function test_get_title()

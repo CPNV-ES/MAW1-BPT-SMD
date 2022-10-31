@@ -43,19 +43,22 @@ class ExercisesHelperTest extends TestCase
         $this->assertInstanceOf(ExercisesHelper::class, self::$exercisesHelper);
 
         //test of create exercise in database
-        self::$exercisesHelper->create($exercise);
+        $id = self::$exercisesHelper->create($exercise);
 
         // verify that the exercise exists
         $this->assertEquals($title, $exercise->getTitle());
+
+
+        self::$exercisesHelper->delete($id);
     }
 
     /**
      * @return void
      */
-    public function test_get_one_exercise_by_title()
+    public function test_get_one_exercise_by_id()
     {
-        $exercise = self::$exercisesHelper->getOneByTitle('Test-Exercise');
-        $this->assertEquals('Test-ExercisesHelper', $exercise->getTitle());
+        $exercise = self::$exercisesHelper->get();
+        $this->assertEquals('Test-ExercisesHelper', $exercise[0]->getTitle());
     }
 
     /**
@@ -63,9 +66,9 @@ class ExercisesHelperTest extends TestCase
      */
     public function test_get_all_exercises()
     {
-        $exercises = self::$exercisesHelper->get();
+        $exercises = self::$exercisesHelper->get([self::$id]);
         $count = count($exercises);
-        $this->assertGreaterThan(1, $count);
+        $this->assertEquals(1, $count);
     }
 
     /**
