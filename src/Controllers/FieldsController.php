@@ -2,14 +2,14 @@
 
 namespace App\Controllers;
 
-use App\Models\ExercisesHelper;
+use App\Models\ExerciseHelper;
 
 class FieldsController extends Controller
 {
     public function index(int $id)
     {
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
-//        $exercise = $exercisesHelper->get([$id]);
+        $ExerciseHelper = new ExerciseHelper($this->dbConnection);
+//        $exercise = $ExerciseHelper->get([$id]);
         $this->view('fields/index');
     }
 }

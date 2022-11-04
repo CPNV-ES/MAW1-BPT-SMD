@@ -51,12 +51,11 @@ class QueryTest extends TestCase
         //refer to setUp method
 
         //when
-        //event is called directly by the assertion
         $this->expectException(PDOException::class);
         self::$query->insert(['title' => 'Query Test']);
 
         //then
-        //trow pdo exception
+        //throw pdo exception
     }
 
     public function test_select_all()

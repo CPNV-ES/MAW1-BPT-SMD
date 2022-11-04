@@ -6,7 +6,7 @@ use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
-class ExercisesHelper
+class ExerciseHelper
 {
     protected Query $query;
 
