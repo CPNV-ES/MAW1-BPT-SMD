@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Exercise;
-use App\Models\ExercisesHelper;
+use App\Models\ExerciseHelper;
 
 class ExerciseController extends Controller
 {
@@ -12,8 +12,8 @@ class ExerciseController extends Controller
      */
     public function index(): void
     {
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
-        $exercises = $exercisesHelper->get();
+        $ExerciseHelper = new ExerciseHelper($this->dbConnection);
+        $exercises = $ExerciseHelper->get();
         $this->view('exercises/index', compact('exercises'));
     }
 
@@ -25,8 +25,8 @@ class ExerciseController extends Controller
         $params = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
-            $exercisesHelper = new ExercisesHelper($this->dbConnection);
-            if ($exercise->getTitle() !== "" && ($id = $exercisesHelper->create($exercise))) {
+            $ExerciseHelper = new ExerciseHelper($this->dbConnection);
+            if ($exercise->getTitle() !== "" && ($id = $ExerciseHelper->create($exercise))) {
                 $this->router->redirect('fields_index', ['id' => $id]);
             } else {
                 $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
@@ -42,10 +42,12 @@ class ExerciseController extends Controller
      */
     public function delete(int $id): void
     {
-        $exercisesHelper = new ExercisesHelper($this->dbConnection);
+        if ($_POST) {
+            $ExerciseHelper = new ExerciseHelper($this->dbConnection);
 
-        $exercisesHelper->delete($id);
+            $ExerciseHelper->delete($id);
 
-        $this->router->redirect('exercises_index');
+            $this->router->redirect('exercises_index');
+        }
     }
 }
