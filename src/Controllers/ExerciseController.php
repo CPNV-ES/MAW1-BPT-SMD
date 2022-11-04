@@ -3,16 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\Exercise;
-use App\Models\ExercisesHelper;
+use App\Models\ExerciseHelper;
 
 class ExerciseController extends Controller
 {
-    protected ExercisesHelper $exercisesHelper;
+    protected ExerciseHelper $exerciseHelper;
 
     public function __construct()
     {
         parent::__construct();
-        $this->exercisesHelper = new ExercisesHelper();
+        $this->exerciseHelper = new ExerciseHelper();
     }
 
     /**
@@ -21,7 +21,7 @@ class ExerciseController extends Controller
     public function index(): void
     {
         $this->view('exercises/index', [
-            'exercises' => $this->exercisesHelper->get(),
+            'exercises' => $this->exerciseHelper->get(),
             'router'    => $this->router
         ]);
     }
@@ -34,11 +34,9 @@ class ExerciseController extends Controller
         $params['router'] = $this->router;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
-
-            if ($id = $this->exercisesHelper->create($exercise)) {
+            if ($id = $this->exerciseHelper->create($exercise)) {
                 $this->router->redirect('fields_index', ['id' => $id]);
             }
-
             $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
         }
         $this->view('exercises/new', $params);
@@ -51,8 +49,10 @@ class ExerciseController extends Controller
      */
     public function delete(int $id): void
     {
-        $this->exercisesHelper->delete($id);
+        if ($_POST) {
+            $this->exerciseHelper->delete($id);
 
-        $this->router->redirect('exercises_index');
+            $this->router->redirect('exercises_index');
+        }
     }
 }

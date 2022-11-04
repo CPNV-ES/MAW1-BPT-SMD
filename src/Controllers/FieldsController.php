@@ -2,17 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Models\ExercisesHelper;
+use App\Models\ExerciseHelper;
 use App\Models\Field;
 
 class FieldsController extends Controller
 {
-    protected ExercisesHelper $exercisesHelper;
+    protected ExerciseHelper $exerciseHelper;
 
     public function __construct()
     {
         parent::__construct();
-        $this->exercisesHelper = new ExercisesHelper();
+        $this->exerciseHelper = new ExerciseHelper();
     }
 
     /**
@@ -22,7 +22,7 @@ class FieldsController extends Controller
      */
     public function index(int $id): void
     {
-        $exercise = $this->exercisesHelper->get([$id])[0];
+        $exercise = $this->exerciseHelper->get([$id])[0];
         $params = [
             'exercise' => $exercise,
             'router'   => $this->router
@@ -48,7 +48,7 @@ class FieldsController extends Controller
 
     public function edit(int $idExercise, int $idField): void
     {
-        $exercise = $this->exercisesHelper->get([$idExercise])[0];
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
         $field = $exercise->getField($idField);
         $params = [
             'exercise' => $exercise,
@@ -72,7 +72,7 @@ class FieldsController extends Controller
 
     public function delete(int $idExercise, int $idField): void
     {
-        $exercise = $this->exercisesHelper->get([$idExercise])[0];
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
 
         $exercise->deleteField($idField);
 

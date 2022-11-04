@@ -3,14 +3,19 @@
 use App\Database\DBConnection;
 use PHPUnit\Framework\TestCase;
 use App\Models\Exercise;
-use App\Models\exercisesHelper;
+use App\Models\ExerciseHelper;
 
 require_once '../public/const.php';
 
 class ExerciseTest extends TestCase
 {
-    protected static Exercise        $exercise;
-    protected static ExercisesHelper $exercisesHelper;
+    protected static Exercise       $exercise;
+    protected static ExerciseHelper $exerciseHelper;
+
+    public static function setUpBeforeClass(): void
+    {
+        DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
+    }
 
     public function test_constructor()
     {
@@ -21,15 +26,17 @@ class ExerciseTest extends TestCase
 
     public function test_get_id()
     {
-        $exercisesHelper = new ExercisesHelper();
+        $exerciseHelper = new ExerciseHelper();
         $exercise = new Exercise();
         $exercise->setTitle('Test-ExerciseId');
         $exercise->setState('edit');
-        $createdExercise = $exercisesHelper->create($exercise);
+        $id = $exerciseHelper->create($exercise);
 
-        $exercise = $exercisesHelper->get([$createdExercise])[0];
+        $exercise = $exerciseHelper->get([$id])[0];
 
-        $this->assertEquals($createdExercise, $exercise->getId());
+        $this->assertEquals($id, $exercise->getId());
+
+        $exerciseHelper->delete($id);
     }
 
     public function test_get_title()
