@@ -8,34 +8,25 @@ class DBConnection
 {
     private static ?DBConnection $instance = null;
 
-    protected string $dns;
-    protected string $username;
-    protected string $password;
-    protected ?PDO   $pdo;
+    protected static string $dns;
+    protected static string $user;
+    protected static string $password;
+    protected ?PDO          $pdo;
 
-    /**
-     * @param string $dns      Arguments required to create a database connection
-     * @param string $username Username for connection
-     * @param string $password Password for the connection
-     */
-    private function __construct(string $dns, string $username, string $password)
+    public static function setUp(string $dns, string $user, string $password): void
     {
-        $this->dns = $dns;
-        $this->username = $username;
-        $this->password = $password;
+        self::$dns = $dns;
+        self::$user = $user;
+        self::$password = $password;
     }
 
     /**
-     * @param string $dns      Arguments required to create a database connection
-     * @param string $username Username for connection
-     * @param string $password Password for the connection
-     *
      * @return DBConnection
      */
-    public static function getInstance(string $dns, string $username, string $password): DBConnection
+    public static function getInstance(): DBConnection
     {
         if (self::$instance == null) {
-            self::$instance = new DBConnection($dns, $username, $password);
+            self::$instance = new DBConnection();
         }
         return self::$instance;
     }
@@ -56,7 +47,7 @@ class DBConnection
      */
     protected function open(): void
     {
-        $this->pdo = new PDO($this->dns, $this->username, $this->password);
+        $this->pdo = new PDO(self::$dns, self::$user, self::$password);
     }
 
     /**
@@ -97,6 +88,9 @@ class DBConnection
         return $stmt->$fetch();
     }
 
+    /**
+     * @return int
+     */
     public function getLastItemId(): int
     {
         return $this->getPDO()->lastInsertId();

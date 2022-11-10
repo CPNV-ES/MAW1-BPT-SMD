@@ -54,9 +54,15 @@ class Route
      */
     public function execute(): void
     {
-        $controller = new $this->controller(DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));
+        $controller = new $this->controller();
         $method = $this->method;
 
-        isset($this->matches[1]) ? $controller->$method($this->matches[1]) : $controller->$method();
+        if (isset($this->matches[2])) {
+            $controller->$method($this->matches[1], $this->matches[2]);
+        } elseif (isset($this->matches[1])) {
+            $controller->$method($this->matches[1]);
+        } else {
+            $controller->$method();
+        }
     }
 }

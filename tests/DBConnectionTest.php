@@ -13,7 +13,8 @@ class DBConnectionTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$dbConnection = DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD);
+        DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
+        self::$dbConnection = DBConnection::getInstance();
     }
 
     public function test_getInstance()
@@ -25,7 +26,7 @@ class DBConnectionTest extends TestCase
         //event is called directly by the assertion
 
         //then
-        self::assertSame(self::$dbConnection, DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));
+        self::assertSame(self::$dbConnection, DBConnection::getInstance());
     }
 
     public function test_getPDO()

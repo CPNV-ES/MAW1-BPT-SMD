@@ -10,7 +10,12 @@ require_once '../public/const.php';
 class ExerciseTest extends TestCase
 {
     protected static Exercise       $exercise;
-    protected static ExerciseHelper $ExerciseHelper;
+    protected static ExerciseHelper $exerciseHelper;
+
+    public static function setUpBeforeClass(): void
+    {
+        DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
+    }
 
     public function test_constructor()
     {
@@ -21,17 +26,17 @@ class ExerciseTest extends TestCase
 
     public function test_get_id()
     {
-        $ExerciseHelper = new ExerciseHelper(DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));
+        $exerciseHelper = new ExerciseHelper();
         $exercise = new Exercise();
         $exercise->setTitle('Test-ExerciseId');
         $exercise->setState('edit');
-        $id = $ExerciseHelper->create($exercise);
+        $id = $exerciseHelper->create($exercise);
 
-        $exercise = $ExerciseHelper->get([$id])[0];
+        $exercise = $exerciseHelper->get([$id])[0];
 
         $this->assertEquals($id, $exercise->getId());
 
-        $ExerciseHelper->delete($id);
+        $exerciseHelper->delete($id);
     }
 
     public function test_get_title()

@@ -16,7 +16,8 @@ class ExerciseHelperTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$ExerciseHelper = new ExerciseHelper(DBConnection::getInstance(DB_DNS, DB_USER, DB_PASSWORD));
+        DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
+        self::$ExerciseHelper = new ExerciseHelper();
     }
 
     protected function setUp(): void

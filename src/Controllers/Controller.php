@@ -10,9 +10,9 @@ abstract class Controller
     protected DBConnection $dbConnection;
     protected Router       $router;
 
-    public function __construct(DBConnection $dbConnection)
+    public function __construct()
     {
-        $this->dbConnection = $dbConnection;
+        $this->dbConnection = DBConnection::getInstance();
         $this->router = Router::getInstance();
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

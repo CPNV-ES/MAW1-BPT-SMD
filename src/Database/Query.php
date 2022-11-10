@@ -32,9 +32,9 @@ class Query
      * @param array|null  $params
      * @param bool        $single
      *
-     * @return array
+     * @return array|object
      */
-    public function select(string $conditions = null, array $params = null, bool $single = false): array
+    public function select(string $conditions = null, array $params = null, bool $single = false): array|object
     {
         $sql = "SELECT * FROM {$this->table}";
         $sql .= $conditions ? " WHERE {$conditions}" : "";

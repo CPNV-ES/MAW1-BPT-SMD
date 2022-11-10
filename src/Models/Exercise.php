@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Database\DBConnection;
+use App\Database\Query;
+use PDOException;
+
 /**
  * Exercise
  */
@@ -10,9 +14,14 @@ class Exercise
     protected int    $id;
     protected string $title;
     protected string $state = 'Building';
+    protected Query  $query;
 
+    /**
+     * @param array $params
+     */
     public function __construct(array $params = [])
     {
+        $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
         if (array_key_exists('title', $params)) {
             $this->title = $params['title'];
         }
@@ -58,5 +67,52 @@ class Exercise
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Field
+     */
+    public function getField(int $id): Field
+    {
+        return $this->query->select('id = :id', [':id' => $id], true);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllFields(): array
+    {
+        return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+    }
+
+    /**
+     * @param Field $field
+     *
+     * @return int
+     */
+    public function createField(Field $field): int
+    {
+        try {
+            return $this->query->insert([
+                'label'        => $field->getLabel(),
+                'value_kind'   => $field->getValueKind(),
+                'exercises_id' => $this->id
+            ]);
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
+    }
+
+    /**
+     * @param $id
+     *
+     * @return void
+     */
+    public function deleteField($id): void
+    {
+        $this->query->delete($id);
     }
 }

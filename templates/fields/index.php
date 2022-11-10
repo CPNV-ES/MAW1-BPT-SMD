@@ -1,6 +1,7 @@
 <?php
+
 $headerColor = 'managing';
-$title = "Exercise: ";
+$title = "Exercise: {$params['exercise']->getTitle()}";
 ?>
 
 <div class="row">
@@ -15,41 +16,40 @@ $title = "Exercise: ";
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params['fields'] as $field) : ?>
+            <?php
+            foreach ($params['exercise']->getAllFields() as $field) : ?>
                 <tr>
-                    <td><?= $field->title ?></td>
-                    <td>single_line</td>
+                    <td><?= $field->getLabel() ?></td>
+                    <td><?= $field->getValueKind() ?></td>
                     <td>
-                        <a title="Edit" href="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>/edit">
+                        <a title="Edit"
+                           href="<?= $params['router']->generateUrl('fields_edit', ['id1' => $params['exercise']->getId(), 'id2' => $field->getId()]); ?>">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                           href="/exercises/<?= $exercise->id ?>/fields/<?= $field->id ?>">
+                           href="<?= $params['router']->generateUrl('fields_delete', ['id1' => $params['exercise']->getId(), 'id2' => $field->getId()]); ?>">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php
+            endforeach; ?>
             </tbody>
         </table>
 
         <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
-           data-method="put" href="/exercises/393?exercise%5Bstatus%5D=answering"><i class="fa fa-comment"></i> Complete
-            and be ready for answers</a>
+           data-method="put" href="/exercises/<?= $params['exercise']->getId() ?>?exercise%5Bstatus%5D=answering">
+            <i class="fa fa-comment"></i> Complete and be ready for answers
+        </a>
 
     </section>
     <section class="column">
         <h1>New Field</h1>
-        <form action="/exercises/393/fields" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden"
-                                                                                         value="✓"><input type="hidden"
-                                                                                                          name="authenticity_token"
-                                                                                                          value="JvRa+eX8jVPedAiRCakPf/Qgocl6HyPG7nM2XDRKoPOswVkR0ByEmwKHASib4Yo3/tbE4Lo2oOZ3PMa2/9B75A==">
-
+        <form action="<?= $params['router']->generateUrl('fields_index', ['id' => $params['exercise']->getId()]); ?>" accept-charset="UTF-8" method="post">
             <div class="field">
                 <label for="field_label">Label</label>
-                <input type="text" name="field[label]" id="field_label">
+                <input type="text" name="field[label]" id="field_label" required>
             </div>
-
             <div class="field">
                 <label for="field_value_kind">Value kind</label>
                 <select name="field[value_kind]" id="field_value_kind">
@@ -58,7 +58,7 @@ $title = "Exercise: ";
                     <option value="multi_line">Multi-line text</option>
                 </select>
             </div>
-
+            <div style="color: orangered"><?= $params['error'] ?? '' ?></div>
             <div class="actions">
                 <input type="submit" name="commit" value="Create Field" data-disable-with="Create Field">
             </div>
