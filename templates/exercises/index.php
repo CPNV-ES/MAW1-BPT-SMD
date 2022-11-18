@@ -22,7 +22,7 @@ $headerColor = 'results';
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
                             <?php
-                            if ($exercise->getAllFields()): ?>
+                            if ($exercise->getFields()): ?>
                                 <a title="Be ready for answers" rel="nofollow" data-method="put" href="/exercises/467?exercise%5Bstatus%5D=answering">
                                     <i class="fa fa-comment"></i>
                                 </a>

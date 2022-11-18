@@ -17,7 +17,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             </thead>
             <tbody>
             <?php
-            foreach ($params['exercise']->getAllFields() as $field) : ?>
+            foreach ($params['exercise']->getFields() as $field) : ?>
                 <tr>
                     <td><?= $field->getLabel() ?></td>
                     <td><?= $field->getValueKind() ?></td>
