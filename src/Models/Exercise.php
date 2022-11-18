@@ -70,21 +70,19 @@ class Exercise
     }
 
     /**
-     * @param int $id
+     * @param array|null $id
      *
-     * @return Field
-     */
-    public function getField(int $id): Field
-    {
-        return $this->query->select('id = :id', [':id' => $id], true);
-    }
-
-    /**
      * @return array
      */
-    public function getAllFields(): array
+    public function getFields(array $id = null): array
     {
-        return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+        if (is_null($id)) {
+            return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+        } else {
+            $conditions = "id IN (:id)";
+            $params = ['id' => implode(',', $id)];
+            return $this->query->select($conditions, $params);
+        }
     }
 
     /**

@@ -17,7 +17,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             </thead>
             <tbody>
             <?php
-            foreach ($params['exercise']->getAllFields() as $field) : ?>
+            foreach ($params['exercise']->getFields() as $field) : ?>
                 <tr>
                     <td><?= $field->getLabel() ?></td>
                     <td><?= $field->getValueKind() ?></td>
@@ -37,7 +37,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             </tbody>
 
         </table><?php
-        if ($params['exercise']->getAllFields()): ?>
+        if ($params['exercise']->getFields()): ?>
             <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
                data-method="put" href="<?= $params['router']->generateUrl('exercises_state', ['id' => $params['exercise']->getId()], 'state=answering'); ?>">
                 <i class="fa fa-comment"></i> Complete and be ready for answers

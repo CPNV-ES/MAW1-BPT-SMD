@@ -22,7 +22,7 @@ $headerColor = 'results';
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
                             <?php
-                            if ($exercise->getAllFields()): ?>
+                            if ($exercise->getFields()): ?>
                                 <a title="Be ready for answers" rel="nofollow" data-method="put"
                                    href="<?= $params['router']->generateUrl('exercises_state', ['id' => $exercise->getId()], 'state=answering'); ?>">
                                     <i class="fa fa-comment"></i>
@@ -68,7 +68,7 @@ $headerColor = 'results';
                             </a>
                             <a title="Close" rel="nofollow" data-method="put"
                                href="<?= $params['router']->generateUrl('exercises_state', ['id' => $exercise->getId()], 'state=closed'); ?>">
-                                <i class="fa fa-minus-circle"></i>
+                            <i class="fa fa-minus-circle"></i>
                             </a>
                         </td>
                     </tr>
