@@ -23,7 +23,7 @@ class ExerciseHelperTest extends TestCase
     protected function setUp(): void
     {
         $exercise = new Exercise(['title' => self::TITLE]);
-        $this->id[] = self::$ExerciseHelper->create($exercise);
+        $this->id[] = self::$ExerciseHelper->save($exercise);
     }
 
     protected function tearDown(): void
@@ -56,7 +56,7 @@ class ExerciseHelperTest extends TestCase
         $exercise = new Exercise(['title' => self::TITLE]);
 
         //then
-        $this->assertFalse(!!self::$ExerciseHelper->create($exercise));
+        $this->assertFalse(!!self::$ExerciseHelper->save($exercise));
     }
 
     public function test_create_null_title()
@@ -70,7 +70,7 @@ class ExerciseHelperTest extends TestCase
         //then
         $exercise = new Exercise();
         $this->expectException(Error::class);
-        self::$ExerciseHelper->create($exercise);
+        self::$ExerciseHelper->save($exercise);
     }
 
     public function test_exercise_get_by_id()
@@ -93,7 +93,7 @@ class ExerciseHelperTest extends TestCase
 
         //when
         $count = count(self::$ExerciseHelper->get());
-        $this->id[] = self::$ExerciseHelper->create(new Exercise(['title' => 'Test-ExerciseHelper2']));
+        $this->id[] = self::$ExerciseHelper->save(new Exercise(['title' => 'Test-ExerciseHelper2']));
 
         //then
         $this->assertCount($count + 1, self::$ExerciseHelper->get());

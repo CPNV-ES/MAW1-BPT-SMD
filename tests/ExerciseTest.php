@@ -30,7 +30,7 @@ class ExerciseTest extends TestCase
         $exercise = new Exercise();
         $exercise->setTitle('Test-ExerciseId');
         $exercise->setState('edit');
-        $id = $exerciseHelper->create($exercise);
+        $id = $exerciseHelper->save($exercise);
 
         $exercise = $exerciseHelper->get([$id])[0];
 

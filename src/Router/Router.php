@@ -2,6 +2,8 @@
 
 namespace App\Router;
 
+use PharIo\Manifest\InvalidUrlException;
+
 class Router
 {
     private static ?Router $instance = null;
@@ -27,9 +29,20 @@ class Router
      *
      * @return void
      */
-    public function add(string $name, Route $route): void
+    public function get(string $name, Route $route): void
     {
-        $this->routes[$name] = $route;
+        $this->routes['GET'][$name] = $route;
+    }
+
+    /**
+     * @param string $name
+     * @param Route  $route
+     *
+     * @return void
+     */
+    public function post(string $name, Route $route): void
+    {
+        $this->routes['POST'][$name] = $route;
     }
 
     /**
@@ -37,7 +50,7 @@ class Router
      */
     public function run(): void
     {
-        foreach ($this->routes as $route) {
+        foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
             if ($route->matches($_SERVER['REQUEST_URI'])) {
                 $route->execute();
             }
@@ -50,15 +63,20 @@ class Router
      *
      * @return string
      */
-    public function generateUrl(string $name, array $params = []): string
+    public function generateUrl(string $name, array $params = [], string $query = ''): string
     {
-        $path = '/' . $this->routes[$name]->getPath();
+        foreach ($this->routes as $routes) {
+            if (isset($routes[$name])) {
+                $path = '/' . $routes[$name]->getPath();
 
-        foreach ($params as $key => $param) {
-            $path = str_replace(':' . $key, $param, $path);
+                foreach ($params as $key => $param) {
+                    $path = str_replace(':' . $key, $param, $path);
+                }
+
+                return $path . ($query ? '?' . $query : '');
+            }
         }
-
-        return $path;
+        throw new InvalidUrlException();
     }
 
     /**

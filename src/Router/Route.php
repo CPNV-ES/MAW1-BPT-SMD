@@ -38,11 +38,15 @@ class Route
      */
     public function matches(string $url): bool
     {
+        $url_components = parse_url($url);
         $path = preg_replace('#:([\w]+)#', '([0-9]+)', $this->path);
         $pathToMatch = '/^\/' . str_replace('/', '\/', $path) . '$/';
 
-        if (preg_match($pathToMatch, $url, $matches)) {
+        if (preg_match($pathToMatch, $url_components['path'], $matches)) {
             $this->matches = $matches;
+            if (isset($url_components['query'])) {
+                $this->matches[] = $url_components['query'];
+            }
             return true;
         } else {
             return false;

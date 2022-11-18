@@ -36,10 +36,39 @@ class ExerciseHelper
      *
      * @return int
      */
-    public function create(Exercise $exercise): int
+    public function save(Exercise $exercise): int
+    {
+        if (is_null($exercise->getId())) {
+            return $this->create($exercise);
+        } else {
+            return $this->update($exercise);
+        }
+    }
+
+    /**
+     * @param Exercise $exercise
+     *
+     * @return int
+     */
+    private function create(Exercise $exercise): int
     {
         try {
             return $this->query->insert(['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
+    }
+
+    /**
+     * @param Exercise $exercise
+     *
+     * @return int
+     */
+    private function update(Exercise $exercise): int
+    {
+        try {
+            return $this->query->update($exercise->getId(), ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
         } catch (PDOException $e) {
             error_log($e);
             return false;

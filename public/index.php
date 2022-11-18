@@ -17,14 +17,18 @@ DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
 
 $router = Router::getInstance();
 
-$router->add('home_index', new Route('/', HomeController::class, 'index'));
+$router->get('home_index', new Route('/', HomeController::class, 'index'));
 
-$router->add('exercises_index', new Route('/exercises', ExerciseController::class, 'index'));
-$router->add('exercises_new', new Route('/exercises/new', ExerciseController::class, 'new'));
-$router->add('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
+$router->get('exercises_index', new Route('/exercises', ExerciseController::class, 'index'));
+$router->get('exercises_new', new Route('/exercises/new', ExerciseController::class, 'new'));
+$router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
+$router->post('exercises_state', new Route('/exercises/:id/state', ExerciseController::class, 'state'));
+$router->post('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
 
-$router->add('fields_index', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
-$router->add('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
-$router->add('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
+$router->get('fields_index', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
+$router->post('fields_create', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
+$router->get('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
+$router->post('fields_update', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
+$router->post('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
 
 $router->run();

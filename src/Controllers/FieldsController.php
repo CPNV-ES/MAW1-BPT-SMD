@@ -73,9 +73,7 @@ class FieldsController extends Controller
     public function delete(int $idExercise, int $idField): void
     {
         $exercise = $this->exerciseHelper->get([$idExercise])[0];
-
         $exercise->deleteField($idField);
-
         $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
     }
 }

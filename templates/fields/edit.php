@@ -6,7 +6,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
 
 <h1>Editing Field</h1>
 
-<form action="<?= $params['router']->generateUrl('fields_edit', ['id1' => $params['exercise']->getId(), 'id2' => $params['field']->getId()]); ?>" accept-charset="UTF-8" method="post">
+<form action="<?= $params['router']->generateUrl('fields_update', ['id1' => $params['exercise']->getId(), 'id2' => $params['field']->getId()]); ?>" accept-charset="UTF-8" method="post">
     <div class="field">
         <label for="field_label">Label</label>
         <input type="text" value="<?= $params['field']->getLabel() ?>" name="field[label]" id="field_label" onchange="enableElement('submit')">
