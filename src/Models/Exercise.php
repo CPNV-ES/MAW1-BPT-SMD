@@ -13,7 +13,7 @@ class Exercise
 {
     protected int    $id;
     protected string $title;
-    protected string $state = 'Building';
+    protected string $state = 'building';
     protected Query  $query;
 
     /**
@@ -28,11 +28,11 @@ class Exercise
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
-        return $this->id;
+        return $this->id ?? null;
     }
 
     /**

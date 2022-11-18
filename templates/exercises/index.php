@@ -17,13 +17,14 @@ $headerColor = 'results';
             <?php
             foreach ($params['exercises'] as $exercise) : ?>
                 <?php
-                if ($exercise->getState() == 'Building'): ?>
+                if ($exercise->getState() == 'building'): ?>
                     <tr>
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
                             <?php
                             if ($exercise->getAllFields()): ?>
-                                <a title="Be ready for answers" rel="nofollow" data-method="put" href="/exercises/467?exercise%5Bstatus%5D=answering">
+                                <a title="Be ready for answers" rel="nofollow" data-method="put"
+                                   href="<?= $params['router']->generateUrl('exercises_state', ['id' => $exercise->getId()], 'state=answering'); ?>">
                                     <i class="fa fa-comment"></i>
                                 </a>
                             <?php
@@ -58,7 +59,7 @@ $headerColor = 'results';
             <?php
             foreach ($params['exercises'] as $exercise) : ?>
                 <?php
-                if ($exercise->getState() == 'Answering'): ?>
+                if ($exercise->getState() == 'answering'): ?>
                     <tr>
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
@@ -66,7 +67,7 @@ $headerColor = 'results';
                                 <i class="fa fa-chart-bar"></i>
                             </a>
                             <a title="Close" rel="nofollow" data-method="put"
-                               href="/exercises/<?= $exercise->getId() ?>?exercise%5Bstatus%5D=closed">
+                               href="<?= $params['router']->generateUrl('exercises_state', ['id' => $exercise->getId()], 'state=closed'); ?>">
                                 <i class="fa fa-minus-circle"></i>
                             </a>
                         </td>
@@ -92,7 +93,7 @@ $headerColor = 'results';
             <?php
             foreach ($params['exercises'] as $exercise) : ?>
                 <?php
-                if ($exercise->getState() == 'Closed'): ?>
+                if ($exercise->getState() == 'closed'): ?>
                     <tr>
                         <td><?= $exercise->getTitle() ?></td>
                         <td>

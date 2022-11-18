@@ -35,12 +35,15 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             <?php
             endforeach; ?>
             </tbody>
-        </table>
 
-        <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
-           data-method="put" href="/exercises/<?= $params['exercise']->getId() ?>?exercise%5Bstatus%5D=answering">
-            <i class="fa fa-comment"></i> Complete and be ready for answers
-        </a>
+        </table><?php
+        if ($params['exercise']->getAllFields()): ?>
+            <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
+               data-method="put" href="<?= $params['router']->generateUrl('exercises_state', ['id' => $params['exercise']->getId()], 'state=answering'); ?>">
+                <i class="fa fa-comment"></i> Complete and be ready for answers
+            </a>
+        <?php
+        endif; ?>
 
     </section>
     <section class="column">
