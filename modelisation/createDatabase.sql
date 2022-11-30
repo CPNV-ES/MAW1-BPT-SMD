@@ -47,6 +47,20 @@ CREATE TABLE IF NOT EXISTS `fields` (
 
 -- Les données exportées n'étaient pas sélectionnées.
 
+-- Listage de la structure de table looper. fields_has_fulfillments
+DROP TABLE IF EXISTS `fields_has_fulfillments`;
+CREATE TABLE IF NOT EXISTS `fields_has_fulfillments` (
+    `fields_id` int(11) NOT NULL,
+    `fulfillments_id` int(11) NOT NULL,
+    `value` varchar(255) DEFAULT NULL,
+    KEY `fk_fields` (`fields_id`) USING BTREE,
+    KEY `fk_fulfillments` (`fulfillments_id`),
+    CONSTRAINT `fk_fields` FOREIGN KEY (`fields_id`) REFERENCES `fields` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_fulfillments` FOREIGN KEY (`fulfillments_id`) REFERENCES `fulfillments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
 -- Listage de la structure de table looper. fulfillments
 DROP TABLE IF EXISTS `fulfillments`;
 CREATE TABLE IF NOT EXISTS `fulfillments` (
@@ -56,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `fulfillments` (
     PRIMARY KEY (`id`),
     KEY `fk_fulfillments_exercises` (`exercises_id`),
     CONSTRAINT `fk_fulfillments_exercises` FOREIGN KEY (`exercises_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-    ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Les données exportées n'étaient pas sélectionnées.
 

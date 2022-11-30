@@ -8,14 +8,16 @@ use PDOException;
 
 class Fulfillment
 {
-    protected int $id;
-    protected Exercise $exercise;
+    protected int       $id;
+    protected Exercise  $exercise;
     protected \DateTime $date;
-    protected Query $query;
+    protected Query     $queryFulfillments;
+    protected Query     $queryFulfillmentsHasFields;
 
     public function __construct(\DateTime $date, Exercise $exercise)
     {
-        $this->query = new Query(DBConnection::getInstance(), 'fulfillments', Fulfillment::class);
+        $this->queryFulfillments = new Query(DBConnection::getInstance(), 'fulfillments', Fulfillment::class);
+        $this->queryFulfillmentsHasFields = new Query(DBConnection::getInstance(), 'fields_has_fulfillments', Fulfillment::class);
         $this->date = $date;
         $this->exercise = $exercise;
     }
@@ -29,23 +31,27 @@ class Fulfillment
     }
 
     /**
-     * @param array $values
+     * @param array $answers
      *
      * @return int
      */
-    public function save(array $values = []): int
+    public function save(array $answers = []): int
     {
         if (!isset($this->id)) {
-            return $this->create($values);
+            return $this->create($answers);
         } else {
-            return $this->update($values);
+            return $this->update($answers);
         }
     }
 
-    protected function create(array $values = []): int
+    protected function create(array $answers = [[]]): int
     {
         try {
-            return $this->query->insert(['date' => $this->date->format('Y-m-d H:i:s'), 'exercises_id' => $this->exercise->getId()]);
+            $fulfillmentsId = $this->queryFulfillments->insert(['date' => $this->date->format('Y-m-d H:i:s'), 'exercises_id' => $this->exercise->getId()]);
+            foreach ($answers as $key => $answer) {
+                $this->queryFulfillmentsHasFields->insert(['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]);
+            }
+            return $fulfillmentsId;
         } catch (PDOException $e) {
             error_log($e);
             return false;

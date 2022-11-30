@@ -32,9 +32,13 @@ class FulfillmentController extends Controller
 
     public function create(int $id): void
     {
+        $answers_attributes = $_POST['fulfillment']['answers_attributes'];
+        $answers = [];
+        for ($i = 0; $i < count($answers_attributes); $i += 2) {
+            $answers[$answers_attributes[$i]['field_id']] = $answers_attributes[$i + 1]['value'];
+        }
         $exercise = $this->exerciseHelper->get([$id])[0];
-
         $fulfillment = new Fulfillment(new \DateTime(), $exercise);
-        $fulfillment->save();
+        $fulfillment_id = $fulfillment->save($answers);
     }
 }

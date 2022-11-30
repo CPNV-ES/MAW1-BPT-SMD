@@ -1,13 +1,11 @@
 <?php
 
-$title = 'Your take';
-$headerColor = 'managing'
+$title = '';
+$headerColor = 'answering'
 ?>
 
-<h1><?= $title ?></h1>
-
+<h1>Your take</h1>
 <p>If you'd like to come back later to finish, simply submit it with blanks</p>
-
 <form action="<?= $params['router']->generateUrl('fulfillments_create', ['id' => $params['exercise']->getId()]); ?>" accept-charset="UTF-8" method="post">
     <?php
     foreach ($params['exercise']->getFields() as $field) : ?>
@@ -16,17 +14,17 @@ $headerColor = 'managing'
         if ($field->getValueKind() == "single_line") : ?>
             <label for="field-<?= $field->getId() ?>"><?= $field->getLabel() ?></label>
             <input id="field-<?= $field->getId() ?>" type="text" name="fulfillment[answers_attributes][][value]"/>
-            <?php
+        <?php
         elseif ($field->getValueKind() == "single_line_list") : ?>
             <label for="field-<?= $field->getId() ?>"><?= $field->getLabel() ?></label>
             <textarea id="field-<?= $field->getId() ?>" type="text" name="fulfillment[answers_attributes][][value]"></textarea>
-            <?php
+        <?php
         elseif ($field->getValueKind() == "multi_line") : ?>
             <label for="field-<?= $field->getId() ?>"><?= $field->getLabel() ?></label>
             <input id="field-<?= $field->getId() ?>" type="text" name="fulfillment[answers_attributes][][value]"/>
-            <?php
-        endif; ?>
         <?php
+        endif; ?>
+    <?php
     endforeach; ?>
     <div class="actions">
         <input type="submit" name="commit" value="Save" data-disable-with="Save"/>
