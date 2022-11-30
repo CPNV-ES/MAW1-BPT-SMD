@@ -15,11 +15,6 @@ class FulfillmentController extends Controller
         $this->exerciseHelper = new ExerciseHelper();
     }
 
-    /**
-     * @param int $id
-     *
-     * @return void
-     */
     public function new(int $id): void
     {
         $exercise = $this->exerciseHelper->get([$id])[0];
@@ -40,5 +35,11 @@ class FulfillmentController extends Controller
         $exercise = $this->exerciseHelper->get([$id])[0];
         $fulfillment = new Fulfillment(new \DateTime(), $exercise);
         $fulfillment_id = $fulfillment->save($answers);
+    }
+
+    public function edit(int $idExercise, int $idFulfillment)
+    {
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
+        $fulfillment = Fulfillment::get($idFulfillment);
     }
 }

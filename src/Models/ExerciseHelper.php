@@ -12,7 +12,7 @@ class ExerciseHelper
 
     public function __construct()
     {
-        $this->query = new Query(DBConnection::getInstance(), 'exercises', Exercise::class);
+        $this->query = new Query();
     }
 
     /**
@@ -23,11 +23,11 @@ class ExerciseHelper
     public function get(array $id = null): array
     {
         if (is_null($id)) {
-            return $this->query->select();
+            return $this->query->select('exercises', Exercise::class);
         } else {
             $conditions = "id IN (:id)";
             $params = ['id' => implode(',', $id)];
-            return $this->query->select($conditions, $params);
+            return $this->query->select('exercises', Exercise::class, $conditions, $params);
         }
     }
 
@@ -53,7 +53,7 @@ class ExerciseHelper
     private function create(Exercise $exercise): int
     {
         try {
-            return $this->query->insert(['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+            return $this->query->insert('exercises', Exercise::class, ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
         } catch (PDOException $e) {
             error_log($e);
             return false;
@@ -68,7 +68,7 @@ class ExerciseHelper
     private function update(Exercise $exercise): int
     {
         try {
-            return $this->query->update($exercise->getId(), ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+            return $this->query->update('exercises', Exercise::class, $exercise->getId(), ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
         } catch (PDOException $e) {
             error_log($e);
             return false;
@@ -82,6 +82,6 @@ class ExerciseHelper
      */
     public function delete(int $id): void
     {
-        $this->query->delete($id);
+        $this->query->delete('exercises', Exercise::class, $id);
     }
 }

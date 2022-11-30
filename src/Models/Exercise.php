@@ -21,7 +21,7 @@ class Exercise
      */
     public function __construct(array $params = [])
     {
-        $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
+        $this->query = new Query();
         if (array_key_exists('title', $params)) {
             $this->title = $params['title'];
         }
@@ -77,11 +77,11 @@ class Exercise
     public function getFields(array $id = null): array
     {
         if (is_null($id)) {
-            return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+            return $this->query->select('fields', Field::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
             $conditions = "id IN (:id)";
             $params = ['id' => implode(',', $id)];
-            return $this->query->select($conditions, $params);
+            return $this->query->select('fields', Field::class, $conditions, $params);
         }
     }
 
@@ -93,7 +93,7 @@ class Exercise
     public function createField(Field $field): int
     {
         try {
-            return $this->query->insert([
+            return $this->query->insert('fields', Field::class, [
                 'label'        => $field->getLabel(),
                 'value_kind'   => $field->getValueKind(),
                 'exercises_id' => $this->id
@@ -105,12 +105,21 @@ class Exercise
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
      * @return void
      */
-    public function deleteField($id): void
+    public function deleteField(int $id): void
     {
-        $this->query->delete($id);
+        $this->query->delete('fields', Field::class, $id);
+    }
+
+    public function getFulfillment($id = null)
+    {
+        if (is_null($id)) {
+            return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+        } else {
+            return $this->query->select('id = :id', ['id' => $id]);
+        }
     }
 }

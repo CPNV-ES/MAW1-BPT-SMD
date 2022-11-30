@@ -11,13 +11,11 @@ class Fulfillment
     protected int       $id;
     protected Exercise  $exercise;
     protected \DateTime $date;
-    protected Query     $queryFulfillments;
-    protected Query     $queryFulfillmentsHasFields;
+    protected Query     $query;
 
     public function __construct(\DateTime $date, Exercise $exercise)
     {
-        $this->queryFulfillments = new Query(DBConnection::getInstance(), 'fulfillments', Fulfillment::class);
-        $this->queryFulfillmentsHasFields = new Query(DBConnection::getInstance(), 'fields_has_fulfillments', Fulfillment::class);
+        $this->query = new Query();
         $this->date = $date;
         $this->exercise = $exercise;
     }
@@ -47,9 +45,9 @@ class Fulfillment
     protected function create(array $answers = [[]]): int
     {
         try {
-            $fulfillmentsId = $this->queryFulfillments->insert(['date' => $this->date->format('Y-m-d H:i:s'), 'exercises_id' => $this->exercise->getId()]);
+            $fulfillmentsId = $this->query->insert('fulfillments', Fulfillment::class, ['date' => $this->date->format('Y-m-d H:i:s'), 'exercises_id' => $this->exercise->getId()]);
             foreach ($answers as $key => $answer) {
-                $this->queryFulfillmentsHasFields->insert(['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]);
+                $this->query->insert('fields_has_fulfillments', Fulfillment::class, ['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]);
             }
             return $fulfillmentsId;
         } catch (PDOException $e) {

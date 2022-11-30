@@ -75,6 +75,8 @@ class Field
     {
         try {
             return $this->query->update(
+                'fields',
+                Field::class,
                 $this->id,
                 [
                     'label'      => $this->getLabel(),
