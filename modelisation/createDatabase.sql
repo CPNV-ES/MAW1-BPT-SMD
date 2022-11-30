@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `fields_has_fulfillments` (
     `fields_id` int(11) NOT NULL,
     `fulfillments_id` int(11) NOT NULL,
     `value` varchar(255) DEFAULT NULL,
+    UNIQUE KEY `fields_id` (`fields_id`,`fulfillments_id`),
     KEY `fk_fields` (`fields_id`) USING BTREE,
     KEY `fk_fulfillments` (`fulfillments_id`),
     CONSTRAINT `fk_fields` FOREIGN KEY (`fields_id`) REFERENCES `fields` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
