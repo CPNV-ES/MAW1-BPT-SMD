@@ -25,7 +25,16 @@ class ExerciseController extends Controller
             'router'    => $this->router
         ]);
     }
-
+    /**
+     * @return void
+     */
+    public function answering(): void
+    {
+        $this->view('exercises/answering', [
+            'exercises' => $this->exerciseHelper->get(),
+            'router'    => $this->router
+        ]);
+    }
     /**
      * @return void
      */
