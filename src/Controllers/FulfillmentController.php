@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ExerciseHelper;
+use App\Models\Fulfillment;
 
 class FulfillmentController extends Controller
 {
@@ -22,12 +23,18 @@ class FulfillmentController extends Controller
     public function new(int $id): void
     {
         $exercise = $this->exerciseHelper->get([$id])[0];
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            die();
-        }
 
-        $params['router'] = $this->router;
-        $params['exercise'] = $exercise;
-        $this->view('fulfillements/new', $params);
+        $this->view('fulfillements/new', [
+            'router'   => $this->router,
+            'exercise' => $exercise
+        ]);
+    }
+
+    public function create(int $id): void
+    {
+        $exercise = $this->exerciseHelper->get([$id])[0];
+
+        $fulfillment = new Fulfillment(new \DateTime(), $exercise);
+        $fulfillment->save();
     }
 }

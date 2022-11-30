@@ -47,6 +47,19 @@ CREATE TABLE IF NOT EXISTS `fields` (
 
 -- Les données exportées n'étaient pas sélectionnées.
 
+-- Listage de la structure de table looper. fulfillments
+DROP TABLE IF EXISTS `fulfillments`;
+CREATE TABLE IF NOT EXISTS `fulfillments` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `exercises_id` int(11) NOT NULL,
+    `date` datetime DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_fulfillments_exercises` (`exercises_id`),
+    CONSTRAINT `fk_fulfillments_exercises` FOREIGN KEY (`exercises_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
