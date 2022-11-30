@@ -2,6 +2,7 @@
 
 use App\Controllers\ExerciseController;
 use App\Controllers\FieldsController;
+use App\Controllers\FulfillmentController;
 use App\Controllers\HomeController;
 use App\Database\DBConnection;
 use App\Router\Route;
@@ -30,5 +31,8 @@ $router->post('fields_create', new Route('/exercises/:id/fields', FieldsControll
 $router->get('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_update', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
+
+$router->get('fulfillments_new', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'new'));
+$router->post('fulfillments_create', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'new'));
 
 $router->run();
