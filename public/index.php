@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\FulfillmentController;
 use App\Controllers\ExerciseController;
 use App\Controllers\FieldsController;
 use App\Controllers\HomeController;
@@ -21,7 +22,7 @@ $router->get('home_index', new Route('/', HomeController::class, 'index'));
 
 $router->get('exercises_index', new Route('/exercises', ExerciseController::class, 'index'));
 $router->get('exercises_new', new Route('/exercises/new', ExerciseController::class, 'new'));
-$router->get('exercises_answering', new Route('/exercises/answering', ExerciseController::class, 'answering'));
+$router->get('exercises_answering', new Route('/exercises/answering', FulfillmentController::class,'choose'));
 $router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
 $router->post('exercises_state', new Route('/exercises/:id/state', ExerciseController::class, 'state'));
 $router->post('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
