@@ -19,7 +19,7 @@ class FulfillmentController extends Controller
     {
         $exercise = $this->exerciseHelper->get([$id])[0];
 
-        $this->view('fulfillements/new', [
+        $this->view('fulfillments/new', [
             'router'   => $this->router,
             'exercise' => $exercise
         ]);
