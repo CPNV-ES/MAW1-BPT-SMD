@@ -33,13 +33,15 @@ class FulfillmentController extends Controller
             $answers[$answers_attributes[$i]['field_id']] = $answers_attributes[$i + 1]['value'];
         }
         $exercise = $this->exerciseHelper->get([$id])[0];
-        $fulfillment = new Fulfillment(new \DateTime(), $exercise);
+        $fulfillment = new Fulfillment(['date' => (new \DateTime())->format('Y-m-d H:i:s'), 'exercise' => $exercise]);
         $fulfillment_id = $fulfillment->save($answers);
+
+        $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment_id]);
     }
 
     public function edit(int $idExercise, int $idFulfillment)
     {
         $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $fulfillment = Fulfillment::get($idFulfillment);
+        $fulfillment = $exercise->getFulfillment($idFulfillment);
     }
 }

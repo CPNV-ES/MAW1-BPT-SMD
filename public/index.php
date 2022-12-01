@@ -34,6 +34,8 @@ $router->post('fields_update', new Route('/exercises/:id1/fields/:id2/edit', Fie
 $router->post('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
 
 $router->get('fulfillments_new', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'new'));
-$router->post('fulfillments_create', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'create'));
+$router->post('fulfillments_create', new Route('/exercises/:id/fulfillments/create', FulfillmentController::class, 'create'));
+$router->get('fulfillments_edit', new Route('/exercises/:id1/fulfillments/:id2/edit', FulfillmentController::class, 'edit'));
+$router->post('fulfillments_update', new Route('/exercises/:id1/fulfillments/:id2/update', FulfillmentController::class, 'update'));
 
 $router->run();

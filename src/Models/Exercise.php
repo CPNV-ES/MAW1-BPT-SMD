@@ -117,9 +117,9 @@ class Exercise
     public function getFulfillment($id = null)
     {
         if (is_null($id)) {
-            return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+            return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('id = :id', ['id' => $id]);
+            return $this->query->select('fulfillments', Fulfillment::class, 'id = :id', ['id' => $id]);
         }
     }
 }

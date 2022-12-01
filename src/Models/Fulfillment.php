@@ -8,16 +8,20 @@ use PDOException;
 
 class Fulfillment
 {
-    protected int       $id;
-    protected Exercise  $exercise;
-    protected \DateTime $date;
-    protected Query     $query;
+    protected int      $id;
+    protected Exercise $exercise;
+    protected string   $date;
+    protected Query    $query;
 
-    public function __construct(\DateTime $date, Exercise $exercise)
+    public function __construct(array $params = [])
     {
         $this->query = new Query();
-        $this->date = $date;
-        $this->exercise = $exercise;
+        if (array_key_exists('date', $params)) {
+            $this->date = $params['date'];
+        }
+        if (array_key_exists('exercise', $params)) {
+            $this->exercise = $params['exercise'];
+        }
     }
 
     /**
@@ -45,7 +49,7 @@ class Fulfillment
     protected function create(array $answers = [[]]): int
     {
         try {
-            $fulfillmentsId = $this->query->insert('fulfillments', Fulfillment::class, ['date' => $this->date->format('Y-m-d H:i:s'), 'exercises_id' => $this->exercise->getId()]);
+            $fulfillmentsId = $this->query->insert('fulfillments', Fulfillment::class, ['date' => $this->date, 'exercises_id' => $this->exercise->getId()]);
             foreach ($answers as $key => $answer) {
                 $this->query->insert('fields_has_fulfillments', Fulfillment::class, ['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]);
             }
