@@ -10,8 +10,6 @@ $headerColor = 'answering'
     <?php
     foreach ($params['fields'] as $field): ?>
         <input type="hidden" value="<?= $field->getId() ?>" name="fulfillment[answers_attributes][][field_id]" id="fulfillment_answers_attributes__field_id"/>
-        <?=
-        $params['fulfillment']->getValue($field); ?>
         <?php
         if ($field->getValueKind() == "single_line"): ?>
             <label for="field-<?= $field->getId() ?>"><?= $field->getLabel() ?></label>

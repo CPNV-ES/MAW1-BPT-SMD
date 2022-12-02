@@ -19,6 +19,8 @@ class Query
     /**
      * Select elements with filter
      *
+     * @param string      $table
+     * @param string      $class
      * @param string|null $conditions
      * @param array|null  $params
      * @param bool        $single
@@ -35,7 +37,9 @@ class Query
     /**
      * Create one element
      *
-     * @param array $data array of fields name and value
+     * @param string $table
+     * @param string $class
+     * @param array  $data array of fields name and value
      *
      * @return int
      */
@@ -63,12 +67,15 @@ class Query
     /**
      * Update one element by his id
      *
-     * @param int   $id   id of object
-     * @param array $data array of fields name and value to update
+     * @param string $table
+     * @param string $class
+     * @param string $conditions
+     * @param array  $params
+     * @param array  $data array of fields name and value to update
      *
      * @return bool
      */
-    public function update(string $table, string $class, int $id, array $data): bool
+    public function update(string $table, string $class, string $conditions, array $params, array $data): bool
     {
         $sqlRequestPart = "";
         $i = 1;
@@ -79,10 +86,10 @@ class Query
             $i++;
         }
 
-        $data['id'] = $id;
+        $data = array_merge($params, $data);
 
         return $this->dbConnection->execute(
-            "UPDATE {$table} SET {$sqlRequestPart} WHERE id = :id",
+            "UPDATE {$table} SET {$sqlRequestPart} WHERE {$conditions}",
             $class,
             $data
         );
@@ -91,7 +98,9 @@ class Query
     /**
      * Create one element
      *
-     * @param int $id id of object
+     * @param string $table
+     * @param string $class
+     * @param int    $id id of object
      *
      * @return bool
      */

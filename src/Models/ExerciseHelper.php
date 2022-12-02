@@ -68,7 +68,13 @@ class ExerciseHelper
     private function update(Exercise $exercise): int
     {
         try {
-            return $this->query->update('exercises', Exercise::class, $exercise->getId(), ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+            return $this->query->update(
+                'exercises',
+                Exercise::class,
+                'id = :id',
+                ['id' => $exercise->getId()],
+                ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]
+            );
         } catch (PDOException $e) {
             error_log($e);
             return false;

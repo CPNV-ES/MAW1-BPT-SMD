@@ -60,6 +60,30 @@ class Fulfillment
         }
     }
 
+    protected function update(array $answers = [[]]): int
+    {
+        try {
+            foreach ($answers as $fields_id => $answer) {
+                $this->query->update(
+                    'fields_has_fulfillments',
+                    Fulfillment::class,
+                    'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
+                    [
+                        'fields_id'       => $fields_id,
+                        'fulfillments_id' => $this->id
+                    ],
+                    [
+                        'value' => $answer
+                    ]
+                );
+            }
+            return true;
+        } catch (PDOException $e) {
+            error_log($e);
+            return false;
+        }
+    }
+
     public function getValue(Field $field)
     {
         $fieldsHasFulfillments = $this->query->select(

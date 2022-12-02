@@ -51,4 +51,19 @@ class FulfillmentController extends Controller
             'fields'      => $exercise->getFields()
         ]);
     }
+
+    public function update(int $idExercise, int $idFulfillment)
+    {
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
+        $fulfillment = $exercise->getFulfillment($idFulfillment);
+
+        $answers_attributes = $_POST['fulfillment']['answers_attributes'];
+        $answers = [];
+        for ($i = 0; $i < count($answers_attributes); $i += 2) {
+            $answers[$answers_attributes[$i]['field_id']] = $answers_attributes[$i + 1]['value'];
+        }
+        $fulfillment->save($answers);
+
+        $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment->getId()]);
+    }
 }
