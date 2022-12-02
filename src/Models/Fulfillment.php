@@ -59,4 +59,19 @@ class Fulfillment
             return false;
         }
     }
+
+    public function getValue(Field $field)
+    {
+        $fieldsHasFulfillments = $this->query->select(
+            'fields_has_fulfillments',
+            FieldsHasFulfillments::class,
+            'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
+            [
+                ':fields_id'       => $field->getId(),
+                ':fulfillments_id' => $this->id
+            ],
+            true
+        );
+        return $fieldsHasFulfillments->getValue();
+    }
 }

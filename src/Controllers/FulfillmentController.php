@@ -43,5 +43,12 @@ class FulfillmentController extends Controller
     {
         $exercise = $this->exerciseHelper->get([$idExercise])[0];
         $fulfillment = $exercise->getFulfillment($idFulfillment);
+
+        $this->view('fulfillments/edit', [
+            'router'      => $this->router,
+            'exercise'    => $exercise,
+            'fulfillment' => $fulfillment,
+            'fields'      => $exercise->getFields()
+        ]);
     }
 }
