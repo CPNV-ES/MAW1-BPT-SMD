@@ -26,16 +26,19 @@ $router->get('exercises_answering', new Route('/exercises/answering', ExerciseCo
 $router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
 $router->post('exercises_state', new Route('/exercises/:id/state', ExerciseController::class, 'state'));
 $router->post('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
+$router->get('exercises_results', new Route('/exercises/:id/results', ExerciseController::class, 'results'));
 
 $router->get('fields_index', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
 $router->post('fields_create', new Route('/exercises/:id/fields', FieldsController::class, 'index'));
 $router->get('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_update', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
+$router->get('fields_results', new Route('/exercises/:exercise/results/:field', FieldsController::class, 'results'));
 
 $router->get('fulfillments_new', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'new'));
 $router->post('fulfillments_create', new Route('/exercises/:id/fulfillments/create', FulfillmentController::class, 'create'));
 $router->get('fulfillments_edit', new Route('/exercises/:id1/fulfillments/:id2/edit', FulfillmentController::class, 'edit'));
 $router->post('fulfillments_update', new Route('/exercises/:id1/fulfillments/:id2/update', FulfillmentController::class, 'update'));
+$router->get('fulfillments_results', new Route('/exercises/:exercise/fulfillments/:fulfillment', FulfillmentController::class, 'results'));
 
 $router->run();

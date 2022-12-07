@@ -33,6 +33,14 @@ class Fulfillment
     }
 
     /**
+     * @return string
+     */
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+    /**
      * @param array $answers
      *
      * @return int
