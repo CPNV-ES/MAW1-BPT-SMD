@@ -70,14 +70,14 @@ ___
 
 - [x] List the exercises that are ready for answers
 - [x] Take an exercise to see all the fields
-- [ ] Answer the taken exercise by filling the fields
-- [ ] Update the existing answers for a taken exercise
+- [x] Answer the taken exercise by filling the fields
+- [x] Update the existing answers for a taken exercise
 
 ### Exercise management
 
 - [x] List all the exercises in 3 columns based on their state
 - [x] Destroy an exercise (only when building or closed)
-- [ ] Change state of an exercise through icon buttons
+- [x] Change state of an exercise through icon buttons
 - [ ] Stats for an exercise: show the recap (all takes, all fields)
 - [ ] Stats for an exercise: show the answers of all fields of one take
 - [ ] Stats for an exercise: show the answers on one field of all takes
