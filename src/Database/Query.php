@@ -2,8 +2,6 @@
 
 namespace App\Database;
 
-use PDOException;
-
 /**
  * Query
  */
@@ -100,12 +98,13 @@ class Query
      *
      * @param string $table
      * @param string $class
-     * @param int    $id id of object
+     * @param string $conditions
+     * @param array  $params
      *
      * @return bool
      */
-    public function delete(string $table, string $class, int $id): bool
+    public function delete(string $table, string $class, string $conditions, array $params): bool
     {
-        return $this->dbConnection->execute("DELETE FROM {$table} WHERE id = :id", $class, compact('id'));
+        return $this->dbConnection->execute("DELETE FROM {$table} WHERE {$conditions}", $class, $params);
     }
 }

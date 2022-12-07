@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `fields` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `label` (`label`,`exercises_id`) USING BTREE,
   KEY `fk_fields_exercises_idx` (`exercises_id`),
-  CONSTRAINT `fk_fields_exercises` FOREIGN KEY (`exercises_id`) REFERENCES `exercises` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_fields_exercises` FOREIGN KEY (`exercises_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Les données exportées n'étaient pas sélectionnées.

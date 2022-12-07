@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
@@ -88,6 +87,13 @@ class ExerciseHelper
      */
     public function delete(int $id): void
     {
-        $this->query->delete('exercises', Exercise::class, $id);
+        $exercise = $this->get([$id])[0];
+        foreach ($exercise->getFulfillment() as $fulfillment) {
+            $fulfillment->delete();
+        }
+        foreach ($exercise->getFields() as $field) {
+            $exercise->deleteField($field->getId());
+        }
+        $this->query->delete('exercises', Exercise::class, 'id = :id', ['id' => $id]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
@@ -97,5 +96,11 @@ class Fulfillment
             true
         );
         return $fieldsHasFulfillments->getValue();
+    }
+
+    public function delete()
+    {
+        $this->query->delete('fields_has_fulfillments', FieldsHasFulfillments::class, 'fulfillments_id = :fulfillments_id', ['fulfillments_id' => $this->id]);
+        $this->query->delete('fulfillments', Fulfillment::class, 'id = :id', ['id' => $this->id]);
     }
 }

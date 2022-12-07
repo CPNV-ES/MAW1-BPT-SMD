@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
@@ -111,7 +110,7 @@ class Exercise
      */
     public function deleteField(int $id): void
     {
-        $this->query->delete('fields', Field::class, $id);
+        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $id]);
     }
 
     public function getFulfillment($id = null)
