@@ -2,6 +2,7 @@
 
 use App\Controllers\ExerciseController;
 use App\Controllers\FieldsController;
+use App\Controllers\FulfillmentController;
 use App\Controllers\HomeController;
 use App\Database\DBConnection;
 use App\Router\Route;
@@ -21,6 +22,7 @@ $router->get('home_index', new Route('/', HomeController::class, 'index'));
 
 $router->get('exercises_index', new Route('/exercises', ExerciseController::class, 'index'));
 $router->get('exercises_new', new Route('/exercises/new', ExerciseController::class, 'new'));
+$router->get('exercises_answering', new Route('/exercises/answering', ExerciseController::class, 'answering'));
 $router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
 $router->post('exercises_state', new Route('/exercises/:id/state', ExerciseController::class, 'state'));
 $router->post('exercises_delete', new Route('/exercises/:id', ExerciseController::class, 'delete'));
@@ -30,5 +32,10 @@ $router->post('fields_create', new Route('/exercises/:id/fields', FieldsControll
 $router->get('fields_edit', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_update', new Route('/exercises/:id1/fields/:id2/edit', FieldsController::class, 'edit'));
 $router->post('fields_delete', new Route('/exercises/:id1/fields/:id2', FieldsController::class, 'delete'));
+
+$router->get('fulfillments_new', new Route('/exercises/:id/fulfillments/new', FulfillmentController::class, 'new'));
+$router->post('fulfillments_create', new Route('/exercises/:id/fulfillments/create', FulfillmentController::class, 'create'));
+$router->get('fulfillments_edit', new Route('/exercises/:id1/fulfillments/:id2/edit', FulfillmentController::class, 'edit'));
+$router->post('fulfillments_update', new Route('/exercises/:id1/fulfillments/:id2/update', FulfillmentController::class, 'update'));
 
 $router->run();

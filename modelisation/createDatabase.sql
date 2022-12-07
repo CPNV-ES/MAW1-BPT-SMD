@@ -47,6 +47,34 @@ CREATE TABLE IF NOT EXISTS `fields` (
 
 -- Les données exportées n'étaient pas sélectionnées.
 
+-- Listage de la structure de table looper. fields_has_fulfillments
+DROP TABLE IF EXISTS `fields_has_fulfillments`;
+CREATE TABLE IF NOT EXISTS `fields_has_fulfillments` (
+    `fields_id` int(11) NOT NULL,
+    `fulfillments_id` int(11) NOT NULL,
+    `value` varchar(255) DEFAULT NULL,
+    UNIQUE KEY `fields_id` (`fields_id`,`fulfillments_id`),
+    KEY `fk_fields` (`fields_id`) USING BTREE,
+    KEY `fk_fulfillments` (`fulfillments_id`),
+    CONSTRAINT `fk_fields` FOREIGN KEY (`fields_id`) REFERENCES `fields` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_fulfillments` FOREIGN KEY (`fulfillments_id`) REFERENCES `fulfillments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
+-- Listage de la structure de table looper. fulfillments
+DROP TABLE IF EXISTS `fulfillments`;
+CREATE TABLE IF NOT EXISTS `fulfillments` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `exercises_id` int(11) NOT NULL,
+    `date` datetime DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_fulfillments_exercises` (`exercises_id`),
+    CONSTRAINT `fk_fulfillments_exercises` FOREIGN KEY (`exercises_id`) REFERENCES `exercises` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

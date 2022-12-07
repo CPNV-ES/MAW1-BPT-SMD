@@ -75,7 +75,10 @@ class Field
     {
         try {
             return $this->query->update(
-                $this->id,
+                'fields',
+                Field::class,
+                'id = :id',
+                ['id' => $this->id],
                 [
                     'label'      => $this->getLabel(),
                     'value_kind' => $this->getValueKind(),

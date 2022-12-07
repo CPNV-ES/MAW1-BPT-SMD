@@ -54,6 +54,14 @@ class ExerciseController extends Controller
         $this->router->redirect('exercises_index');
     }
 
+    public function answering(): void
+    {
+        $this->view('exercises/answering', [
+            'exercises' => $this->exerciseHelper->get(),
+            'router'    => $this->router
+        ]);
+    }
+
     /**
      * @param int $id
      *
