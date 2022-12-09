@@ -4,18 +4,15 @@ namespace App\Controllers;
 
 use App\Models\ExerciseHelper;
 use App\Models\Field;
-use App\Models\FieldsHasFulfillments;
 
 class FieldsController extends Controller
 {
     protected ExerciseHelper $exerciseHelper;
-    protected FieldsHasFulfillments $fieldsHasFulfillments;
 
     public function __construct()
     {
         parent::__construct();
         $this->exerciseHelper = new ExerciseHelper();
-        $this->fieldsHasFulfillments = new FieldsHasFulfillments();
     }
 
     /**
@@ -80,21 +77,14 @@ class FieldsController extends Controller
         $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
     }
 
-    public function results(int $exercise, int $field):void
+    public function results(int $idExercise, int $field):void
     {
-        $field = ['id'=>$field];
-        // get the answer for that field
-        $field_has_fulfillments = $this->fieldsHasFulfillments->get($field);
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
 
-        $exercise = $this->exerciseHelper->get([$exercise])[0];
-
-        //give the fulfillments their id to get them
-        foreach ($field_has_fulfillments as $element){
-            $fulfillments[] = $exercise->getFulfillments($element->fulfillments_id);
-        }
         $this->view('fields/results', [
-            'field'       => $exercise->getFields($field),
-            'fulfillments' => $fulfillments,
+            'exercise' => $exercise,
+            'field'       => $exercise->getFields([$field])[0],
+            'fulfillments' => $exercise->getFulfillments(),
             'router'       => $this->router
         ]);
     }

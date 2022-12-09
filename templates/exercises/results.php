@@ -1,3 +1,7 @@
+<?php
+
+$headerColor = 'results';
+?>
 <table>
     <thead>
     <tr>
