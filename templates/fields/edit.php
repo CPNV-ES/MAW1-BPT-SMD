@@ -9,7 +9,7 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
 <form action="<?= $params['router']->generateUrl('fields_update', ['id1' => $params['exercise']->getId(), 'id2' => $params['field']->getId()]); ?>" accept-charset="UTF-8" method="post">
     <div class="field">
         <label for="field_label">Label</label>
-        <input type="text" value="<?= $params['field']->getLabel() ?>" name="field[label]" id="field_label" onchange="enableElement('submit')">
+        <input type="text" value="<?= $params['field']->getLabel() ?>" name="field[label]" id="field_label" oninput="enableElement('submit')">
     </div>
     <div class="field">
         <label for="field_value_kind">Value kind</label>
