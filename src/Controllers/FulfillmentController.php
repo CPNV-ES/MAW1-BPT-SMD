@@ -15,9 +15,9 @@ class FulfillmentController extends Controller
         $this->exerciseHelper = new ExerciseHelper();
     }
 
-    public function new(int $id): void
+    public function new(int $exerciseId): void
     {
-        $exercise = $this->exerciseHelper->get([$id])[0];
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
 
         $this->view('fulfillments/new', [
             'router'   => $this->router,
@@ -25,24 +25,24 @@ class FulfillmentController extends Controller
         ]);
     }
 
-    public function create(int $id): void
+    public function create(int $exerciseId): void
     {
         $answers_attributes = $_POST['fulfillment']['answers_attributes'];
         $answers = [];
         for ($i = 0; $i < count($answers_attributes); $i += 2) {
             $answers[$answers_attributes[$i]['field_id']] = $answers_attributes[$i + 1]['value'];
         }
-        $exercise = $this->exerciseHelper->get([$id])[0];
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
         $fulfillment = new Fulfillment(['date' => (new \DateTime())->format('Y-m-d H:i:s'), 'exercise' => $exercise]);
         $fulfillment_id = $fulfillment->save($answers);
 
-        $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment_id]);
+        $this->router->redirect('fulfillments_edit', ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment_id]);
     }
 
-    public function edit(int $idExercise, int $idFulfillment)
+    public function edit(int $exerciseId, int $fulfillmentId)
     {
-        $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $fulfillment = $exercise->getFulfillment($idFulfillment);
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $fulfillment = $exercise->getFulfillment($fulfillmentId);
 
         $this->view('fulfillments/edit', [
             'router'      => $this->router,
@@ -52,10 +52,10 @@ class FulfillmentController extends Controller
         ]);
     }
 
-    public function update(int $idExercise, int $idFulfillment)
+    public function update(int $exerciseId, int $fulfillmentId)
     {
-        $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $fulfillment = $exercise->getFulfillment($idFulfillment);
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $fulfillment = $exercise->getFulfillment($fulfillmentId);
 
         $answers_attributes = $_POST['fulfillment']['answers_attributes'];
         $answers = [];
@@ -64,6 +64,6 @@ class FulfillmentController extends Controller
         }
         $fulfillment->save($answers);
 
-        $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment->getId()]);
+        $this->router->redirect('fulfillments_edit', ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment->getId()]);
     }
 }

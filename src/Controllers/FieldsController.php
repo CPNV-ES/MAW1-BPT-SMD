@@ -15,14 +15,9 @@ class FieldsController extends Controller
         $this->exerciseHelper = new ExerciseHelper();
     }
 
-    /**
-     * @param int $id
-     *
-     * @return void
-     */
-    public function index(int $id): void
+    public function index(int $exerciseId): void
     {
-        $exercise = $this->exerciseHelper->get([$id])[0];
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
         $params = [
             'exercise' => $exercise,
             'router'   => $this->router
@@ -35,21 +30,19 @@ class FieldsController extends Controller
             ]);
 
             if ($exercise->createField($field)) {
-                $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
+                $this->router->redirect('fields_index', ['exercise' => $exercise->getId()]);
             } else {
                 $params["error"] = "Le label déjà utilisé. Veuillez en choisir un autre.";
             }
         }
 
-        $params['formAction'] = $this->router->generateUrl('fields_index', ['id' => $id]);
-
         $this->view('fields/index', $params);
     }
 
-    public function edit(int $idExercise, int $idField): void
+    public function edit(int $exerciseId, int $fieldId): void
     {
-        $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $field = $exercise->getFields([$idField])[0];
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $field = $exercise->getFields([$fieldId])[0];
         $params = [
             'exercise' => $exercise,
             'field'    => $field,
@@ -61,7 +54,7 @@ class FieldsController extends Controller
             $field->setValueKind($_POST['field']['value_kind']);
 
             if ($field->update()) {
-                $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
+                $this->router->redirect('fields_index', ['exercise' => $exercise->getId()]);
             } else {
                 $params["error"] = "Le label déjà utilisé. Veuillez en choisir un autre.";
             }
@@ -70,10 +63,10 @@ class FieldsController extends Controller
         $this->view('fields/edit', $params);
     }
 
-    public function delete(int $idExercise, int $idField): void
+    public function delete(int $exerciseId, int $fieldId): void
     {
-        $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $exercise->deleteField($idField);
-        $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
+        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $exercise->deleteField($fieldId);
+        $this->router->redirect('fields_index', ['exercise' => $exercise->getId()]);
     }
 }
