@@ -42,7 +42,7 @@ class ExerciseHelperTest extends TestCase
         //event is called directly by the assertion
 
         //then
-        $exercise = self::$ExerciseHelper->get([$this->id[0]])[0];
+        $exercise = self::$ExerciseHelper->get($this->id[0]);
         self::assertEquals($this->id[0], $exercise->getId());
     }
 
@@ -82,7 +82,7 @@ class ExerciseHelperTest extends TestCase
         //event is called directly by the assertion
 
         //then
-        $exercise = self::$ExerciseHelper->get([$this->id[0]])[0];
+        $exercise = self::$ExerciseHelper->get($this->id[0]);
         $this->assertEquals(self::TITLE, $exercise->getTitle());
     }
 

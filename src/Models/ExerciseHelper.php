@@ -15,18 +15,16 @@ class ExerciseHelper
     }
 
     /**
-     * @param array|null $exerciseId
+     * @param int|null $exerciseId
      *
-     * @return array
+     * @return array|Exercise
      */
-    public function get(array $exerciseId = null): array
+    public function get(int $exerciseId = null): array|Exercise
     {
         if (is_null($exerciseId)) {
             return $this->query->select('exercises', Exercise::class);
         } else {
-            $conditions = "id IN (:id)";
-            $params = ['id' => implode(',', $exerciseId)];
-            return $this->query->select('exercises', Exercise::class, $conditions, $params);
+            return $this->query->select('exercises', Exercise::class, 'id = :id', ['id' => $exerciseId], true);
         }
     }
 
@@ -87,13 +85,13 @@ class ExerciseHelper
      */
     public function delete(int $exerciseId): void
     {
-        $exercise = $this->get([$exerciseId])[0];
+        $exercise = $this->get($exerciseId);
         foreach ($exercise->getFulfillment() as $fulfillment) {
             $fulfillment->delete();
         }
         foreach ($exercise->getFields() as $field) {
             $exercise->deleteField($field->getId());
         }
-        $this->query->delete('exercises', Exercise::class, 'id = :id', ['id' => $id]);
+        $this->query->delete('exercises', Exercise::class, 'id = :id', ['id' => $exerciseId]);
     }
 }

@@ -58,7 +58,7 @@ $headerColor = 'results';
                                 <i class="fa fa-chart-bar"></i>
                             </a>
                             <a title="Close" rel="nofollow" data-method="put"
-                               href="<?= $params['router']->generateUrl('exercises_state', ['id' => $exercise->getId()], 'state=closed'); ?>">
+                               href="<?= $params['router']->generateUrl('exercises_state', ['exercise' => $exercise->getId()], 'state=closed'); ?>">
                             <i class="fa fa-minus-circle"></i>
                             </a>
                         </td>

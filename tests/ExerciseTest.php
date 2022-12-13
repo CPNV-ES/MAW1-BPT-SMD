@@ -32,7 +32,7 @@ class ExerciseTest extends TestCase
         $exercise->setState('edit');
         $id = $exerciseHelper->save($exercise);
 
-        $exercise = $exerciseHelper->get([$id])[0];
+        $exercise = $exerciseHelper->get($id);
 
         $this->assertEquals($id, $exercise->getId());
 

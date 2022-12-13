@@ -17,7 +17,7 @@ class FieldsController extends Controller
 
     public function index(int $exerciseId): void
     {
-        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $exercise = $this->exerciseHelper->get($exerciseId);
         $params = [
             'exercise' => $exercise,
             'router'   => $this->router
@@ -41,7 +41,7 @@ class FieldsController extends Controller
 
     public function edit(int $exerciseId, int $fieldId): void
     {
-        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $exercise = $this->exerciseHelper->get($exerciseId);
         $field = $exercise->getFields($fieldId);
         $params = [
             'exercise' => $exercise,
@@ -65,7 +65,7 @@ class FieldsController extends Controller
 
     public function delete(int $exerciseId, int $fieldId): void
     {
-        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $exercise = $this->exerciseHelper->get($exerciseId);
         $exercise->deleteField($fieldId);
         $this->router->redirect('fields_index', ['exercise' => $exercise->getId()]);
     }

@@ -40,7 +40,7 @@ class ExerciseController extends Controller
     {
         parse_str($query, $params);
 
-        $exercise = $this->exerciseHelper->get([$exerciseId])[0];
+        $exercise = $this->exerciseHelper->get($exerciseId);
         $exercise->setState($params['state']);
 
         $this->exerciseHelper->save($exercise);
