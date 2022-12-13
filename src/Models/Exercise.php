@@ -69,18 +69,16 @@ class Exercise
     }
 
     /**
-     * @param array|null $id
+     * @param int|null $fieldId
      *
-     * @return array
+     * @return array|Field
      */
-    public function getFields(array $id = null): array
+    public function getFields(int $fieldId = null): array|Field
     {
-        if (is_null($id)) {
+        if (is_null($fieldId)) {
             return $this->query->select('fields', Field::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            $conditions = "id IN (:id)";
-            $params = ['id' => implode(',', $id)];
-            return $this->query->select('fields', Field::class, $conditions, $params);
+            return $this->query->select('fields', Field::class, 'id  = :field_id AND exercises_id = :exercises_id', ['field_id' => $fieldId, 'exercises_id' => $this->id], true);
         }
     }
 
@@ -104,21 +102,26 @@ class Exercise
     }
 
     /**
-     * @param int $id
+     * @param int $fieldId
      *
      * @return void
      */
-    public function deleteField(int $id): void
+    public function deleteField(int $fieldId): void
     {
-        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $id]);
+        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $fieldId]);
     }
 
-    public function getFulfillment($id = null)
+    /**
+     * @param int|null $id
+     *
+     * @return array|Fulfillment
+     */
+    public function getFulfillment(int $id = null): array|Fulfillment
     {
         if (is_null($id)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('fulfillments', Fulfillment::class, 'id = :id', ['id' => $id], true);
+            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id, exercises_id = :exercises_id', ['field_id' => $id, 'exercises_id' => $this->id], true);
         }
     }
 }

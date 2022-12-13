@@ -42,7 +42,7 @@ class FieldsController extends Controller
     public function edit(int $exerciseId, int $fieldId): void
     {
         $exercise = $this->exerciseHelper->get([$exerciseId])[0];
-        $field = $exercise->getFields([$fieldId])[0];
+        $field = $exercise->getFields($fieldId);
         $params = [
             'exercise' => $exercise,
             'field'    => $field,
