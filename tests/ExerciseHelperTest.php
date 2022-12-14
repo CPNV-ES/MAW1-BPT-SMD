@@ -11,7 +11,7 @@ class ExerciseHelperTest extends TestCase
 {
 
     protected static ExerciseHelper $ExerciseHelper;
-    protected array                 $ids;
+    protected array                 $exerciseIds;
     protected const                TITLE = 'Test-ExerciseHelper';
 
     public static function setUpBeforeClass(): void
@@ -23,12 +23,12 @@ class ExerciseHelperTest extends TestCase
     protected function setUp(): void
     {
         $exercise = new Exercise(['title' => self::TITLE]);
-        $this->ids[] = self::$ExerciseHelper->save($exercise);
+        $this->exerciseIds[] = self::$ExerciseHelper->save($exercise);
     }
 
     protected function tearDown(): void
     {
-        foreach ($this->ids as $id) {
+        foreach ($this->exerciseIds as $id) {
             self::$ExerciseHelper->delete($id);
         }
     }
@@ -42,8 +42,8 @@ class ExerciseHelperTest extends TestCase
         //event is called directly by the assertion
 
         //then
-        $exercise = self::$ExerciseHelper->get($this->ids[0]);
-        self::assertEquals($this->ids[0], $exercise->getId());
+        $exercise = self::$ExerciseHelper->get($this->exerciseIds[0]);
+        self::assertEquals($this->exerciseIds[0], $exercise->getId());
     }
 
     public function test_create_same_title()
@@ -82,7 +82,7 @@ class ExerciseHelperTest extends TestCase
         //event is called directly by the assertion
 
         //then
-        $exercise = self::$ExerciseHelper->get($this->ids[0]);
+        $exercise = self::$ExerciseHelper->get($this->exerciseIds[0]);
         $this->assertEquals(self::TITLE, $exercise->getTitle());
     }
 
@@ -93,7 +93,7 @@ class ExerciseHelperTest extends TestCase
 
         //when
         $count = count(self::$ExerciseHelper->get());
-        $this->ids[] = self::$ExerciseHelper->save(new Exercise(['title' => 'Test-ExerciseHelper2']));
+        $this->exerciseIds[] = self::$ExerciseHelper->save(new Exercise(['title' => 'Test-ExerciseHelper2']));
 
         //then
         $this->assertCount($count + 1, self::$ExerciseHelper->get());
@@ -107,11 +107,11 @@ class ExerciseHelperTest extends TestCase
         //when
         $title = 'Title Update';
         $state = 'State Update';
-        $exercise = self::$ExerciseHelper->get($this->ids[0]);
+        $exercise = self::$ExerciseHelper->get($this->exerciseIds[0]);
         $exercise->setTitle($title);
         $exercise->setState($state);
         self::$ExerciseHelper->save($exercise);
-        $exercise = self::$ExerciseHelper->get($this->ids[0]);
+        $exercise = self::$ExerciseHelper->get($this->exerciseIds[0]);
 
         //then
         $this->assertEquals($title, $exercise->getTitle());
@@ -128,8 +128,8 @@ class ExerciseHelperTest extends TestCase
 
         //then
         $count = count(self::$ExerciseHelper->get());
-        self::$ExerciseHelper->delete($this->ids[0]);
-        unset($this->ids[0]);
+        self::$ExerciseHelper->delete($this->exerciseIds[0]);
+        unset($this->exerciseIds[0]);
 
         $this->assertCount($count - 1, self::$ExerciseHelper->get());
     }

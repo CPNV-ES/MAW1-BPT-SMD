@@ -11,8 +11,7 @@ use App\Router\Router;
 require_once '../vendor/autoload.php';
 require_once 'const.php';
 
-define('TEMPLATES_DIR', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR);
-define('SCRIPTS_DIR', dirname($_SERVER['SCRIPT_NAME']) . DIRECTORY_SEPARATOR);
+define('TEMPLATES_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR);
 
 DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
 

@@ -112,16 +112,16 @@ class Exercise
     }
 
     /**
-     * @param int|null $id
+     * @param int|null $fulfillment
      *
      * @return array|Fulfillment
      */
-    public function getFulfillment(int $id = null): array|Fulfillment
+    public function getFulfillment(int $fulfillment = null): array|Fulfillment
     {
-        if (is_null($id)) {
+        if (is_null($fulfillment)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id AND exercises_id = :exercises_id', ['field_id' => $id, 'exercises_id' => $this->id], true);
+            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id AND exercises_id = :exercises_id', ['field_id' => $fulfillment, 'exercises_id' => $this->id], true);
         }
     }
 }
