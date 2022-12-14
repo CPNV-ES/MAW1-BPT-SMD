@@ -1,11 +1,18 @@
-<main class="container">
+<?php
 
+$title = 'Exercise: <a href="' . $params['router']->generateUrl('exercises_results', [
+        "id" => $params['exercise']->getId
+        ()
+    ]) . '">' . $params['exercise']->getTitle() . '</a>';
+$headerColor = 'results';
+?>
+<main class="container">
     <body>
-        <h1><?= $data['fulfillment']->getDate() ?></h1>
+        <h1><?= $params['fulfillment']->getDate() ?></h1>
         <dl class="answer">
-            <?php foreach ($data['fulfillment']->getFieldsValues() as $value) : ?>
-                <dt><?= $value['field']->getTitle() ?></dt>
-                <dd><?= $value['value'] ?></dd>
+            <?php foreach ($params['fields'] as $field) : ?>
+                <dt><?= $field->getLabel() ?></dt>
+                <dd><?= $params['fulfillment']->getValue($field) ?></dd>
             <?php endforeach; ?>
         </dl>
     </body>

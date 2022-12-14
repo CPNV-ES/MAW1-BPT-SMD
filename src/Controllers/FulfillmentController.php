@@ -66,4 +66,16 @@ class FulfillmentController extends Controller
 
         $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment->getId()]);
     }
+
+    public function results(int $idExercise, int $idFulfillment): void
+    {
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
+
+        $this->view('fulfillments/results', [
+            'exercise'    => $exercise,
+            'fields'      => $exercise->getFields(),
+            'fulfillment' => $exercise->getFulfillments($idFulfillment),
+            'router'      => $this->router
+        ]);
+    }
 }

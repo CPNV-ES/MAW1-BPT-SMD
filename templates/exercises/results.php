@@ -1,5 +1,9 @@
 <?php
 
+$title = 'Exercise: <a href="' . $params['router']->generateUrl('exercises_results', [
+        "id" => $params['exercise']->getId
+        ()
+    ]) . '">' . $params['exercise']->getTitle() . '</a>';
 $headerColor = 'results';
 ?>
 <table>
@@ -8,7 +12,10 @@ $headerColor = 'results';
         <th>Take</th>
         <?php
         foreach ($params['fields'] as $field) : ?>
-            <th><a href="<?= $params['router']->generateUrl('fields_results', ["exercise" => $params['exercise']->getId(), "field" => $field->getId()]) ?>"><?= $field->getLabel()
+            <th><a href="<?= $params['router']->generateUrl(
+                    'fields_results',
+                    ["exercise" => $params['exercise']->getId(), "field" => $field->getId()]
+                ) ?>"><?= $field->getLabel()
                     ?></a></th>
         <?php
         endforeach; ?>
@@ -20,7 +27,10 @@ $headerColor = 'results';
     foreach ($params['fulfillments'] as $fulfillment) : ?>
         <tr>
             <td>
-                <a href="<?= $params['router']->generateUrl('fulfillments_results', ['exercise' => $params['exercise']->getId(), "fulfillment" => $fulfillment->getId()]) ?>">
+                <a href="<?= $params['router']->generateUrl(
+                    'fulfillments_results',
+                    ['exercise' => $params['exercise']->getId(), "fulfillment" => $fulfillment->getId()]
+                ) ?>">
                     <?= $fulfillment->getDate() ?> UTC
                 </a>
             </td>
