@@ -20,13 +20,13 @@ class FieldsController extends Controller
         $exercise = $this->exerciseHelper->get($exerciseId);
         $params = [
             'exercise' => $exercise,
-            'router'   => $this->router
+            'router'   => $this->router,
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $field = new Field([
                 'label'      => $_POST['field']['label'],
-                'value_kind' => $_POST['field']['value_kind']
+                'value_kind' => $_POST['field']['value_kind'],
             ]);
 
             if ($exercise->createField($field)) {
@@ -46,7 +46,7 @@ class FieldsController extends Controller
         $params = [
             'exercise' => $exercise,
             'field'    => $field,
-            'router'   => $this->router
+            'router'   => $this->router,
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,5 +68,17 @@ class FieldsController extends Controller
         $exercise = $this->exerciseHelper->get($exerciseId);
         $exercise->deleteField($fieldId);
         $this->router->redirect('fields_index', ['exercise' => $exercise->getId()]);
+    }
+
+    public function results(int $exerciseId, int $fieldId): void
+    {
+        $exercise = $this->exerciseHelper->get($exerciseId);
+
+        $this->view('fields/results', [
+            'exercise'     => $exercise,
+            'field'        => $exercise->getFields($fieldId),
+            'fulfillments' => $exercise->getFulfillments(),
+            'router'       => $this->router,
+        ]);
     }
 }

@@ -19,7 +19,7 @@ class ExerciseController extends Controller
     {
         $this->view('exercises/index', [
             'exercises' => $this->exerciseHelper->get(),
-            'router'    => $this->router
+            'router'    => $this->router,
         ]);
     }
 
@@ -52,7 +52,19 @@ class ExerciseController extends Controller
     {
         $this->view('exercises/answering', [
             'exercises' => $this->exerciseHelper->get(),
-            'router'    => $this->router
+            'router'    => $this->router,
+        ]);
+    }
+
+    public function results(int $exerciseId): void
+    {
+        $exercise = $this->exerciseHelper->get($exerciseId);
+
+        $this->view('exercises/results', [
+            'exercise'     => $exercise,
+            'fields'       => $exercise->getFields(),
+            'fulfillments' => $exercise->getFulfillments(),
+            'router'       => $this->router,
         ]);
     }
 

@@ -32,6 +32,14 @@ class Fulfillment
     }
 
     /**
+     * @return string
+     */
+    public function getDate(): string
+    {
+        return $this->date;
+    }
+
+    /**
      * @param array $answers
      *
      * @return int
@@ -53,9 +61,17 @@ class Fulfillment
     protected function create(array $answers = [[]]): int
     {
         try {
-            $fulfillmentsId = $this->query->insert('fulfillments', Fulfillment::class, ['date' => $this->date, 'exercises_id' => $this->exercise->getId()]);
+            $fulfillmentsId = $this->query->insert(
+                'fulfillments',
+                Fulfillment::class,
+                ['date' => $this->date, 'exercises_id' => $this->exercise->getId()]
+            );
             foreach ($answers as $key => $answer) {
-                $this->query->insert('fields_has_fulfillments', Fulfillment::class, ['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]);
+                $this->query->insert(
+                    'fields_has_fulfillments',
+                    Fulfillment::class,
+                    ['fulfillments_id' => $fulfillmentsId, 'fields_id' => $key, 'value' => $answer]
+                );
             }
             return $fulfillmentsId;
         } catch (PDOException $e) {
@@ -79,10 +95,10 @@ class Fulfillment
                     'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
                     [
                         'fields_id'       => $fields_id,
-                        'fulfillments_id' => $this->id
+                        'fulfillments_id' => $this->id,
                     ],
                     [
-                        'value' => $answer
+                        'value' => $answer,
                     ]
                 );
             }
@@ -106,7 +122,7 @@ class Fulfillment
             'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
             [
                 ':fields_id'       => $field->getId(),
-                ':fulfillments_id' => $this->id
+                ':fulfillments_id' => $this->id,
             ],
             true
         );
@@ -118,7 +134,12 @@ class Fulfillment
      */
     public function delete(): void
     {
-        $this->query->delete('fields_has_fulfillments', FieldsHasFulfillments::class, 'fulfillments_id = :fulfillments_id', ['fulfillments_id' => $this->id]);
+        $this->query->delete(
+            'fields_has_fulfillments',
+            FieldsHasFulfillments::class,
+            'fulfillments_id = :fulfillments_id',
+            ['fulfillments_id' => $this->id]
+        );
         $this->query->delete('fulfillments', Fulfillment::class, 'id = :id', ['id' => $this->id]);
     }
 }

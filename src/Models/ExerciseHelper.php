@@ -86,7 +86,7 @@ class ExerciseHelper
     public function delete(int $exerciseId): void
     {
         $exercise = $this->get($exerciseId);
-        foreach ($exercise->getFulfillment() as $fulfillment) {
+        foreach ($exercise->getFulfillments() as $fulfillment) {
             $fulfillment->delete();
         }
         foreach ($exercise->getFields() as $field) {

@@ -20,15 +20,25 @@ $headerColor = 'results';
                         <td>
                             <?php if ($exercise->getFields()): ?>
                                 <a title="Be ready for answers" rel="nofollow" data-method="put"
-                                   href="<?= $params['router']->generateUrl('exercises_state', ['exercise' => $exercise->getId()], 'state=answering'); ?>">
+                                   href="<?= $params['router']->generateUrl(
+                                       'exercises_state',
+                                       ['exercise' => $exercise->getId()],
+                                       'state=answering'
+                                   ); ?>">
                                     <i class="fa fa-comment"></i>
                                 </a>
                             <?php endif; ?>
-                            <a title="Manage fields" href="<?= $params['router']->generateUrl('fields_index', ['exercise' => $exercise->getId()]); ?>">
+                            <a title="Manage fields" href="<?= $params['router']->generateUrl(
+                                'fields_index',
+                                ['exercise' => $exercise->getId()]
+                            ); ?>">
                                 <i class=" fa fa-edit"></i>
                             </a>
                             <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                               href="<?= $params['router']->generateUrl('exercises_delete', ['exercise' => $exercise->getId()]); ?>">
+                               href="<?= $params['router']->generateUrl(
+                                   'exercises_delete',
+                                   ['exercise' => $exercise->getId()]
+                               ); ?>">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
@@ -58,8 +68,12 @@ $headerColor = 'results';
                                 <i class="fa fa-chart-bar"></i>
                             </a>
                             <a title="Close" rel="nofollow" data-method="put"
-                               href="<?= $params['router']->generateUrl('exercises_state', ['exercise' => $exercise->getId()], 'state=closed'); ?>">
-                            <i class="fa fa-minus-circle"></i>
+                               href="<?= $params['router']->generateUrl(
+                                   'exercises_state',
+                                   ['exercise' => $exercise->getId()],
+                                   'state=closed'
+                               ); ?>">
+                                <i class="fa fa-minus-circle"></i>
                             </a>
                         </td>
                     </tr>

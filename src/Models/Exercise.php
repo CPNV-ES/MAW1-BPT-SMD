@@ -93,7 +93,7 @@ class Exercise
             return $this->query->insert('fields', Field::class, [
                 'label'        => $field->getLabel(),
                 'value_kind'   => $field->getValueKind(),
-                'exercises_id' => $this->id
+                'exercises_id' => $this->id,
             ]);
         } catch (PDOException $e) {
             error_log($e);
@@ -116,7 +116,7 @@ class Exercise
      *
      * @return array|Fulfillment
      */
-    public function getFulfillment(int $fulfillment = null): array|Fulfillment
+    public function getFulfillments(int $fulfillment = null): array|Fulfillment
     {
         if (is_null($fulfillment)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
