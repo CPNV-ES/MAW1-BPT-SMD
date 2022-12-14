@@ -5,7 +5,7 @@ use App\Models\Exercise;
 use App\Models\ExerciseHelper;
 use PHPUnit\Framework\TestCase;
 
-require_once '../public/const.php';
+require_once dirname(__DIR__).'../public/const.php';
 
 class ExerciseHelperTest extends TestCase
 {
@@ -97,6 +97,25 @@ class ExerciseHelperTest extends TestCase
 
         //then
         $this->assertCount($count + 1, self::$ExerciseHelper->get());
+    }
+
+    public function test_exercise_update()
+    {
+        //given
+        //refer to setUp method
+
+        //when
+        $title = 'Title Update';
+        $state = 'State Update';
+        $exercise = self::$ExerciseHelper->get($this->ids[0]);
+        $exercise->setTitle($title);
+        $exercise->setState($state);
+        self::$ExerciseHelper->save($exercise);
+        $exercise = self::$ExerciseHelper->get($this->ids[0]);
+
+        //then
+        $this->assertEquals($title, $exercise->getTitle());
+        $this->assertEquals($state, $exercise->getState());
     }
 
     public function test_exercise_can_be_deleted()
