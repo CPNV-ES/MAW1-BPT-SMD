@@ -69,18 +69,16 @@ class Exercise
     }
 
     /**
-     * @param array|null $id
+     * @param int|null $fieldId
      *
-     * @return array
+     * @return array|Field
      */
-    public function getFields(array $id = null): array
+    public function getFields(int $fieldId = null): array|Field
     {
-        if (is_null($id)) {
+        if (is_null($fieldId)) {
             return $this->query->select('fields', Field::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            $conditions = "id IN (:id)";
-            $params = ['id' => implode(',', $id)];
-            return $this->query->select('fields', Field::class, $conditions, $params);
+            return $this->query->select('fields', Field::class, 'id  = :field_id AND exercises_id = :exercises_id', ['field_id' => $fieldId, 'exercises_id' => $this->id], true);
         }
     }
 
@@ -95,7 +93,7 @@ class Exercise
             return $this->query->insert('fields', Field::class, [
                 'label'        => $field->getLabel(),
                 'value_kind'   => $field->getValueKind(),
-                'exercises_id' => $this->id
+                'exercises_id' => $this->id,
             ]);
         } catch (PDOException $e) {
             error_log($e);
@@ -104,21 +102,26 @@ class Exercise
     }
 
     /**
-     * @param int $id
+     * @param int $fieldId
      *
      * @return void
      */
-    public function deleteField(int $id): void
+    public function deleteField(int $fieldId): void
     {
-        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $id]);
+        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $fieldId]);
     }
 
-    public function getFulfillments($id = null)
+    /**
+     * @param int|null $fulfillment
+     *
+     * @return array|Fulfillment
+     */
+    public function getFulfillments(int $fulfillment = null): array|Fulfillment
     {
-        if (is_null($id)) {
+        if (is_null($fulfillment)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('fulfillments', Fulfillment::class, 'id = :id', ['id' => $id], true);
+            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id AND exercises_id = :exercises_id', ['field_id' => $fulfillment, 'exercises_id' => $this->id], true);
         }
     }
 }

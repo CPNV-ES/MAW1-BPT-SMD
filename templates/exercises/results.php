@@ -1,30 +1,26 @@
 <?php
-
-$title = 'Exercise: <a href="' . $params['router']->generateUrl('exercises_results', [
-        "id" => $params['exercise']->getId
-        ()
-    ]) . '">' . $params['exercise']->getTitle() . '</a>';
+$title = 'Exercise: <a href="' . $params['router']->generateUrl(
+        'exercises_results',
+        ["id" => $params['exercise']->getId(),]
+    ) . '">' . $params['exercise']->getTitle() . '</a>';
 $headerColor = 'results';
 ?>
 <table>
     <thead>
     <tr>
         <th>Take</th>
-        <?php
-        foreach ($params['fields'] as $field) : ?>
+        <?php foreach ($params['fields'] as $field) : ?>
             <th><a href="<?= $params['router']->generateUrl(
                     'fields_results',
                     ["exercise" => $params['exercise']->getId(), "field" => $field->getId()]
                 ) ?>"><?= $field->getLabel()
                     ?></a></th>
-        <?php
-        endforeach; ?>
+        <?php endforeach; ?>
     </tr>
     </thead>
 
     <tbody>
-    <?php
-    foreach ($params['fulfillments'] as $fulfillment) : ?>
+    <?php foreach ($params['fulfillments'] as $fulfillment) : ?>
         <tr>
             <td>
                 <a href="<?= $params['router']->generateUrl(
@@ -34,27 +30,19 @@ $headerColor = 'results';
                     <?= $fulfillment->getDate() ?> UTC
                 </a>
             </td>
-            <?php
-            foreach ($params['fields'] as $field) : ?>
-                <?php
-                $response = $fulfillment->getValue($field); ?>
+            <?php foreach ($params['fields'] as $field) : ?>
+                <?php $response = $fulfillment->getValue($field); ?>
                 <td class="answer">
-                    <?php
-                    if (strlen($response) == 0) : ?>
+                    <?php if (strlen($response) == 0) : ?>
                         <i class="fa fa-times empty"></i>
-                    <?php
-                    elseif (strlen($response) < 10) : ?>
+                    <?php elseif (strlen($response) < 10) : ?>
                         <i class="fa fa-check short"></i>
-                    <?php
-                    else : ?>
+                    <?php else : ?>
                         <i class="fa fa-check-double filled"></i>
-                    <?php
-                    endif; ?>
+                    <?php endif; ?>
                 </td>
-            <?php
-            endforeach; ?>
+            <?php endforeach; ?>
         </tr>
-    <?php
-    endforeach; ?>
+    <?php endforeach; ?>
     </tbody>
 </table>

@@ -53,6 +53,11 @@ class Fulfillment
         }
     }
 
+    /**
+     * @param array $answers
+     *
+     * @return int
+     */
     protected function create(array $answers = [[]]): int
     {
         try {
@@ -75,6 +80,11 @@ class Fulfillment
         }
     }
 
+    /**
+     * @param array $answers
+     *
+     * @return int
+     */
     protected function update(array $answers = [[]]): int
     {
         try {
@@ -85,10 +95,10 @@ class Fulfillment
                     'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
                     [
                         'fields_id'       => $fields_id,
-                        'fulfillments_id' => $this->id
+                        'fulfillments_id' => $this->id,
                     ],
                     [
-                        'value' => $answer
+                        'value' => $answer,
                     ]
                 );
             }
@@ -99,7 +109,12 @@ class Fulfillment
         }
     }
 
-    public function getValue(Field $field)
+    /**
+     * @param Field $field
+     *
+     * @return string
+     */
+    public function getValue(Field $field): string
     {
         $fieldsHasFulfillments = $this->query->select(
             'fields_has_fulfillments',
@@ -107,16 +122,24 @@ class Fulfillment
             'fields_id = :fields_id AND fulfillments_id = :fulfillments_id',
             [
                 ':fields_id'       => $field->getId(),
-                ':fulfillments_id' => $this->id
+                ':fulfillments_id' => $this->id,
             ],
             true
         );
         return $fieldsHasFulfillments->getValue();
     }
 
-    public function delete()
+    /**
+     * @return void
+     */
+    public function delete(): void
     {
-        $this->query->delete('fields_has_fulfillments', FieldsHasFulfillments::class, 'fulfillments_id = :fulfillments_id', ['fulfillments_id' => $this->id]);
+        $this->query->delete(
+            'fields_has_fulfillments',
+            FieldsHasFulfillments::class,
+            'fulfillments_id = :fulfillments_id',
+            ['fulfillments_id' => $this->id]
+        );
         $this->query->delete('fulfillments', Fulfillment::class, 'id = :id', ['id' => $this->id]);
     }
 }

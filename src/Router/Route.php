@@ -2,8 +2,6 @@
 
 namespace App\Router;
 
-use App\Database\DBConnection;
-
 class Route
 {
     protected string $path;

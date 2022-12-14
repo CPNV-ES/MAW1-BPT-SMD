@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
@@ -19,7 +18,7 @@ class Field
      */
     public function __construct(array $params = [])
     {
-        $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
+        $this->query = new Query();
         if (array_key_exists('label', $params)) {
             $this->label = $params['label'];
         }
