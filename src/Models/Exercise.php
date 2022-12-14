@@ -113,7 +113,7 @@ class Exercise
         $this->query->delete('fields', Field::class, 'id = :id', ['id' => $id]);
     }
 
-    public function getFulfillment($id = null)
+    public function getFulfillments($id = null)
     {
         if (is_null($id)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);

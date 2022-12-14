@@ -76,4 +76,16 @@ class FieldsController extends Controller
         $exercise->deleteField($idField);
         $this->router->redirect('fields_index', ['id' => $exercise->getId()]);
     }
+
+    public function results(int $idExercise, int $field): void
+    {
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
+
+        $this->view('fields/results', [
+            'exercise'     => $exercise,
+            'field'        => $exercise->getFields([$field])[0],
+            'fulfillments' => $exercise->getFulfillments(),
+            'router'       => $this->router
+        ]);
+    }
 }

@@ -62,6 +62,18 @@ class ExerciseController extends Controller
         ]);
     }
 
+    public function results(int $id)
+    {
+        $exercise = $this->exerciseHelper->get([$id])[0];
+
+        $this->view('exercises/results', [
+            'exercise'     => $exercise,
+            'fields'       => $exercise->getFields(),
+            'fulfillments' => $exercise->getFulfillments(),
+            'router'       => $this->router
+        ]);
+    }
+
     /**
      * @param int $id
      *

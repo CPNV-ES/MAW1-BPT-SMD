@@ -42,7 +42,7 @@ class FulfillmentController extends Controller
     public function edit(int $idExercise, int $idFulfillment)
     {
         $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $fulfillment = $exercise->getFulfillment($idFulfillment);
+        $fulfillment = $exercise->getFulfillments($idFulfillment);
 
         $this->view('fulfillments/edit', [
             'router'      => $this->router,
@@ -55,7 +55,7 @@ class FulfillmentController extends Controller
     public function update(int $idExercise, int $idFulfillment)
     {
         $exercise = $this->exerciseHelper->get([$idExercise])[0];
-        $fulfillment = $exercise->getFulfillment($idFulfillment);
+        $fulfillment = $exercise->getFulfillments($idFulfillment);
 
         $answers_attributes = $_POST['fulfillment']['answers_attributes'];
         $answers = [];
@@ -65,5 +65,17 @@ class FulfillmentController extends Controller
         $fulfillment->save($answers);
 
         $this->router->redirect('fulfillments_edit', ['id1' => $exercise->getId(), 'id2' => $fulfillment->getId()]);
+    }
+
+    public function results(int $idExercise, int $idFulfillment): void
+    {
+        $exercise = $this->exerciseHelper->get([$idExercise])[0];
+
+        $this->view('fulfillments/results', [
+            'exercise'    => $exercise,
+            'fields'      => $exercise->getFields(),
+            'fulfillment' => $exercise->getFulfillments($idFulfillment),
+            'router'      => $this->router
+        ]);
     }
 }
