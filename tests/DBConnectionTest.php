@@ -4,7 +4,7 @@ use App\Database\DBConnection;
 use App\Models\Exercise;
 use PHPUnit\Framework\TestCase;
 
-require_once '../public/const.php';
+require_once dirname(__DIR__).'../public/const.php';
 
 class DBConnectionTest extends TestCase
 {

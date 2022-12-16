@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
@@ -21,7 +20,7 @@ class Exercise
      */
     public function __construct(array $params = [])
     {
-        $this->query = new Query(DBConnection::getInstance(), 'fields', Field::class);
+        $this->query = new Query();
         if (array_key_exists('title', $params)) {
             $this->title = $params['title'];
         }
@@ -70,18 +69,16 @@ class Exercise
     }
 
     /**
-     * @param array|null $id
+     * @param int|null $fieldId
      *
-     * @return array
+     * @return array|Field
      */
-    public function getFields(array $id = null): array
+    public function getFields(int $fieldId = null): array|Field
     {
-        if (is_null($id)) {
-            return $this->query->select('exercises_id = :id', [':id' => $this->id]);
+        if (is_null($fieldId)) {
+            return $this->query->select('fields', Field::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            $conditions = "id IN (:id)";
-            $params = ['id' => implode(',', $id)];
-            return $this->query->select($conditions, $params);
+            return $this->query->select('fields', Field::class, 'id  = :field_id AND exercises_id = :exercises_id', ['field_id' => $fieldId, 'exercises_id' => $this->id], true);
         }
     }
 
@@ -93,10 +90,10 @@ class Exercise
     public function createField(Field $field): int
     {
         try {
-            return $this->query->insert([
+            return $this->query->insert('fields', Field::class, [
                 'label'        => $field->getLabel(),
                 'value_kind'   => $field->getValueKind(),
-                'exercises_id' => $this->id
+                'exercises_id' => $this->id,
             ]);
         } catch (PDOException $e) {
             error_log($e);
@@ -105,12 +102,26 @@ class Exercise
     }
 
     /**
-     * @param $id
+     * @param int $fieldId
      *
      * @return void
      */
-    public function deleteField($id): void
+    public function deleteField(int $fieldId): void
     {
-        $this->query->delete($id);
+        $this->query->delete('fields', Field::class, 'id = :id', ['id' => $fieldId]);
+    }
+
+    /**
+     * @param int|null $fulfillment
+     *
+     * @return array|Fulfillment
+     */
+    public function getFulfillments(int $fulfillment = null): array|Fulfillment
+    {
+        if (is_null($fulfillment)) {
+            return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
+        } else {
+            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id AND exercises_id = :exercises_id', ['field_id' => $fulfillment, 'exercises_id' => $this->id], true);
+        }
     }
 }

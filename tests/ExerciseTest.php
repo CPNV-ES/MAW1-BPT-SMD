@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 use App\Models\Exercise;
 use App\Models\ExerciseHelper;
 
-require_once '../public/const.php';
+require_once dirname(__DIR__).'../public/const.php';
 
 class ExerciseTest extends TestCase
 {
@@ -32,7 +32,7 @@ class ExerciseTest extends TestCase
         $exercise->setState('edit');
         $id = $exerciseHelper->save($exercise);
 
-        $exercise = $exerciseHelper->get([$id])[0];
+        $exercise = $exerciseHelper->get($id);
 
         $this->assertEquals($id, $exercise->getId());
 

@@ -1,4 +1,3 @@
-function enableElement(idElement){
-    element = document.getElementById(idElement);
-    element.disabled = false;
+const enableElement = (element) => {
+    document.querySelector('#' + element).disabled = false
 }

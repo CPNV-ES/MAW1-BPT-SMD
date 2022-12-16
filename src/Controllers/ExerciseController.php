@@ -15,38 +15,32 @@ class ExerciseController extends Controller
         $this->exerciseHelper = new ExerciseHelper();
     }
 
-    /**
-     * @return void
-     */
     public function index(): void
     {
         $this->view('exercises/index', [
             'exercises' => $this->exerciseHelper->get(),
-            'router'    => $this->router
+            'router'    => $this->router,
         ]);
     }
 
-    /**
-     * @return void
-     */
     public function new(): void
     {
         $params['router'] = $this->router;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exercise = new Exercise(['title' => $_POST['title']]);
-            if ($id = $this->exerciseHelper->save($exercise)) {
-                $this->router->redirect('fields_index', ['id' => $id]);
+            if ($exerciseId = $this->exerciseHelper->save($exercise)) {
+                $this->router->redirect('fields_index', ['exercise' => $exerciseId]);
             }
             $params["error"] = "Le titre est déjà utilisé. Veuillez en choisir un autre.";
         }
         $this->view('exercises/new', $params);
     }
 
-    public function state(int $id, string $query)
+    public function state(int $exerciseId, string $query)
     {
         parse_str($query, $params);
 
-        $exercise = $this->exerciseHelper->get([$id])[0];
+        $exercise = $this->exerciseHelper->get($exerciseId);
         $exercise->setState($params['state']);
 
         $this->exerciseHelper->save($exercise);
@@ -54,14 +48,29 @@ class ExerciseController extends Controller
         $this->router->redirect('exercises_index');
     }
 
-    /**
-     * @param int $id
-     *
-     * @return void
-     */
-    public function delete(int $id): void
+    public function answering(): void
     {
-        $this->exerciseHelper->delete($id);
+        $this->view('exercises/answering', [
+            'exercises' => $this->exerciseHelper->get(),
+            'router'    => $this->router,
+        ]);
+    }
+
+    public function results(int $exerciseId): void
+    {
+        $exercise = $this->exerciseHelper->get($exerciseId);
+
+        $this->view('exercises/results', [
+            'exercise'     => $exercise,
+            'fields'       => $exercise->getFields(),
+            'fulfillments' => $exercise->getFulfillments(),
+            'router'       => $this->router,
+        ]);
+    }
+
+    public function delete(int $exerciseId): void
+    {
+        $this->exerciseHelper->delete($exerciseId);
         $this->router->redirect('exercises_index');
     }
 }
