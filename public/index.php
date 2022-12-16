@@ -11,7 +11,7 @@ use App\Router\Router;
 require_once '../vendor/autoload.php';
 require_once 'const.php';
 
-define('TEMPLATES_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR);
+define('TEMPLATES_DIR', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR);
 
 DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
 
@@ -25,7 +25,7 @@ $router->get('exercises_answering', new Route('/exercises/answering', ExerciseCo
 $router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
 $router->post('exercises_state', new Route('/exercises/:exercise/state', ExerciseController::class, 'state'));
 $router->post('exercises_delete', new Route('/exercises/:exercise', ExerciseController::class, 'delete'));
-$router->get('exercises_results', new Route('/exercises/:id/results', ExerciseController::class, 'results'));
+$router->get('exercises_results', new Route('/exercises/:exercise/results', ExerciseController::class, 'results'));
 
 $router->get('fields_index', new Route('/exercises/:exercise/fields', FieldsController::class, 'index'));
 $router->post('fields_create', new Route('/exercises/:exercise/fields', FieldsController::class, 'index'));

@@ -64,7 +64,10 @@ $headerColor = 'results';
                     <tr>
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
-                            <a title="Show results" href="/exercises/<?= $exercise->getId() ?>/results">
+                            <a title="Show results" href="<?= $params['router']->generateUrl(
+                                'exercises_results',
+                                ['exercise' => $exercise->getId(),]
+                            ) ?>">
                                 <i class="fa fa-chart-bar"></i>
                             </a>
                             <a title="Close" rel="nofollow" data-method="put"
@@ -98,11 +101,17 @@ $headerColor = 'results';
                     <tr>
                         <td><?= $exercise->getTitle() ?></td>
                         <td>
-                            <a title="Show results" href="/exercises/<?= $exercise->getId() ?>/results">
+                            <a title="Show results" href="<?= $params['router']->generateUrl(
+                                'exercises_results',
+                                ['exercise' => $exercise->getId(),]
+                            ) ?>">
                                 <i class="fa fa-chart-bar"></i>
                             </a>
                             <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
-                               href="/exercises/<?= $exercise->getId() ?>">
+                               href="<?= $params['router']->generateUrl(
+                                   'exercises_delete',
+                                   ['exercise' => $exercise->getId()]
+                               ); ?>">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
