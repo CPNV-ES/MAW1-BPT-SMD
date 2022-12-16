@@ -2,9 +2,6 @@
 
 namespace App\Database;
 
-/**
- * Query
- */
 class Query
 {
     protected DBConnection $dbConnection;
@@ -15,47 +12,44 @@ class Query
     }
 
     /**
-     * Select elements with filter
+     * Method to select records from a database table
      *
-     * @param string      $table
-     * @param string      $class
-     * @param string|null $conditions
-     * @param array|null  $params
-     * @param bool        $single
+     * @param string      $table Name of the table to select from
+     * @param string      $class Name of the class to use for the result objects
+     * @param string|null $conditions Optional WHERE conditions for the SELECT statement
+     * @param array|null  $params Optional parameters for the WHERE conditions
+     * @param bool        $single Optional flag indicating whether to return a single object or an array of objects
      *
      * @return array|object
      */
-    public function select(string $table, string $class, string $conditions = null, array $params = null, bool $single = false): array|object
-    {
+    public function select(
+        string $table,
+        string $class,
+        string $conditions = null,
+        array $params = null,
+        bool $single = false
+    ): array|object {
         $sql = "SELECT * FROM {$table}";
         $sql .= $conditions ? " WHERE {$conditions}" : "";
         return $this->dbConnection->execute($sql, $class, $params, $single);
     }
 
     /**
-     * Create one element
+     * Method to insert a new record into a database table
      *
-     * @param string $table
-     * @param string $class
-     * @param array  $data array of fields name and value
+     * @param string $table Name of the table to insert into
+     * @param string $class Name of the class to use for the result objects
+     * @param array  $data Array of field values for the new record
      *
      * @return int
      */
     public function insert(string $table, string $class, array $data): int
     {
-        $firstParenthesis = "";
-        $secondParenthesis = "";
-        $i = 1;
-
-        foreach ($data as $key => $value) {
-            $comma = $i === count($data) ? "" : ", ";
-            $firstParenthesis .= "{$key}{$comma}";
-            $secondParenthesis .= ":{$key}{$comma}";
-            $i++;
-        }
+        $fieldList = implode(', ', array_keys($data));
+        $placeholderList = implode(', ', array_map(fn($key) => ":{$key}", array_keys($data)));
 
         $this->dbConnection->execute(
-            "INSERT INTO {$table} ($firstParenthesis) VALUES ($secondParenthesis)",
+            "INSERT INTO {$table} ({$fieldList}) VALUES ({$placeholderList})",
             $class,
             $data
         );
@@ -63,43 +57,38 @@ class Query
     }
 
     /**
-     * Update one element by his id
+     * Method to update an existing record in a database table
      *
-     * @param string $table
-     * @param string $class
-     * @param string $conditions
-     * @param array  $params
-     * @param array  $data array of fields name and value to update
+     * @param string $table Name of the table to update
+     * @param string $class Name of the class to use for the result objects
+     * @param string $conditions WHERE conditions for the UPDATE statement
+     * @param array  $params Parameters for the WHERE conditions
+     * @param array  $data Array of updated field values
      *
      * @return bool
      */
     public function update(string $table, string $class, string $conditions, array $params, array $data): bool
     {
-        $sqlRequestPart = "";
-        $i = 1;
-
-        foreach ($data as $key => $value) {
-            $comma = $i === count($data) ? "" : ', ';
-            $sqlRequestPart .= "{$key} = :{$key}{$comma}";
-            $i++;
-        }
-
+        $updateList = implode(
+            ', ',
+            array_map(fn($key) => "{$key} = :{$key}", array_keys($data))
+        );
         $data = array_merge($params, $data);
 
         return $this->dbConnection->execute(
-            "UPDATE {$table} SET {$sqlRequestPart} WHERE {$conditions}",
+            "UPDATE {$table} SET {$updateList} WHERE {$conditions}",
             $class,
             $data
         );
     }
 
     /**
-     * Create one element
+     * Method to delete a record from a database table
      *
-     * @param string $table
-     * @param string $class
-     * @param string $conditions
-     * @param array  $params
+     * @param string $table Name of the table to delete from
+     * @param string $class Name of the class to use for the result objects
+     * @param string $conditions WHERE conditions for the DELETE statement
+     * @param array  $params Parameters for the WHERE conditions
      *
      * @return bool
      */
