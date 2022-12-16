@@ -1,4 +1,5 @@
 <?php
+
 $title = 'New exercise';
 $headerColor = 'managing'
 ?>

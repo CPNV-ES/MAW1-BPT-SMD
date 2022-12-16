@@ -17,16 +17,21 @@ class Query
     /**
      * Select elements with filter
      *
-     * @param string      $table
-     * @param string      $class
+     * @param string $table
+     * @param string $class
      * @param string|null $conditions
-     * @param array|null  $params
-     * @param bool        $single
+     * @param array|null $params
+     * @param bool $single
      *
      * @return array|object
      */
-    public function select(string $table, string $class, string $conditions = null, array $params = null, bool $single = false): array|object
-    {
+    public function select(
+        string $table,
+        string $class,
+        string $conditions = null,
+        array $params = null,
+        bool $single = false
+    ): array|object {
         $sql = "SELECT * FROM {$table}";
         $sql .= $conditions ? " WHERE {$conditions}" : "";
         return $this->dbConnection->execute($sql, $class, $params, $single);

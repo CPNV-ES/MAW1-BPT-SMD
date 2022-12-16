@@ -1,4 +1,5 @@
 <?php
+
 $headerColor = 'managing';
 $title = "Exercise: {$params['exercise']->getTitle()}";
 ?>
@@ -15,15 +16,23 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($params['exercise']->getFields() as $field) : ?>
+            <?php
+            foreach ($params['exercise']->getFields() as $field) : ?>
                 <tr>
                     <td><?= $field->getLabel() ?></td>
                     <td><?= $field->getValueKind() ?></td>
                     <td>
-                        <a title="Edit" href="<?= $params['router']->generateUrl('fields_edit', ['exercise' => $params['exercise']->getId(), 'field' => $field->getId()]); ?>">
+                        <a title="Edit" href="<?= $params['router']->generateUrl(
+                            'fields_edit',
+                            ['exercise' => $params['exercise']->getId(), 'field' => $field->getId()]
+                        ); ?>">
                             <i class="fa fa-edit"></i>
                         </a>
-                        <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete" href="<?= $params['router']->generateUrl('fields_delete', ['exercise' => $params['exercise']->getId(), 'field' => $field->getId()]); ?>">
+                        <a data-confirm="Are you sure?" title="Destroy" rel="nofollow" data-method="delete"
+                           href="<?= $params['router']->generateUrl(
+                               'fields_delete',
+                               ['exercise' => $params['exercise']->getId(), 'field' => $field->getId()]
+                           ); ?>">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
@@ -33,16 +42,24 @@ $title = "Exercise: {$params['exercise']->getTitle()}";
             </tbody>
 
         </table>
-        <?php if ($params['exercise']->getFields()): ?>
-            <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button" rel="nofollow"
-               data-method="put" href="<?= $params['router']->generateUrl('exercises_state', ['exercise' => $params['exercise']->getId()], 'state=answering'); ?>">
+        <?php
+        if ($params['exercise']->getFields()): ?>
+            <a data-confirm="Are you sure? You won't be able to further edit this exercise" class="button"
+               rel="nofollow"
+               data-method="put" href="<?= $params['router']->generateUrl(
+                'exercises_state',
+                ['exercise' => $params['exercise']->getId()],
+                'state=answering'
+            ); ?>">
                 <i class="fa fa-comment"></i> Complete and be ready for answers
             </a>
-        <?php endif; ?>
+        <?php
+        endif; ?>
     </section>
     <section class="column">
         <h1>New Field</h1>
-        <form action="<?= $params['router']->generateUrl('fields_index', ['exercise' => $params['exercise']->getId()]); ?>" accept-charset="UTF-8" method="post">
+        <form action="<?= $params['router']->generateUrl('fields_index', ['exercise' => $params['exercise']->getId()]
+        ); ?>" accept-charset="UTF-8" method="post">
             <div class="field">
                 <label for="field_label">Label</label>
                 <input type="text" name="field[label]" id="field_label" required>
