@@ -13,6 +13,15 @@ class DBConnection
     protected static string $password;
     protected ?PDO          $pdo;
 
+    /**
+     * Method to set the database connection details
+     *
+     * @param string $dns Data source name (DSN) for the database connection
+     * @param string $user Username for the database connection
+     * @param string $password Password for the database connection
+     *
+     * @return void
+     */
     public static function setUp(string $dns, string $user, string $password): void
     {
         self::$dns = $dns;
@@ -21,17 +30,18 @@ class DBConnection
     }
 
     /**
+     * Method to get the single instance of the class
+     *
      * @return DBConnection
      */
     public static function getInstance(): DBConnection
     {
-        if (self::$instance == null) {
-            self::$instance = new DBConnection();
-        }
-        return self::$instance;
+        return self::$instance ??= new DBConnection();
     }
 
     /**
+     * Method to get the PDO object for the database connection
+     *
      * @return PDO
      */
     public function getPDO(): PDO
@@ -43,6 +53,8 @@ class DBConnection
     }
 
     /**
+     * Method to open a new database connection
+     *
      * @return void
      */
     protected function open(): void
@@ -51,7 +63,7 @@ class DBConnection
     }
 
     /**
-     * Close dbConnection connection
+     * Method to close the database connection
      *
      * @return void
      */
@@ -61,34 +73,35 @@ class DBConnection
     }
 
     /**
-     * Run a query on the database
+     * Method to execute a database query
      *
-     * @param string     $sql    Sql to run
-     * @param string     $class  class expected in return
-     * @param array|null $param  params for the query
-     * @param bool       $single true for a single value in return
+     * @param string     $sql SQL statement to execute
+     * @param string     $class Name of the class to use for the result objects
+     * @param array|null $param Optional parameters for the query
+     * @param bool       $single Optional flag indicating whether to return a single object or an array of objects
      *
-     * @return bool|object|array
+     * @return object|bool|array
      */
-    public function execute(string $sql, string $class, array $param = null, bool $single = false): bool|object|array
+    public function execute(string $sql, string $class, array $param = null, bool $single = false): object|bool|array
     {
-        $method = is_null($param) ? 'query' : 'prepare';
-        $stmt = $this->getPDO()->$method($sql);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+        $request = $this->getPDO()->prepare($sql);
 
-        if (str_starts_with($sql, 'DELETE') || str_starts_with($sql, 'UPDATE') || str_starts_with($sql, 'INSERT')) {
-            return $stmt->execute($param);
+        $request->execute($param);
+
+        if (str_starts_with($sql, 'SELECT')) {
+            if ($single) {
+                return $request->fetchObject($class);
+            } else {
+                return $request->fetchAll(PDO::FETCH_CLASS, $class);
+            }
+        } else {
+            return $request->rowCount() > 0;
         }
-
-        if ($method !== 'query') {
-            $stmt->execute($param);
-        }
-
-        $fetch = $single ? 'fetch' : 'fetchAll';
-        return $stmt->$fetch();
     }
 
     /**
+     * Method to get the ID of the last inserted item
+     *
      * @return int
      */
     public function getLastItemId(): int
