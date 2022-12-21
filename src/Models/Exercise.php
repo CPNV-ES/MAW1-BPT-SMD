@@ -5,9 +5,6 @@ namespace App\Models;
 use App\Database\Query;
 use PDOException;
 
-/**
- * Exercise
- */
 class Exercise
 {
     protected int    $id;
@@ -27,7 +24,9 @@ class Exercise
     }
 
     /**
-     * @return int|null
+     * Getter method for the id property.
+     *
+     * @return int|null The id of the exercise, or null if not set.
      */
     public function getId(): ?int
     {
@@ -35,7 +34,9 @@ class Exercise
     }
 
     /**
-     * @return string
+     * Getter method for the title property.
+     *
+     * @return string The title of the exercise.
      */
     public function getTitle(): string
     {
@@ -43,7 +44,9 @@ class Exercise
     }
 
     /**
-     * @param string $title
+     * Setter method for the title property.
+     *
+     * @param string $title The new title for the exercise.
      *
      * @return void
      */
@@ -53,7 +56,9 @@ class Exercise
     }
 
     /**
-     * @return string
+     * Getter method for the state property.
+     *
+     * @return string The state of the exercise.
      */
     public function getState(): string
     {
@@ -61,7 +66,11 @@ class Exercise
     }
 
     /**
-     * @param string $state
+     * Setter method for the state property.
+     *
+     * @param string $state The new state for the exercise.
+     *
+     * @return void
      */
     public function setState(string $state): void
     {
@@ -69,9 +78,11 @@ class Exercise
     }
 
     /**
-     * @param int|null $fieldId
+     * Retrieve all fields belonging to an exercise, or a specific field if an id is provided.
      *
-     * @return array|Field
+     * @param int|null $fieldId The id of the field to retrieve, or null to retrieve all fields.
+     *
+     * @return array|Field An array of Field objects, or a single Field object if an id was provided.
      */
     public function getFields(int $fieldId = null): array|Field
     {
@@ -82,10 +93,13 @@ class Exercise
         }
     }
 
+
     /**
-     * @param Field $field
+     * Create a new field for an exercise.
      *
-     * @return int
+     * @param Field $field The field to create.
+     *
+     * @return int The id of the newly created field.
      */
     public function createField(Field $field): int
     {
@@ -101,27 +115,41 @@ class Exercise
         }
     }
 
+
     /**
-     * @param int $fieldId
+     * Delete a field from an exercise.
+     *
+     * @param int $fieldId The id of the field to delete.
      *
      * @return void
      */
     public function deleteField(int $fieldId): void
     {
+        foreach ($this->getFulfillments() as $fulfillment) {
+            $fulfillment->delete();
+        }
         $this->query->delete('fields', Field::class, 'id = :id', ['id' => $fieldId]);
     }
 
     /**
-     * @param int|null $fulfillment
+     * Retrieve all fulfillments belonging to an exercise, or a specific fulfillment if an id is provided.
      *
-     * @return array|Fulfillment
+     * @param int|null $fulfillment The id of the fulfillment to retrieve, or null to retrieve all fulfillments.
+     *
+     * @return array|Fulfillment An array of Fulfillment objects, or a single Fulfillment object if an id was provided.
      */
     public function getFulfillments(int $fulfillment = null): array|Fulfillment
     {
         if (is_null($fulfillment)) {
             return $this->query->select('fulfillments', Fulfillment::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('fulfillments', Fulfillment::class, 'id = :field_id AND exercises_id = :exercises_id', ['field_id' => $fulfillment, 'exercises_id' => $this->id], true);
+            return $this->query->select(
+                'fulfillments',
+                Fulfillment::class,
+                'id = :field_id AND exercises_id = :exercises_id',
+                ['field_id' => $fulfillment, 'exercises_id' => $this->id],
+                true
+            );
         }
     }
 }
