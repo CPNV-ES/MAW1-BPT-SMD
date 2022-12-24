@@ -60,7 +60,11 @@ class ExerciseHelper
     private function create(Exercise $exercise): int
     {
         try {
-            return $this->query->insert('exercises', Exercise::class, ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]);
+            return $this->query->insert(
+                'exercises',
+                Exercise::class,
+                ['title' => $exercise->getTitle(), 'state' => $exercise->getState()]
+            );
         } catch (PDOException $e) {
             error_log($e);
             return false;

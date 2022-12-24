@@ -89,7 +89,13 @@ class Exercise
         if (is_null($fieldId)) {
             return $this->query->select('fields', Field::class, 'exercises_id = :id', [':id' => $this->id]);
         } else {
-            return $this->query->select('fields', Field::class, 'id  = :field_id AND exercises_id = :exercises_id', ['field_id' => $fieldId, 'exercises_id' => $this->id], true);
+            return $this->query->select(
+                'fields',
+                Field::class,
+                'id  = :field_id AND exercises_id = :exercises_id',
+                ['field_id' => $fieldId, 'exercises_id' => $this->id],
+                true
+            );
         }
     }
 

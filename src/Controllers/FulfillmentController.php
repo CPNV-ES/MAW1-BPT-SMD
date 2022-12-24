@@ -36,7 +36,10 @@ class FulfillmentController extends Controller
         $fulfillment = new Fulfillment(['date' => (new \DateTime())->format('Y-m-d H:i:s'), 'exercise' => $exercise]);
         $fulfillment_id = $fulfillment->save($answers);
 
-        $this->router->redirect('fulfillments_edit', ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment_id]);
+        $this->router->redirect(
+            'fulfillments_edit',
+            ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment_id]
+        );
     }
 
     public function edit(int $exerciseId, int $fulfillmentId)
@@ -64,7 +67,10 @@ class FulfillmentController extends Controller
         }
         $fulfillment->save($answers);
 
-        $this->router->redirect('fulfillments_edit', ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment->getId()]);
+        $this->router->redirect(
+            'fulfillments_edit',
+            ['exercise' => $exercise->getId(), 'fulfillment' => $fulfillment->getId()]
+        );
     }
 
     public function results(int $exerciseId, int $fulfillmentId): void

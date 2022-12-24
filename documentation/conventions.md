@@ -11,13 +11,11 @@ Only one dev per branch
 We must in our commits  
 Commit naming:
 
-- use english
-- loweCamelCase
-- if one file is modifed : name of the file with his extension
-- if muliple file are modified : name of the story
-- after name use `:` to write a description
+- Use english
+- LoweCamelCase
+- If one file is modified : name of the file with his extension
+- If multiple file are modified : name of the story
+- After name use `:` to write a description
 
-in englais cour fonctionalité si plusieurs fichier
-nom de fichier si un seul fichier modifié
-
-ghj
+En anglais le nom fonctionnalité si plusieurs fichiers  
+Nom de fichier si un seul fichier modifié
