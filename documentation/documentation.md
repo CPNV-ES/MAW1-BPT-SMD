@@ -2,12 +2,17 @@
 
 ## Introduction
 
-Dans ce projet, nous devons copier d'un site web en l'améliorant. Le concept du site est de pouvoir avoir un ouitl web qui permet de créer un exercise et d'y répondre sans gestion des utilisateur du site. Il n'y a pas besoin de se connecter au site pour l'utiliser. Ce n'est d'ailleur pas possible de se connecter sur le site. Le projet est construit en MVC (Modèle Vue Controller). Il utilise une base de donneés MySQL.
+Dans ce projet, nous devons copier d'un site web en l'améliorant. Le concept du site est de pouvoir avoir un ouitl web qui permet de créer un exercise et d'y répondre sans gestion des utilisateur du
+site. Il n'y a pas besoin de se connecter au site pour l'utiliser. Ce n'est d'ailleur pas possible de se connecter sur le site. Le projet est construit en MVC (Modèle Vue Controller). Il utilise une
+base de donneés MySQL.
 La documentation contien un model conceptuel de donnée, pour visualiser la base de donnée d'un point de vue métier et un model logique de données.
 
+Notre verson de ce site existe [en ligne](https://cld2-7.mycpnv.ch/)
 
 ## Installation
+
 ### Prérequis
+
 Veuillez vous référez à la section téchnologie pour obtenir les versions des composants utilisés.
 
 ### Procédure
@@ -15,10 +20,8 @@ Veuillez vous référez à la section téchnologie pour obtenir les versions des
 1. Récuperer le repository depuis Github (clone, fork ou téléchargement .zip) (https://github.com/CPNV-ES/MAW1-BPT-SMD)
 1. Faire un `composer install` à la racine du projet
 1. Ouvrir le fichier `const.php.exemple` et remplir les champs en majuscule [HOSTNAME,DBNAME,DB_USER,SB_PASSWORD] avec vos informations.
-  1. Renommer le fichier en `const.php`
+1. Renommer le fichier en `const.php`
 1. Lancer le serveur PHP via la commande `php -S 127.0.0.1:8888 -t public`
-
-
 
 ## Fonctionnement du projet
 
@@ -70,21 +73,23 @@ Contre-exemples: ORM, composants de framework comme Symfony.
 Pour réaliser ce projet, nous avons commencé par faire les exercices. Ils sont la base du site et utilisés partout et par toutes les parties du site.
 Nous avons créé des tests qui permettent de tester si nous n'ajoutons pas de bug avec nos fonctionnalités.
 
+### Router
 
+Les routes sont définit dans ```public/index.php```. On utilise les class ```src/Router/Router``` et
+```src/Router/Route``` pour gérer les url et rediriger dans le bon controller.
 
-### Classes  
+### Database connection
 
-- Exercise
-- Field
-- Fulfillment
-- DBconnection
-- Query
+On utilise la class ```src/Database/Query``` pour créer les requêtes en foncion des paramètres données et on
+utilise ```src/Database/DBConnection``` pour les executer.
 
 ### Models
-Nos models sont globalement assez similiaire les uns au autres. Cependant ils ont tout de même des méthodes qui différent légèrement. Voici les méthodes notables du model Exercice : 
-- Une fonction qui permet de récupérer les champs d'un exercice. Si un ID de champ est spécifié, elle renvoie un objet Field correspondant à ce champ, sinon elle renvoie un tableau contenant tous les objets Field associés à l'exercice.
 
-  
+Nos models sont globalement assez similiaire les uns au autres. Cependant ils ont tout de même des méthodes qui différent légèrement. Voici les méthodes notables du model Exercice :
+
+- Une fonction qui permet de récupérer les champs d'un exercice. Si un ID de champ est spécifié, elle renvoie un objet Field correspondant à ce champ, sinon elle renvoie un tableau contenant tous les
+  objets Field associés à l'exercice.
+
   ```php 
     public function getFields(int $fieldId = null): array|Field
     {
@@ -95,7 +100,9 @@ Nos models sont globalement assez similiaire les uns au autres. Cependant ils on
         }
     }
   ```
+
 - Une fonction qui permet de créer un exercice, à partir des valeur `label, value_kind, exercise_id`. En cas d'échec, une erreur est retournée:
+
 ```php
 - public function createField(Field $field): int
   {
@@ -111,7 +118,9 @@ Nos models sont globalement assez similiaire les uns au autres. Cependant ils on
       }
   } 
 ```
+
 - Une fonction qui permet de récupérer les fulfillments en retournant tout les fulfillment pour un exercice si aucune id n'est donnée, et un fulfillment précis, si sont id est donnée:
+
 ```php 
   public function getFulfillments(int $fulfillment = null): array|Fulfillment
   {
@@ -125,17 +134,22 @@ Nos models sont globalement assez similiaire les uns au autres. Cependant ils on
 
 Le projet contient les models suivants:
 
-**Exercise**  
-**ExerciseHelper**  
-**Field**  
-
+- **ExerciseHelper** permet de gérer des exercises
+- **Exercise** lier à la table ```exercises``` dans la db, permet de gérer les fields et le fullfilments qui lui sont lié
+- **Field** lier à la table ```fields``` dans la db, permet d'update un field
+- **Fulfillment** lier a la table ```fulfillment``` dans la db, permet de créer et modifier un fulfillment
+- **FieldsHasFulfillments** lier a la table ```fields_has_fulfillment``` dans la db
 
 ### Controllers
-Nos controllers se basent sur un fichier qui contient une classe abstraite appelée Controller qui est utilisée pour généraliser le comportement des contrôleurs de l'application. 
-La classe Controller définit deux propriétés: un objet DBConnection et un objet Router. La méthode view()` est utilisée pour afficher une vue et prend en paramètre le chemin de la vue et un tableau d'options facultatif pour remplir les variables de la vue.
+
+Nos controllers se basent sur un fichier qui contient une classe abstraite appelée Controller qui est utilisée pour généraliser le comportement des contrôleurs de l'application.
+La classe Controller définit deux propriétés: un objet DBConnection et un objet Router. La méthode view()` est utilisée pour afficher une vue et prend en paramètre le chemin de la vue et un tableau
+d'options facultatif pour remplir les variables de la vue.
 
 Voici un exemple de la classe générique Controller:
+
 - Cette fonction permet d'afficher une vue. On lui donne le chemin d'accès de la vue et il se charche de prendre la bonne vue pour l'afficher.
+
 ```php 
   protected function view(string $path, array $params = null): void
   {
@@ -147,7 +161,9 @@ Voici un exemple de la classe générique Controller:
 ```
 
 Voici des exemples du controller ExerciseController:
+
 - Cette fonction permet d'afficher la vue pour répondre à un exercice, en lui donnant les variables nécessaires.
+
 ```php 
     public function answering(): void
       {
@@ -159,6 +175,7 @@ Voici des exemples du controller ExerciseController:
 ```
 
 - Cette fonction permet de supprimer un exercice à partir de sont id. Puis de rediriger vers la liste des exercices.
+
 ```php 
   public function delete(int $exerciseId): void
   {
