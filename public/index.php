@@ -1,53 +1,43 @@
 <?php
-//=============================================================================
-// Entry script for ooless framework web apps.
-// Author:  Pascal Hurni
-// Date:    03-05-2014
-//=============================================================================
-// Do not modify this file except to adapt the URL fetching for URL rewriting.
-// Fill up these files:
-//    src/dispatcher.php
-//    src/handler.php
-//    src/renderer.php
-//=============================================================================
 
-session_start();
+use App\Controllers\ExerciseController;
+use App\Controllers\FieldsController;
+use App\Controllers\FulfillmentController;
+use App\Controllers\HomeController;
+use App\Database\DBConnection;
+use App\Router\Route;
+use App\Router\Router;
 
-define('BASE_DIR', dirname( __FILE__ ).'/..');
-define('SOURCE_DIR', BASE_DIR.'/src');
+require_once '../vendor/autoload.php';
+require_once 'const.php';
 
-//=============================================================================
-// Create the BAG which will contain the request/response meta data
+define('TEMPLATES_DIR', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR);
 
-$bag = [];
+DBConnection::setUp(DB_DNS, DB_USER, DB_PASSWORD);
 
-//=============================================================================
-// Extract the route from a friendly URL
+$router = Router::getInstance();
 
-$route = $_SERVER["REQUEST_URI"];
-if (!empty($_SERVER["QUERY_STRING"])) {
-    $route = substr($route, 0, strlen($_SERVER["REQUEST_URI"])-strlen($_SERVER["QUERY_STRING"])-1);
-}
+$router->get('home_index', new Route('/', HomeController::class, 'index'));
 
-$bag['route'] = urldecode($route);
-$bag['method'] = $_SERVER['REQUEST_METHOD'];
+$router->get('exercises_index', new Route('/exercises', ExerciseController::class, 'index'));
+$router->get('exercises_new', new Route('/exercises/new', ExerciseController::class, 'new'));
+$router->get('exercises_answering', new Route('/exercises/answering', ExerciseController::class, 'answering'));
+$router->post('exercises_create', new Route('/exercises/new', ExerciseController::class, 'new'));
+$router->post('exercises_state', new Route('/exercises/:exercise/state', ExerciseController::class, 'state'));
+$router->post('exercises_delete', new Route('/exercises/:exercise', ExerciseController::class, 'delete'));
+$router->get('exercises_results', new Route('/exercises/:exercise/results', ExerciseController::class, 'results'));
 
-error_log("index(): ".$bag['method']." ".$bag['route']);
+$router->get('fields_index', new Route('/exercises/:exercise/fields', FieldsController::class, 'index'));
+$router->post('fields_create', new Route('/exercises/:exercise/fields', FieldsController::class, 'index'));
+$router->get('fields_edit', new Route('/exercises/:exercise/fields/:field/edit', FieldsController::class, 'edit'));
+$router->post('fields_update', new Route('/exercises/:exercise/fields/:field/edit', FieldsController::class, 'edit'));
+$router->post('fields_delete', new Route('/exercises/:exercise/fields/:field', FieldsController::class, 'delete'));
+$router->get('fields_results', new Route('/exercises/:exercise/results/:field', FieldsController::class, 'results'));
 
-//=============================================================================
-// Dispatch the request
+$router->get('fulfillments_new', new Route('/exercises/:exercise/fulfillments/new', FulfillmentController::class, 'new'));
+$router->post('fulfillments_create', new Route('/exercises/:exercise/fulfillments/create', FulfillmentController::class, 'create'));
+$router->get('fulfillments_edit', new Route('/exercises/:exercise/fulfillments/:fulfillment/edit', FulfillmentController::class, 'edit'));
+$router->post('fulfillments_update', new Route('/exercises/:exercise/fulfillments/:fulfillment/update', FulfillmentController::class, 'update'));
+$router->get('fulfillments_results', new Route('/exercises/:exercise/fulfillments/:fulfillment', FulfillmentController::class, 'results'));
 
-require SOURCE_DIR.'/dispatcher.php';
-$bag = dispatch($bag);
-
-//=============================================================================
-// Call the handler
-
-require SOURCE_DIR.'/handler.php';
-$bag = handle($bag);
-
-//=============================================================================
-// Render the response
-
-require SOURCE_DIR.'/renderer.php';
-render($bag);
+$router->run();

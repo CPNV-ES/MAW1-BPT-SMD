@@ -1,0 +1,50 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User order 1
+participant Exercise order 2
+participant Field order 2
+participant ExerciseHelper order 4
+participant Query order 5
+participant DBConnection order 6
+actor Database order 7
+
+group Create Exercise
+    User -> Exercise : Create a new exercise
+    Exercise -> ExerciseHelper : Create()
+    ExerciseHelper -> Query : insert()
+    Query -> DBConnection : execute()
+    DBConnection -> Database : Create the exercise
+end
+
+group Delete Exercise
+User -> Exercise : Delete the exercise
+Exercise -> ExerciseHelper : Delete()
+ExerciseHelper -> Query : delete()
+Query -> DBConnection : execute()
+DBConnection -> Database : Delete the exercise
+end
+
+group Create Field
+User -> Field : Create a new field
+Field -> Exercise : CreateField()
+Exercise -> Query : insert()
+Query -> DBConnection : execute()
+DBConnection -> Database : Create the field
+end
+
+group Edit Field
+User -> Field : Edit the field
+Field -> Exercise : setValueKind(), setLabel()
+Exercise --> Query : saveField()
+Query -> DBConnection : execute()
+DBConnection -> Database : Edit the field
+end
+group Delete Field
+Field -> Exercise : Delete the field
+Exercise -> ExerciseHelper : deleteField()
+ExerciseHelper -> Query : deleteField()
+Query -> DBConnection : execute()
+DBConnection -> Database : Delete the field
+end
+@enduml
