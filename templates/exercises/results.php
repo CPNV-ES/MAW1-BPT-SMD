@@ -2,7 +2,7 @@
 
 $title = 'Exercise: <a href="' . $params['router']->generateUrl(
         'exercises_results',
-        ["id" => $params['exercise']->getId(),]
+        ['exercise' => $params['exercise']->getId(),]
     ) . '">' . $params['exercise']->getTitle() . '</a>';
 $headerColor = 'results';
 ?>

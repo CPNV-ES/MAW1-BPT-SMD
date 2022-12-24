@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Database\DBConnection;
 use App\Database\Query;
 use PDOException;
 
+/**
+ * This class provides methods for manipulating Exercise objects
+ */
 class ExerciseHelper
 {
     protected Query $query;
@@ -15,9 +19,11 @@ class ExerciseHelper
     }
 
     /**
-     * @param int|null $exerciseId
+     * Method to get one or all Exercise objects
      *
-     * @return array|Exercise
+     * @param int|null $exerciseId optional parameter to specify the id of the Exercise object to retrieve
+     *
+     * @return array|Exercise returns an array of Exercise objects or a single Exercise object if an id is specified
      */
     public function get(int $exerciseId = null): array|Exercise
     {
@@ -29,9 +35,11 @@ class ExerciseHelper
     }
 
     /**
-     * @param Exercise $exercise
+     * Method to save a new or existing Exercise object
      *
-     * @return int
+     * @param Exercise $exercise the Exercise object to save
+     *
+     * @return int returns the id of the saved Exercise object
      */
     public function save(Exercise $exercise): int
     {
@@ -43,9 +51,11 @@ class ExerciseHelper
     }
 
     /**
-     * @param Exercise $exercise
+     * Private method to create a new Exercise object
      *
-     * @return int
+     * @param Exercise $exercise the Exercise object to create
+     *
+     * @return int returns the id of the created Exercise object
      */
     private function create(Exercise $exercise): int
     {
@@ -62,9 +72,11 @@ class ExerciseHelper
     }
 
     /**
-     * @param Exercise $exercise
+     * Private method to update an existing Exercise object
      *
-     * @return int
+     * @param Exercise $exercise the Exercise object to update
+     *
+     * @return int returns the id of the updated Exercise object
      */
     private function update(Exercise $exercise): int
     {
@@ -83,19 +95,30 @@ class ExerciseHelper
     }
 
     /**
-     * @param int $exerciseId
+     * Method to delete an Exercise object
      *
-     * @return void
+     * @param int $exerciseId the id of the Exercise object to delete
+     *
+     * @return bool returns true if the Exercise object was successfully deleted, false otherwise
      */
-    public function delete(int $exerciseId): void
+    public function delete(int $exerciseId): bool
     {
         $exercise = $this->get($exerciseId);
-        foreach ($exercise->getFulfillments() as $fulfillment) {
-            $fulfillment->delete();
+        $pdo = DBConnection::getInstance()->getPDO();
+        try {
+            $pdo->beginTransaction();
+            foreach ($exercise->getFields() as $field) {
+                $exercise->deleteField($field->getId());
+            }
+            $this->query->delete('exercises', Exercise::class, 'id = :id', ['id' => $exerciseId]);
+            $pdo->commit();
+            return true;
+        } finally {
+            // If the transaction has not been committed, roll it back
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+                return false;
+            }
         }
-        foreach ($exercise->getFields() as $field) {
-            $exercise->deleteField($field->getId());
-        }
-        $this->query->delete('exercises', Exercise::class, 'id = :id', ['id' => $exerciseId]);
     }
 }
