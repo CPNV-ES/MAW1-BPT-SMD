@@ -74,8 +74,8 @@ ___
 - [x] List all the exercises in 3 columns based on their state
 - [x] Destroy an exercise (only when building or closed)
 - [x] Change state of an exercise through icon buttons
-- [ ] Stats for an exercise: show the recap (all takes, all fields)
-- [ ] Stats for an exercise: show the answers of all fields of one take
-- [ ] Stats for an exercise: show the answers on one field of all takes
+- [x] Stats for an exercise: show the recap (all takes, all fields)
+- [x] Stats for an exercise: show the answers of all fields of one take
+- [x] Stats for an exercise: show the answers on one field of all takes
 
 ___
